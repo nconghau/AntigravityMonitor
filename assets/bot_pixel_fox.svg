@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Shadow -->
+  <ellipse cx="32" cy="60" rx="15" ry="3" fill="rgba(0,0,0,0.25)"/>
+  <!-- Bushy Fox Tail with White Tip -->
+  <path d="M42 45 Q56 42 54 30 Q46 36 38 42 Z" fill="#ea580c" stroke="#c2410c" stroke-width="1.5"/>
+  <polygon points="54,30 50,33 53,35 48,36 52,38 46,39" fill="#ffffff"/>
+  <!-- Body / Hoodie -->
+  <rect x="22" y="32" width="20" height="20" rx="7" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1.5"/>
+  <!-- Hoodie Strings -->
+  <line x1="28" y1="32" x2="28" y2="40" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="36" y1="32" x2="36" y2="40" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Legs -->
+  <rect x="25" y="51" width="5" height="8" rx="2" fill="#1e293b"/>
+  <rect x="34" y="51" width="5" height="8" rx="2" fill="#1e293b"/>
+  <!-- Fox Ears -->
+  <polygon points="21,18 16,6 27,14" fill="#ea580c" stroke="#c2410c" stroke-width="1.5"/>
+  <polygon points="21,16 18,9 25,14" fill="#fed7aa"/>
+  <polygon points="43,18 48,6 37,14" fill="#ea580c" stroke="#c2410c" stroke-width="1.5"/>
+  <polygon points="43,16 46,9 39,14" fill="#fed7aa"/>
+  <!-- Fox Head -->
+  <polygon points="32,32 18,20 46,20" fill="#ea580c"/>
+  <circle cx="32" cy="20" r="12" fill="#ea580c"/>
+  <!-- White Cheeks -->
+  <polygon points="18,22 25,28 32,30 25,20" fill="#ffffff"/>
+  <polygon points="46,22 39,28 32,30 39,20" fill="#ffffff"/>
+  <!-- Fox Nose & Eyes -->
+  <circle cx="32" cy="29" r="1.5" fill="#1e293b"/>
+  <circle cx="27" cy="21" r="2" fill="#1e293b"/>
+  <circle cx="37" cy="21" r="2" fill="#1e293b"/>
+  <circle cx="27.5" cy="20.5" r="0.7" fill="#ffffff"/>
+  <circle cx="37.5" cy="20.5" r="0.7" fill="#ffffff"/>
+  <!-- Tech Headset -->
+  <path d="M17 18 Q32 10 47 18" stroke="#64748b" stroke-width="2.5" fill="none"/>
+  <circle cx="17" cy="20" r="3.5" fill="#0284c7"/>
+  <circle cx="47" cy="20" r="3.5" fill="#0284c7"/>
+</svg>

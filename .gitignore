@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Xcode / Swift build artifacts
+build/
+DerivedData/
+*.swp
+*.o
+*.dylib
+
+# Compiled Binaries
+AntigravityMonitor
+AntigravityMonitor_arm64
+AntigravityMonitor_x86_64
+AntigravityMonitor_universal
+
+# Release Archives (Upload these to GitHub Releases)
+dist/
+*.dmg
+*.zip

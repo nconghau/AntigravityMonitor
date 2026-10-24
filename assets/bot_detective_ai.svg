@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <filter id="glow-amber"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#f59e0b" flood-opacity="0.7"/></filter>
+  <!-- Shadow -->
+  <ellipse cx="32" cy="60" rx="14" ry="3" fill="rgba(0,0,0,0.25)"/>
+  <!-- Trench Coat Body -->
+  <path d="M22 34 L17 56 L47 56 L42 34 Z" fill="#d97706" stroke="#b45309" stroke-width="1.5"/>
+  <path d="M27 34 L32 44 L37 34" fill="#fef3c7" stroke="#b45309" stroke-width="1"/>
+  <!-- Belt -->
+  <rect x="20" y="45" width="24" height="3.5" fill="#92400e"/>
+  <rect x="30" y="44" width="4" height="5.5" fill="#fde68a"/>
+  <!-- Legs -->
+  <rect x="25" y="55" width="5" height="5" rx="1" fill="#451a03"/>
+  <rect x="34" y="55" width="5" height="5" rx="1" fill="#451a03"/>
+  <!-- Head -->
+  <circle cx="32" cy="24" r="10" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+  <!-- Eyes with Monocle -->
+  <circle cx="28" cy="24" r="2" fill="#1e293b"/>
+  <circle cx="36" cy="24" r="3.5" fill="none" stroke="#f59e0b" stroke-width="1.5" filter="url(#glow-amber)"/>
+  <circle cx="36" cy="24" r="2" fill="#0284c7"/>
+  <!-- Detective Hat -->
+  <ellipse cx="32" cy="16" rx="17" ry="4" fill="#b45309"/>
+  <path d="M21 15 Q32 7 43 15 Z" fill="#d97706" stroke="#92400e" stroke-width="1.5"/>
+  <rect x="21" y="13" width="22" height="2.5" fill="#78350f"/>
+  <!-- Magnifying Glass -->
+  <circle cx="47" cy="40" r="6" fill="none" stroke="#f59e0b" stroke-width="2"/>
+  <circle cx="47" cy="40" r="4.5" fill="rgba(56,189,248,0.3)"/>
+  <line x1="43" y1="44" x2="39" y2="48" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

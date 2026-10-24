@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <filter id="glow-gold"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#f59e0b" flood-opacity="0.7"/></filter>
+  <!-- Shadow -->
+  <ellipse cx="32" cy="60" rx="15" ry="3" fill="rgba(0,0,0,0.25)"/>
+  <!-- Backpack / Jetpack -->
+  <rect x="14" y="28" width="8" height="18" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="42" y="28" width="8" height="18" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+  <ellipse cx="18" cy="48" rx="2" ry="3" fill="#38bdf8"/>
+  <ellipse cx="46" cy="48" rx="2" ry="3" fill="#38bdf8"/>
+  <!-- Body Suit -->
+  <rect x="21" y="32" width="22" height="20" rx="7" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <!-- Chest Control Box -->
+  <rect x="26" y="36" width="12" height="9" rx="2" fill="#0284c7"/>
+  <circle cx="29" cy="40.5" r="1.5" fill="#ef4444"/>
+  <circle cx="33" cy="40.5" r="1.5" fill="#10b981"/>
+  <circle cx="36" cy="40.5" r="1.5" fill="#38bdf8"/>
+  <!-- Legs -->
+  <rect x="24" y="50" width="6" height="9" rx="3" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+  <rect x="34" y="50" width="6" height="9" rx="3" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+  <!-- Big Astronaut Helmet -->
+  <circle cx="32" cy="21" r="16" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+  <!-- Gold Bubble Visor -->
+  <ellipse cx="32" cy="21" rx="12" ry="9" fill="#f59e0b" filter="url(#glow-gold)"/>
+  <ellipse cx="32" cy="21" rx="11" ry="8" fill="#fbbf24"/>
+  <!-- Visor Highlight -->
+  <path d="M24 16 Q32 13 38 15" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- Little Antenna -->
+  <line x1="32" y1="5" x2="32" y2="1" stroke="#94a3b8" stroke-width="2"/>
+  <circle cx="32" cy="1" r="2" fill="#ef4444"/>
+</svg>

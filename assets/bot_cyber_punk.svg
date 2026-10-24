@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <filter id="glow-pink"><feDropShadow dx="0" dy="1" stdDeviation="2.5" flood-color="#ec4899" flood-opacity="0.8"/></filter>
+  <!-- Shadow -->
+  <ellipse cx="32" cy="60" rx="14" ry="3" fill="rgba(0,0,0,0.25)"/>
+  <!-- Leather Cyber Jacket -->
+  <rect x="21" y="32" width="22" height="20" rx="6" fill="#18181b" stroke="#ec4899" stroke-width="1.5"/>
+  <line x1="32" y1="32" x2="32" y2="52" stroke="#a1a1aa" stroke-width="1.5"/>
+  <!-- Neon Collar -->
+  <polygon points="26,32 32,38 29,42" fill="#ec4899"/>
+  <polygon points="38,32 32,38 35,42" fill="#ec4899"/>
+  <!-- Legs -->
+  <rect x="24" y="51" width="6" height="8" rx="2" fill="#27272a"/>
+  <rect x="34" y="51" width="6" height="8" rx="2" fill="#27272a"/>
+  <!-- Cyberpunk Mohawk -->
+  <path d="M30 4 L34 4 L33 16 L31 16 Z" fill="#ec4899" filter="url(#glow-pink)"/>
+  <path d="M27 7 L31 7 L30 16 L28 16 Z" fill="#f43f5e"/>
+  <path d="M33 7 L37 7 L36 16 L34 16 Z" fill="#f43f5e"/>
+  <!-- Head -->
+  <rect x="20" y="14" width="24" height="19" rx="7" fill="#fef08a" stroke="#27272a" stroke-width="1.5"/>
+  <!-- Cool Neon Sunglasses -->
+  <polygon points="22,21 31,21 30,26 23,26" fill="#06b6d4"/>
+  <polygon points="33,21 42,21 41,26 34,26" fill="#06b6d4"/>
+  <line x1="31" y1="22" x2="33" y2="22" stroke="#18181b" stroke-width="2"/>
+  <!-- Smirk -->
+  <path d="M31 29 Q34 30 36 28" stroke="#713f12" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>
