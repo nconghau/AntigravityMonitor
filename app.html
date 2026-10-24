@@ -691,6 +691,7 @@
       }
     }
   </style>
+  <style id="dynamic-custom-theme"></style>
 </head>
 <body class="select-none font-sans min-h-screen flex flex-col justify-between overflow-x-hidden p-2 sm:p-3.5 antialiased">
 
@@ -781,6 +782,11 @@
         </button>
       </div>
 
+      <!-- Studio Customizer Trigger (Playful Button) -->
+      <button onclick="openCustomizerModal()" id="btn-customizer" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 hover:from-amber-500 hover:to-rose-500 active:scale-95 text-white text-xs font-black shadow-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0" title="Tùy chỉnh Giao diện, Nhạc & Các Agent (Phím tắt C)">
+        <span>🎨 Custom</span>
+      </button>
+
       <!-- Quick Settings Unified Menu (Tinh gọn gom nhóm) -->
       <div class="relative inline-block shrink-0">
         <button onclick="toggleQuickSettingsMenu()" id="btn-quick-settings" class="px-2.5 py-1.5 rounded-xl bg-[var(--card-surface)] hover:bg-[var(--floor-color)] text-xs font-bold border border-[var(--card-border)] shadow-2xs flex items-center gap-1 transition-all cursor-pointer whitespace-nowrap" title="Cài đặt & Tiện ích">
@@ -790,6 +796,11 @@
         <div id="quick-settings-menu" class="hidden absolute right-0 top-full mt-2 w-56 p-2.5 bg-white/95 backdrop-blur-md rounded-2xl border border-[var(--card-border)] shadow-xl z-50 text-xs text-[var(--text-main)] pop-in space-y-1.5">
           <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-1">Tiện Ích Nhanh</div>
           
+          <button onclick="openCustomizerModal(); toggleQuickSettingsMenu();" class="w-full text-left p-1.5 rounded-lg hover:bg-amber-50 flex items-center justify-between text-amber-900 font-bold transition-colors cursor-pointer">
+            <span class="flex items-center gap-1.5">🎨 <span>Studio Customizer</span></span>
+            <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 font-mono">Phím C</span>
+          </button>
+
           <button onclick="toggleFeverMode(); toggleQuickSettingsMenu();" class="w-full text-left p-1.5 rounded-lg hover:bg-orange-50 flex items-center justify-between text-orange-800 font-bold transition-colors cursor-pointer">
             <span class="flex items-center gap-1.5">⚡ <span>Tăng Tốc (Fever)</span></span>
             <span id="fever-text" class="text-[10px] px-1.5 py-0.5 rounded bg-orange-100">Bật/Tắt</span>
@@ -1195,6 +1206,11 @@
             <button id="btn-force-complete" onclick="forceCompleteAgent(currentSelectedId)" class="px-2 py-0.5 rounded-md bg-zinc-50 hover:bg-emerald-50 text-zinc-600 hover:text-emerald-800 font-bold text-[9px] border border-zinc-200 hover:border-emerald-300 flex items-center gap-1 transition-colors cursor-pointer shadow-2xs whitespace-nowrap">
               ✓ Xong việc
             </button>
+
+            <!-- CUSTOMIZE BOT BUTTON -->
+            <button onclick="openCustomizerForAgent(currentSelectedId)" class="px-2 py-0.5 rounded-md bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold text-[9px] border border-purple-200 flex items-center gap-1 transition-colors cursor-pointer shadow-2xs whitespace-nowrap" title="Tùy chỉnh tên, vai trò và avatar của bot này">
+              ✏️ Sửa Bot
+            </button>
           </div>
 
           <div id="inspect-prompt" class="text-[11px] font-semibold text-amber-700 truncate max-w-[280px] sm:max-w-md mt-0.5">
@@ -1518,6 +1534,292 @@
     </div>
   </div>
 
+  <!-- MODAL: STUDIO CUSTOMIZER (THEME, MUSIC SOURCES, AGENTS - PLAYFUL UI) -->
+  <div id="modal-studio-customizer" class="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 hidden" onclick="if(event.target === this) closeCustomizerModal()">
+    <div class="bg-[var(--card-surface)] text-[var(--text-main)] rounded-3xl border-2 border-[var(--card-border)] shadow-2xl max-w-2xl w-full p-3.5 sm:p-5 overflow-hidden pop-in flex flex-col max-h-[92vh] sm:max-h-[88vh]">
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-[var(--card-border)] mb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-400 text-amber-950 flex items-center justify-center font-bold text-lg border border-amber-300 shadow-2xs shrink-0">
+            🎨
+          </div>
+          <div>
+            <h3 class="font-extrabold text-xs sm:text-base flex items-center gap-1.5" style="color: var(--text-main)">
+              <span>Studio Customizer Hub</span>
+              <span class="text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-300">Playful Edition</span>
+            </h3>
+            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)] font-medium">Tự do tùy chỉnh Theme màu, Nguồn nhạc & Nhân vật AI theo phong cách của bạn</p>
+          </div>
+        </div>
+        <button onclick="closeCustomizerModal()" class="w-8 h-8 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-800 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <!-- Playful Segmented Tabs -->
+      <div class="flex items-center gap-1 bg-[var(--floor-color)] p-1 rounded-2xl border border-[var(--card-border)] mb-3 text-xs font-bold shrink-0">
+        <button onclick="switchCustomizerTab('theme')" id="customizer-tab-btn-theme" class="flex-1 py-1.5 rounded-xl bg-amber-400 text-amber-950 shadow-2xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+          <span>🎨</span> <span>Theme Màu</span>
+        </button>
+        <button onclick="switchCustomizerTab('music')" id="customizer-tab-btn-music" class="flex-1 py-1.5 rounded-xl text-[var(--text-muted)] hover:bg-white/60 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+          <span>🎵</span> <span>Nguồn Nhạc</span>
+        </button>
+        <button onclick="switchCustomizerTab('agents')" id="customizer-tab-btn-agents" class="flex-1 py-1.5 rounded-xl text-[var(--text-muted)] hover:bg-white/60 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+          <span>🤖</span> <span>Tùy Biến Agent</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: THEME CUSTOMIZER -->
+      <div id="customizer-panel-theme" class="flex-1 overflow-y-auto space-y-3.5 pr-1 text-xs">
+        <!-- Preset Palettes -->
+        <div class="p-3 rounded-2xl bg-[var(--floor-color)]/70 border border-[var(--card-border)]">
+          <div class="text-[11px] font-extrabold text-amber-900 mb-2 flex items-center gap-1.5">
+            <span>✨ Bảng Màu Playful Có Sẵn</span>
+            <span class="text-[9px] text-zinc-500 font-normal">(Bấm để đổi ngay)</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <button onclick="applyPresetTheme('cozy-amber')" class="p-2 rounded-xl bg-[#faf5ee] border-2 border-amber-300 hover:scale-102 transition-transform text-left cursor-pointer flex items-center justify-between">
+              <div>
+                <div class="font-bold text-amber-950 text-[11px]">🍯 Mật Ong Ấm</div>
+                <div class="text-[9px] text-amber-700">Cozy Amber (Default)</div>
+              </div>
+              <span class="w-4 h-4 rounded-full bg-amber-400 border border-amber-500 shrink-0"></span>
+            </button>
+            <button onclick="applyPresetTheme('strawberry-milk')" class="p-2 rounded-xl bg-[#fff5f7] border-2 border-rose-300 hover:scale-102 transition-transform text-left cursor-pointer flex items-center justify-between">
+              <div>
+                <div class="font-bold text-rose-950 text-[11px]">🍓 Dâu Tây Sữa</div>
+                <div class="text-[9px] text-rose-700">Sweet Strawberry</div>
+              </div>
+              <span class="w-4 h-4 rounded-full bg-rose-400 border border-rose-500 shrink-0"></span>
+            </button>
+            <button onclick="applyPresetTheme('matcha-mint')" class="p-2 rounded-xl bg-[#f0fdf4] border-2 border-emerald-300 hover:scale-102 transition-transform text-left cursor-pointer flex items-center justify-between">
+              <div>
+                <div class="font-bold text-emerald-950 text-[11px]">🍵 Trà Xanh Mint</div>
+                <div class="text-[9px] text-emerald-700">Fresh Matcha</div>
+              </div>
+              <span class="w-4 h-4 rounded-full bg-emerald-400 border border-emerald-500 shrink-0"></span>
+            </button>
+            <button onclick="applyPresetTheme('grape-pop')" class="p-2 rounded-xl bg-[#faf5ff] border-2 border-purple-300 hover:scale-102 transition-transform text-left cursor-pointer flex items-center justify-between">
+              <div>
+                <div class="font-bold text-purple-950 text-[11px]">🍇 Kẹo Nho Pop</div>
+                <div class="text-[9px] text-purple-700">Grape Soda</div>
+              </div>
+              <span class="w-4 h-4 rounded-full bg-purple-400 border border-purple-500 shrink-0"></span>
+            </button>
+            <button onclick="applyPresetTheme('ocean-cyan')" class="p-2 rounded-xl bg-[#f0fdfa] border-2 border-cyan-300 hover:scale-102 transition-transform text-left cursor-pointer flex items-center justify-between">
+              <div>
+                <div class="font-bold text-cyan-950 text-[11px]">🌊 Biển Xanh Cyan</div>
+                <div class="text-[9px] text-cyan-700">Ocean Splash</div>
+              </div>
+              <span class="w-4 h-4 rounded-full bg-cyan-400 border border-cyan-500 shrink-0"></span>
+            </button>
+            <button onclick="applyPresetTheme('cyber-dark')" class="p-2 rounded-xl bg-[#0f172a] border-2 border-cyan-400 text-white hover:scale-102 transition-transform text-left cursor-pointer flex items-center justify-between">
+              <div>
+                <div class="font-bold text-white text-[11px]">🌙 Đêm Neon</div>
+                <div class="text-[9px] text-cyan-300">Cyberpunk Dark</div>
+              </div>
+              <span class="w-4 h-4 rounded-full bg-cyan-400 border border-white shrink-0"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Custom Color Pickers -->
+        <div class="p-3 rounded-2xl bg-white border border-[var(--card-border)] space-y-2.5">
+          <div class="text-[11px] font-extrabold text-zinc-800 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">🎨 <span>Tự Chọn Bảng Màu Riêng</span></span>
+            <span class="text-[9px] text-zinc-400 font-normal">Tự do chọn màu theo sở thích</span>
+          </div>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+            <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
+              <label class="block text-[10px] font-bold text-zinc-600 mb-1">Nền Thế Giới</label>
+              <div class="flex items-center gap-1.5">
+                <input type="color" id="cust-color-bg" value="#faf5ee" oninput="updateCustomThemePreview()" class="w-7 h-7 rounded-lg border-0 cursor-pointer p-0"/>
+                <input type="text" id="cust-hex-bg" value="#faf5ee" class="w-full px-1.5 py-0.5 rounded text-[10px] font-mono border border-zinc-300 uppercase"/>
+              </div>
+            </div>
+            <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
+              <label class="block text-[10px] font-bold text-zinc-600 mb-1">Sàn Studio</label>
+              <div class="flex items-center gap-1.5">
+                <input type="color" id="cust-color-floor" value="#f7eedd" oninput="updateCustomThemePreview()" class="w-7 h-7 rounded-lg border-0 cursor-pointer p-0"/>
+                <input type="text" id="cust-hex-floor" value="#f7eedd" class="w-full px-1.5 py-0.5 rounded text-[10px] font-mono border border-zinc-300 uppercase"/>
+              </div>
+            </div>
+            <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
+              <label class="block text-[10px] font-bold text-zinc-600 mb-1">Màu Nhấn (Accent)</label>
+              <div class="flex items-center gap-1.5">
+                <input type="color" id="cust-color-accent" value="#f59e0b" oninput="updateCustomThemePreview()" class="w-7 h-7 rounded-lg border-0 cursor-pointer p-0"/>
+                <input type="text" id="cust-hex-accent" value="#f59e0b" class="w-full px-1.5 py-0.5 rounded text-[10px] font-mono border border-zinc-300 uppercase"/>
+              </div>
+            </div>
+            <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
+              <label class="block text-[10px] font-bold text-zinc-600 mb-1">Màu Thẻ Card</label>
+              <div class="flex items-center gap-1.5">
+                <input type="color" id="cust-color-card" value="#ffffff" oninput="updateCustomThemePreview()" class="w-7 h-7 rounded-lg border-0 cursor-pointer p-0"/>
+                <input type="text" id="cust-hex-card" value="#ffffff" class="w-full px-1.5 py-0.5 rounded text-[10px] font-mono border border-zinc-300 uppercase"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-end gap-2 pt-1">
+            <button onclick="resetDefaultTheme()" class="px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold text-xs transition-colors cursor-pointer">
+              🔄 Đặt Lại Mặc Định
+            </button>
+            <button onclick="applyCustomThemeFromInputs()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-amber-950 font-black text-xs shadow-xs transition-transform active:scale-95 cursor-pointer flex items-center gap-1.5">
+              <span>💾 Lưu & Áp Dụng Theme</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: MUSIC SOURCES CUSTOMIZER -->
+      <div id="customizer-panel-music" class="flex-1 overflow-y-auto space-y-3.5 pr-1 text-xs hidden">
+        <!-- Current Jukebox Playlist -->
+        <div class="p-3 rounded-2xl bg-[var(--floor-color)]/70 border border-[var(--card-border)]">
+          <div class="text-[11px] font-extrabold text-indigo-950 mb-2 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">📻 <span>Danh Sách Bài Hát Hiện Có</span></span>
+            <span class="text-[9px] text-zinc-500 font-mono" id="custom-music-count">5 bài hát</span>
+          </div>
+          <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1" id="custom-music-track-list">
+            <!-- Dynamically Populated -->
+          </div>
+        </div>
+
+        <!-- Add Custom Music Source Form -->
+        <div class="p-3 rounded-2xl bg-white border border-[var(--card-border)] space-y-2.5">
+          <div class="text-[11px] font-extrabold text-zinc-800 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">➕ <span>Thêm Nguồn Nhạc Của Bạn</span></span>
+            <span class="text-[9px] text-zinc-400 font-normal">Hỗ trợ MP3, Audio Stream & File máy tính</span>
+          </div>
+
+          <div class="space-y-2">
+            <div>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Tên bản nhạc:</label>
+              <input type="text" id="cust-music-name" placeholder="VD: Lofi Girl 24/7 Stream..." class="w-full px-2.5 py-1.5 rounded-xl bg-zinc-50 border border-zinc-200 outline-none focus:border-indigo-400 text-xs font-medium"/>
+            </div>
+
+            <!-- Radio stream presets quick click -->
+            <div>
+              <div class="text-[10px] font-bold text-zinc-500 mb-1">Gợi ý luồng Lo-fi trực tuyến miễn phí:</div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <button onclick="setMusicStreamPreset('📻 Lofi Girl Chill Live', 'https://play.streamafrica.net/lofiradio')" class="px-2 py-0.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-[10px] border border-indigo-200 cursor-pointer">
+                  + Lofi Girl Live
+                </button>
+                <button onclick="setMusicStreamPreset('☕ Chillhop Cafe Radio', 'https://stream.zeno.fm/f3wvbbqmdg8uv')" class="px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[10px] border border-amber-200 cursor-pointer">
+                  + Chillhop Cafe
+                </button>
+                <button onclick="setMusicStreamPreset('🎧 Night Cyber Radio', 'https://stream.nightride.fm/chillsynth.mp3')" class="px-2 py-0.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold text-[10px] border border-purple-200 cursor-pointer">
+                  + Chillsynth FM
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Link luồng trực tuyến (Audio Stream URL):</label>
+              <input type="text" id="cust-music-url" placeholder="https://...mp3 hoặc URL stream online" class="w-full px-2.5 py-1.5 rounded-xl bg-zinc-50 border border-zinc-200 outline-none focus:border-indigo-400 text-xs font-mono"/>
+            </div>
+
+            <div class="flex items-center gap-2 pt-1">
+              <label class="px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-bold text-xs cursor-pointer flex items-center gap-1.5 border border-zinc-300">
+                <span>📁 Chọn File Nhạc Từ Máy</span>
+                <input type="file" id="cust-music-file" accept="audio/*" onchange="handleAudioFileUpload(event)" class="hidden"/>
+              </label>
+              <button onclick="addCustomAudioTrackFromForm()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-xs transition-transform active:scale-95 cursor-pointer ml-auto flex items-center gap-1.5">
+                <span>➕ Thêm Vào Jukebox</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: AGENTS CUSTOMIZER -->
+      <div id="customizer-panel-agents" class="flex-1 overflow-y-auto space-y-3.5 pr-1 text-xs hidden">
+        <!-- Form: Create / Edit Agent -->
+        <div class="p-3 rounded-2xl bg-white border border-[var(--card-border)] space-y-2.5 shadow-2xs">
+          <div class="text-[11px] font-extrabold text-amber-950 flex items-center justify-between pb-1 border-b border-zinc-100">
+            <span id="cust-agent-form-title" class="flex items-center gap-1.5">✨ <span>Tạo Bot Mới / Tùy Chỉnh Bot</span></span>
+            <button onclick="resetAgentCustomForm()" class="text-[10px] text-zinc-500 hover:text-zinc-800 font-bold cursor-pointer">
+              Làm mới form
+            </button>
+          </div>
+
+          <input type="hidden" id="cust-agent-id" value=""/>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Tên Bot:</label>
+              <input type="text" id="cust-agent-name" placeholder="VD: Pango AI Coder..." class="w-full px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-bold outline-none focus:border-amber-400"/>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Vai trò (Role):</label>
+              <input type="text" id="cust-agent-role" placeholder="VD: Frontend Lead & Animation..." class="w-full px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-medium outline-none focus:border-amber-400"/>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Phòng làm việc:</label>
+              <select id="cust-agent-room" class="w-full px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-bold outline-none cursor-pointer">
+                <option value="office">💻 Dev Lab (Phòng Code)</option>
+                <option value="kitchen">🍳 Kitchen & Cafe (Bếp Ăn)</option>
+                <option value="living">🛋️ Studio Lounge (Phòng Khách)</option>
+                <option value="bedroom">🛏️ Sleep Pod (Phòng Ngủ)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Câu thoại suy nghĩ (Bong bóng):</label>
+              <input type="text" id="cust-agent-dialog" placeholder="VD: Đang build tính năng cho sếp!" class="w-full px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-medium outline-none focus:border-amber-400"/>
+            </div>
+          </div>
+
+          <!-- Character Avatar Picker: 14 Playful Chibi Cutout Characters -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-[10px] font-bold text-zinc-600">Chọn Avatar Playful (Trong suốt):</label>
+              <span id="cust-selected-avatar-label" class="text-[9px] font-mono font-bold text-amber-700">Dev Bot</span>
+            </div>
+            <input type="hidden" id="cust-agent-avatar" value="./assets/dev_bot.png"/>
+            
+            <div class="grid grid-cols-7 gap-1.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200 max-h-32 overflow-y-auto" id="cust-avatar-grid">
+              <!-- Dynamically populated 14 playful characters -->
+            </div>
+          </div>
+
+          <!-- Custom Avatar URL -->
+          <div class="flex items-center gap-2">
+            <input type="text" id="cust-agent-avatar-custom-url" placeholder="Hoặc dán URL ảnh ngoài (.png/.svg trong suốt)..." class="flex-1 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-mono outline-none focus:border-amber-400"/>
+            <button onclick="applyCustomAvatarUrl()" class="px-2.5 py-1 rounded-lg bg-zinc-100 hover:bg-zinc-200 font-bold text-[11px] cursor-pointer">Dùng URL</button>
+          </div>
+
+          <div class="flex items-center justify-end gap-2 pt-1">
+            <button onclick="saveAgentCustomization()" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-amber-950 font-black text-xs shadow-xs transition-transform active:scale-95 cursor-pointer flex items-center gap-1.5">
+              <span>💾 Lưu Bot Vào Studio</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Agents List -->
+        <div class="p-3 rounded-2xl bg-[var(--floor-color)]/70 border border-[var(--card-border)] space-y-2">
+          <div class="text-[11px] font-extrabold text-amber-950 flex items-center justify-between">
+            <span>👥 Danh Sách Bot Đang Hoạt Động Trong Studio</span>
+            <span class="text-[9px] text-zinc-500 font-mono" id="custom-agents-count">4 bots</span>
+          </div>
+          <div class="space-y-1.5 max-h-44 overflow-y-auto pr-1" id="custom-agents-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="pt-2.5 sm:pt-3 border-t border-[var(--card-border)] mt-3 flex items-center justify-between text-[11px] text-[var(--text-muted)]">
+        <span>Tự động lưu vào trình duyệt của bạn</span>
+        <button onclick="closeCustomizerModal()" class="px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors cursor-pointer">
+          Xong
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: STEP DETAIL INSPECTOR (Phím tắt S hoặc bấm Xem Chi Tiết Step) -->
   <div id="modal-step-detail" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 hidden" onclick="if(event.target === this) closeStepDetailModal()">
     <div class="bg-[var(--card-surface)] text-[var(--text-main)] rounded-3xl border-2 border-[var(--card-border)] shadow-2xl max-w-2xl w-full p-3.5 sm:p-5 overflow-hidden pop-in flex flex-col max-h-[92vh] sm:max-h-[90vh]">
@@ -1802,7 +2104,7 @@
     }
 
     // ==========================================
-    // 📻 MUSIC JUKEBOX & SYNTHESIZED SOUNDTRACKS
+    // 📻 MUSIC JUKEBOX & SYNTHESIZED SOUNDTRACKS (EXPANDED PLAYFUL ENGINE)
     // ==========================================
     class MusicJukebox {
       constructor() {
@@ -1813,14 +2115,40 @@
         this.timer = null;
         this.masterGain = null;
         this.step = 0;
+        this.audioEl = new Audio();
+        this.audioEl.crossOrigin = 'anonymous';
+
+        this.audioEl.addEventListener('ended', () => {
+          this.selectTrack((this.currentTrackIndex + 1) % this.tracks.length);
+        });
+
+        this.audioEl.addEventListener('error', (e) => {
+          console.log('Audio element stream error or notice:', e);
+        });
         
-        this.tracks = [
-          { id: 'lofi', name: '☕ Cozy Lo-fi Study Cafe', desc: 'Rhodes chords & vinyl warmth' },
-          { id: 'arcade', name: '👾 8-Bit Retro Arcade', desc: 'Bouncy Game Boy chiptune arpeggios' },
-          { id: 'synth', name: '🌌 Deep Space Synthwave', desc: 'Chill neon cyberpunk atmosphere' },
-          { id: 'rain', name: '🌧️ Gentle Coffee Rain', desc: 'Ambient focus rain & soft chords' },
-          { id: 'zen', name: '🧘 Zen Flow Chimes', desc: 'Calm pentatonic bells' }
+        this.defaultTracks = [
+          { id: 'lofi', type: 'synth', name: '☕ Cozy Lo-fi Study Cafe', desc: 'Rhodes chords & vinyl warmth' },
+          { id: 'arcade', type: 'synth', name: '👾 8-Bit Retro Arcade', desc: 'Bouncy Game Boy chiptune arpeggios' },
+          { id: 'synth', type: 'synth', name: '🌌 Deep Space Synthwave', desc: 'Chill neon cyberpunk atmosphere' },
+          { id: 'rain', type: 'synth', name: '🌧️ Gentle Coffee Rain', desc: 'Ambient focus rain & soft chords' },
+          { id: 'zen', type: 'synth', name: '🧘 Zen Flow Chimes', desc: 'Calm pentatonic bells' }
         ];
+
+        this.loadCustomTracks();
+      }
+
+      loadCustomTracks() {
+        try {
+          const saved = JSON.parse(localStorage.getItem('antigravity_custom_music') || '[]');
+          this.tracks = [...this.defaultTracks, ...saved];
+        } catch(e) {
+          this.tracks = [...this.defaultTracks];
+        }
+      }
+
+      saveCustomTracks() {
+        const customOnly = this.tracks.filter(t => t.isCustom);
+        localStorage.setItem('antigravity_custom_music', JSON.stringify(customOnly));
       }
 
       init() {
@@ -1841,17 +2169,37 @@
         if (this.masterGain && this.ctx) {
           this.masterGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
         }
+        if (this.audioEl) {
+          this.audioEl.volume = this.volume;
+        }
       }
 
       play() {
-        this.init();
-        if (this.isPlaying) return;
-        this.isPlaying = true;
-        this.step = 0;
-        this.tick();
-        this.timer = setInterval(() => this.tick(), this.getTempoForTrack());
+        const track = this.tracks[this.currentTrackIndex];
+        if (!track) return;
+
+        if (track.type === 'stream' || track.type === 'file') {
+          if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+          if (this.audioEl.src !== track.url) {
+            this.audioEl.src = track.url;
+          }
+          this.audioEl.volume = this.volume;
+          this.audioEl.play().catch(e => console.log('Audio stream playback notice:', e));
+          this.isPlaying = true;
+        } else {
+          if (this.audioEl) this.audioEl.pause();
+          this.init();
+          this.isPlaying = true;
+          this.step = 0;
+          if (this.timer) clearInterval(this.timer);
+          this.tick();
+          this.timer = setInterval(() => this.tick(), this.getTempoForTrack());
+        }
         updateJukeboxUI();
-        spawnFloatingEmoji("🎶 Đang phát: " + this.tracks[this.currentTrackIndex].name);
+        spawnFloatingEmoji("🎶 Đang phát: " + track.name);
       }
 
       stop() {
@@ -1859,6 +2207,9 @@
         if (this.timer) {
           clearInterval(this.timer);
           this.timer = null;
+        }
+        if (this.audioEl) {
+          this.audioEl.pause();
         }
         updateJukeboxUI();
       }
@@ -1869,17 +2220,43 @@
       }
 
       selectTrack(index) {
+        const wasPlaying = this.isPlaying;
+        this.stop();
         this.currentTrackIndex = (index + this.tracks.length) % this.tracks.length;
         this.step = 0;
-        if (this.isPlaying) {
-          if (this.timer) clearInterval(this.timer);
-          this.timer = setInterval(() => this.tick(), this.getTempoForTrack());
-        }
+        this.play();
         updateJukeboxUI();
+        if (typeof renderCustomizerMusicList === 'function') renderCustomizerMusicList();
+      }
+
+      addTrack(track) {
+        track.isCustom = true;
+        this.tracks.push(track);
+        this.saveCustomTracks();
+        updateJukeboxUI();
+        if (typeof renderCustomizerMusicList === 'function') renderCustomizerMusicList();
+      }
+
+      removeTrack(index) {
+        if (index < 0 || index >= this.tracks.length) return;
+        if (!this.tracks[index].isCustom) {
+          spawnFloatingEmoji("⚠️ Không thể xóa bản nhạc mặc định");
+          return;
+        }
+        const wasPlayingThis = this.isPlaying && this.currentTrackIndex === index;
+        if (wasPlayingThis) this.stop();
+        this.tracks.splice(index, 1);
+        if (this.currentTrackIndex >= this.tracks.length) {
+          this.currentTrackIndex = Math.max(0, this.tracks.length - 1);
+        }
+        this.saveCustomTracks();
+        updateJukeboxUI();
+        if (typeof renderCustomizerMusicList === 'function') renderCustomizerMusicList();
+        if (wasPlayingThis && this.tracks.length > 0) this.play();
       }
 
       getTempoForTrack() {
-        const track = this.tracks[this.currentTrackIndex].id;
+        const track = this.tracks[this.currentTrackIndex] ? this.tracks[this.currentTrackIndex].id : 'lofi';
         if (track === 'arcade') return 240;
         if (track === 'lofi') return 520;
         if (track === 'synth') return 360;
@@ -1889,7 +2266,7 @@
 
       tick() {
         if (!this.isPlaying || !this.ctx) return;
-        const track = this.tracks[this.currentTrackIndex].id;
+        const track = this.tracks[this.currentTrackIndex] ? this.tracks[this.currentTrackIndex].id : 'lofi';
         
         if (track === 'lofi') {
           const progression = [
@@ -1978,6 +2355,502 @@
     const musicJukebox = new MusicJukebox();
     let isJukeboxMenuOpen = false;
     let isQuickSettingsOpen = false;
+
+    // ==========================================
+    // 🎨 STUDIO CUSTOMIZER CONTROLLER (THEME, MUSIC & AGENTS)
+    // ==========================================
+    let isCustomizerModalOpen = false;
+    let currentCustomizerTab = 'theme';
+    let selectedCustomizerAvatar = './assets/dev_bot.png';
+
+    const PLAYFUL_PRESETS = {
+      'cozy-amber': {
+        name: 'Mật Ong Ấm',
+        bgWorld: '#faf5ee',
+        floorColor: '#f7eedd',
+        cardSurface: '#ffffff',
+        accent: '#f59e0b',
+        textMain: '#332b24',
+        textMuted: '#857564',
+        cardBorder: '#ede4d8'
+      },
+      'strawberry-milk': {
+        name: 'Dâu Tây Sữa',
+        bgWorld: '#fff5f7',
+        floorColor: '#ffe4e9',
+        cardSurface: '#ffffff',
+        accent: '#f43f5e',
+        textMain: '#4c0519',
+        textMuted: '#9f1239',
+        cardBorder: '#fecdd3'
+      },
+      'matcha-mint': {
+        name: 'Trà Xanh Mint',
+        bgWorld: '#f0fdf4',
+        floorColor: '#dcfce7',
+        cardSurface: '#ffffff',
+        accent: '#10b981',
+        textMain: '#052e16',
+        textMuted: '#065f46',
+        cardBorder: '#bbf7d0'
+      },
+      'grape-pop': {
+        name: 'Kẹo Nho Pop',
+        bgWorld: '#faf5ff',
+        floorColor: '#f3e8ff',
+        cardSurface: '#ffffff',
+        accent: '#a855f7',
+        textMain: '#3b0764',
+        textMuted: '#6b21a8',
+        cardBorder: '#e9d5ff'
+      },
+      'ocean-cyan': {
+        name: 'Biển Xanh Cyan',
+        bgWorld: '#f0fdfa',
+        floorColor: '#ccfbf1',
+        cardSurface: '#ffffff',
+        accent: '#06b6d4',
+        textMain: '#164e63',
+        textMuted: '#0e7490',
+        cardBorder: '#a5f3fc'
+      },
+      'cyber-dark': {
+        name: 'Đêm Neon',
+        bgWorld: '#0b0f19',
+        floorColor: '#1e293b',
+        cardSurface: '#111827',
+        accent: '#38bdf8',
+        textMain: '#f8fafc',
+        textMuted: '#94a3b8',
+        cardBorder: '#334155'
+      }
+    };
+
+    function injectCustomThemeCSS(theme) {
+      const styleEl = document.getElementById('dynamic-custom-theme');
+      if (!styleEl) return;
+      styleEl.textContent = `
+        :root[data-theme="custom"] {
+          --bg-world: ${theme.bgWorld};
+          --ambient-glow-1: ${theme.accent}33;
+          --ambient-glow-2: ${theme.accent}22;
+          --floor-color: ${theme.floorColor};
+          --card-surface: ${theme.cardSurface};
+          --card-border: ${theme.cardBorder || '#ede4d8'};
+          --text-main: ${theme.textMain || '#332b24'};
+          --text-muted: ${theme.textMuted || '#857564'};
+          --accent: ${theme.accent};
+          --accent-soft: ${theme.accent}22;
+          --tooltip-bg: ${theme.textMain || '#2d241e'};
+        }
+      `;
+    }
+
+    function applyPresetTheme(key) {
+      const preset = PLAYFUL_PRESETS[key];
+      if (!preset) return;
+      injectCustomThemeCSS(preset);
+      document.documentElement.setAttribute('data-theme', 'custom');
+      localStorage.setItem('antigravity_custom_theme', JSON.stringify(preset));
+      localStorage.setItem('antigravity_monitor_theme', 'custom');
+      
+      const bg = document.getElementById('cust-color-bg');
+      const fl = document.getElementById('cust-color-floor');
+      const cd = document.getElementById('cust-color-card');
+      const ac = document.getElementById('cust-color-accent');
+      if (bg) { bg.value = preset.bgWorld; document.getElementById('cust-hex-bg').value = preset.bgWorld; }
+      if (fl) { fl.value = preset.floorColor; document.getElementById('cust-hex-floor').value = preset.floorColor; }
+      if (cd) { cd.value = preset.cardSurface; document.getElementById('cust-hex-card').value = preset.cardSurface; }
+      if (ac) { ac.value = preset.accent; document.getElementById('cust-hex-accent').value = preset.accent; }
+
+      if (soundEngine && soundEngine.enabled) soundEngine.playLofiTune();
+      spawnFloatingEmoji("🎨 Đã áp dụng theme: " + preset.name);
+    }
+
+    function applyCustomThemeFromInputs() {
+      const bg = document.getElementById('cust-color-bg').value;
+      const fl = document.getElementById('cust-color-floor').value;
+      const cd = document.getElementById('cust-color-card').value;
+      const ac = document.getElementById('cust-color-accent').value;
+
+      const theme = {
+        name: 'Tùy chỉnh riêng',
+        bgWorld: bg,
+        floorColor: fl,
+        cardSurface: cd,
+        accent: ac,
+        textMain: '#1e293b',
+        textMuted: '#64748b',
+        cardBorder: '#e2e8f0'
+      };
+
+      injectCustomThemeCSS(theme);
+      document.documentElement.setAttribute('data-theme', 'custom');
+      localStorage.setItem('antigravity_custom_theme', JSON.stringify(theme));
+      localStorage.setItem('antigravity_monitor_theme', 'custom');
+      if (soundEngine && soundEngine.enabled) soundEngine.playMechanicalTyping();
+      spawnFloatingEmoji("💾 Đã lưu và kích hoạt theme của bạn!");
+    }
+
+    function resetDefaultTheme() {
+      applyPresetTheme('cozy-amber');
+      document.documentElement.setAttribute('data-theme', 'cozy-day');
+      localStorage.removeItem('antigravity_custom_theme');
+      localStorage.setItem('antigravity_monitor_theme', 'cozy-day');
+      spawnFloatingEmoji("🔄 Đã khôi phục theme mặc định!");
+    }
+
+    function updateCustomThemePreview() {
+      document.getElementById('cust-hex-bg').value = document.getElementById('cust-color-bg').value;
+      document.getElementById('cust-hex-floor').value = document.getElementById('cust-color-floor').value;
+      document.getElementById('cust-hex-accent').value = document.getElementById('cust-color-accent').value;
+      document.getElementById('cust-hex-card').value = document.getElementById('cust-color-card').value;
+    }
+
+    function setMusicStreamPreset(name, url) {
+      document.getElementById('cust-music-name').value = name;
+      document.getElementById('cust-music-url').value = url;
+    }
+
+    function addCustomAudioTrackFromForm() {
+      const name = document.getElementById('cust-music-name').value.trim();
+      const url = document.getElementById('cust-music-url').value.trim();
+      if (!name) {
+        alert("Vui lòng nhập tên bài hát!");
+        return;
+      }
+      if (!url) {
+        alert("Vui lòng nhập URL luồng stream hoặc chọn file từ máy tính!");
+        return;
+      }
+
+      musicJukebox.addTrack({
+        id: 'cust_' + Date.now(),
+        type: 'stream',
+        name: name,
+        desc: 'Custom Audio Stream',
+        url: url
+      });
+
+      document.getElementById('cust-music-name').value = '';
+      document.getElementById('cust-music-url').value = '';
+      spawnFloatingEmoji("➕ Đã thêm bản nhạc mới vào Jukebox!");
+      if (soundEngine && soundEngine.enabled) soundEngine.playMechanicalTyping();
+    }
+
+    function handleAudioFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const objectUrl = URL.createObjectURL(file);
+      const name = file.name.replace(/\.[^/.]+$/, "");
+      musicJukebox.addTrack({
+        id: 'cust_file_' + Date.now(),
+        type: 'file',
+        name: '📁 ' + name,
+        desc: 'Local File (' + Math.round(file.size / 1024) + ' KB)',
+        url: objectUrl
+      });
+      spawnFloatingEmoji("📁 Đã tải bài hát từ máy: " + name);
+    }
+
+    function renderCustomizerMusicList() {
+      const container = document.getElementById('custom-music-track-list');
+      const countEl = document.getElementById('custom-music-count');
+      if (countEl) countEl.innerText = `${musicJukebox.tracks.length} bài hát`;
+      if (!container) return;
+
+      container.innerHTML = musicJukebox.tracks.map((t, idx) => {
+        const isCurrent = musicJukebox.currentTrackIndex === idx;
+        const isPlayingThis = isCurrent && musicJukebox.isPlaying;
+        return `
+          <div class="p-2 rounded-xl border flex items-center justify-between gap-2 transition-all ${
+            isCurrent ? 'bg-indigo-50 border-indigo-300 text-indigo-950 font-bold' : 'bg-white border-zinc-200 text-zinc-700'
+          }">
+            <div class="flex items-center gap-2 truncate">
+              <button onclick="musicJukebox.selectTrack(${idx})" class="w-7 h-7 rounded-lg ${isPlayingThis ? 'bg-amber-500 text-amber-950 font-bold' : 'bg-indigo-600 text-white'} flex items-center justify-center text-xs shrink-0 cursor-pointer shadow-2xs">
+                ${isPlayingThis ? '⏸️' : '▶️'}
+              </button>
+              <div class="truncate">
+                <div class="text-[11px] truncate">${t.name}</div>
+                <div class="text-[9px] text-zinc-500 flex items-center gap-1">
+                  <span>${t.type === 'stream' ? '🌐 Stream' : (t.type === 'file' ? '📁 File Máy' : '📻 Web Audio Synth')}</span>
+                  <span>•</span>
+                  <span class="truncate">${t.desc || ''}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              ${t.isCustom ? `
+                <button onclick="musicJukebox.removeTrack(${idx})" class="w-6 h-6 rounded-md hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs cursor-pointer" title="Xóa bản nhạc này">
+                  🗑️
+                </button>
+              ` : `
+                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-500">Mặc định</span>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderCustomizerAvatarGrid() {
+      const grid = document.getElementById('cust-avatar-grid');
+      if (!grid) return;
+      grid.innerHTML = DIVERSE_CHARACTERS.map(c => `
+        <div onclick="selectCustomizerAvatar('${c.img}', '${c.name}')" class="p-1 rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all hover:scale-110 ${
+          selectedCustomizerAvatar === c.img ? 'bg-amber-100 border-2 border-amber-400 shadow-xs' : 'bg-white border border-zinc-200 hover:border-amber-300'
+        }">
+          <img src="${c.img}" class="w-8 h-8 object-contain drop-shadow" alt="${c.name}"/>
+          <span class="text-[8px] font-bold text-zinc-700 truncate w-full text-center mt-0.5">${c.name.split(' ')[0]}</span>
+        </div>
+      `).join('');
+    }
+
+    function selectCustomizerAvatar(img, name = '') {
+      selectedCustomizerAvatar = img;
+      document.getElementById('cust-agent-avatar').value = img;
+      const lbl = document.getElementById('cust-selected-avatar-label');
+      if (lbl) lbl.innerText = name || img.split('/').pop();
+      renderCustomizerAvatarGrid();
+      if (soundEngine && soundEngine.enabled) soundEngine.playMechanicalTyping();
+    }
+
+    function applyCustomAvatarUrl() {
+      const url = document.getElementById('cust-agent-avatar-custom-url').value.trim();
+      if (!url) return;
+      selectCustomizerAvatar(url, 'Custom URL');
+      spawnFloatingEmoji("🖼️ Đã chọn Avatar từ URL!");
+    }
+
+    function renderCustomizerAgentList() {
+      const container = document.getElementById('custom-agents-list');
+      const countEl = document.getElementById('custom-agents-count');
+      if (countEl) countEl.innerText = `${agentList.length} bots`;
+      if (!container) return;
+
+      container.innerHTML = agentList.map(a => `
+        <div class="p-2 rounded-xl bg-white border border-zinc-200 flex items-center justify-between gap-2 shadow-2xs hover:border-amber-300 transition-colors">
+          <div class="flex items-center gap-2 truncate">
+            <div class="w-9 h-9 flex items-center justify-center shrink-0">
+              <img src="${a.avatarImg}" class="w-full h-full object-contain filter drop-shadow(0 2px 4px rgba(0,0,0,0.15))" onerror="this.src='./assets/dev_bot.png'"/>
+            </div>
+            <div class="truncate">
+              <div class="font-bold text-[11px] text-zinc-800 flex items-center gap-1 truncate">
+                <span>${a.name}</span>
+                <span class="text-[9px] font-mono text-zinc-400">(${a.shortId || a.id.slice(0, 6)})</span>
+                ${a.isUserCreated ? '<span class="text-[8px] px-1 py-0.2 rounded bg-purple-100 text-purple-700 font-bold">Custom</span>' : ''}
+              </div>
+              <div class="text-[9px] text-zinc-500 truncate">
+                Phòng: ${a.houseRoom || 'office'} • "${a.dialog || a.bubbleText || ''}"
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 shrink-0">
+            <button onclick="editAgentInForm('${a.id}')" class="px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[10px] border border-amber-200 cursor-pointer">
+              ✏️ Sửa
+            </button>
+            ${a.isUserCreated ? `
+              <button onclick="deleteCustomAgent('${a.id}')" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-[10px] border border-rose-200 cursor-pointer">
+                🗑️
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function editAgentInForm(agentId) {
+      const agent = agentList.find(a => a.id === agentId);
+      if (!agent) return;
+
+      document.getElementById('cust-agent-form-title').innerHTML = `✏️ <span>Chỉnh Sửa Bot: ${agent.name}</span>`;
+      document.getElementById('cust-agent-id').value = agent.id;
+      document.getElementById('cust-agent-name').value = agent.name;
+      document.getElementById('cust-agent-role').value = agent.role || 'Autonomous Coding Agent';
+      document.getElementById('cust-agent-room').value = agent.houseRoom || 'office';
+      document.getElementById('cust-agent-dialog').value = agent.dialog || agent.bubbleText || '';
+      selectCustomizerAvatar(agent.avatarImg, agent.name);
+      switchCustomizerTab('agents');
+    }
+
+    function resetAgentCustomForm() {
+      document.getElementById('cust-agent-form-title').innerHTML = `✨ <span>Tạo Bot Mới / Tùy Chỉnh Bot</span>`;
+      document.getElementById('cust-agent-id').value = '';
+      document.getElementById('cust-agent-name').value = '';
+      document.getElementById('cust-agent-role').value = '';
+      document.getElementById('cust-agent-room').value = 'office';
+      document.getElementById('cust-agent-dialog').value = '';
+      selectCustomizerAvatar('./assets/dev_bot.png', 'Dev Bot');
+    }
+
+    function saveAgentCustomization() {
+      const agentId = document.getElementById('cust-agent-id').value;
+      const name = document.getElementById('cust-agent-name').value.trim();
+      const role = document.getElementById('cust-agent-role').value.trim() || 'AI Specialist';
+      const room = document.getElementById('cust-agent-room').value;
+      const dialog = document.getElementById('cust-agent-dialog').value.trim() || 'Sẵn sàng code!';
+      const avatar = document.getElementById('cust-agent-avatar').value;
+
+      if (!name) {
+        alert("Vui lòng nhập tên cho Bot!");
+        return;
+      }
+
+      if (agentId) {
+        // Edit existing agent
+        const overrides = JSON.parse(localStorage.getItem('antigravity_agent_overrides') || '{}');
+        overrides[agentId] = { name, role, houseRoom: room, dialog, avatarImg: avatar };
+        localStorage.setItem('antigravity_agent_overrides', JSON.stringify(overrides));
+
+        // Check if user created
+        const customAgents = JSON.parse(localStorage.getItem('antigravity_custom_agents') || '[]');
+        const idx = customAgents.findIndex(a => a.id === agentId);
+        if (idx !== -1) {
+          customAgents[idx].name = name;
+          customAgents[idx].role = role;
+          customAgents[idx].houseRoom = room;
+          customAgents[idx].dialog = dialog;
+          customAgents[idx].avatarImg = avatar;
+          localStorage.setItem('antigravity_custom_agents', JSON.stringify(customAgents));
+        }
+
+        // Apply immediately to agent in memory
+        const target = agentList.find(a => a.id === agentId);
+        if (target) {
+          target.name = name;
+          target.role = role;
+          target.houseRoom = room;
+          target.dialog = dialog;
+          target.bubbleText = dialog;
+          target.avatarImg = avatar;
+          moveAgentRoom(agentId, room);
+        }
+        spawnFloatingEmoji(`✨ Đã cập nhật bot ${name}!`);
+      } else {
+        // Create brand new custom agent
+        const newId = 'custom-' + Date.now().toString(36);
+        const wpKey = getBestWaypointForRoom(room, newId);
+        const wp = STUDIO_WAYPOINTS[wpKey] || STUDIO_WAYPOINTS.desk1;
+
+        const newAgent = {
+          id: newId,
+          shortId: newId.slice(-6),
+          name: name,
+          role: role,
+          avatarImg: avatar,
+          characterType: 'dev',
+          project: 'custom-workspace',
+          branch: 'main',
+          workspacePath: '~/Documents/projects/custom',
+          model: 'Gemini 3.8 Flash (High)',
+          zone: 'dev',
+          houseRoom: room,
+          currentWaypoint: wpKey,
+          x: wp.x,
+          y: wp.y,
+          targetX: wp.x,
+          targetY: wp.y,
+          facing: 1,
+          isWalking: false,
+          actionState: wp.action || 'typing',
+          bubbleText: dialog,
+          bubbleTimer: 250,
+          env: 'Custom',
+          steps: 42,
+          tokensEst: 8500,
+          tokensEstFormatted: '8.5k',
+          contextPct: '0.8%',
+          time: new Date().toLocaleTimeString('vi-VN'),
+          tool: 'custom_agent',
+          prompt: 'Tùy chỉnh riêng bởi người dùng',
+          isActive: true,
+          dialog: dialog,
+          isUserCreated: true,
+          logs: [
+            '[SYSTEM] Khởi tạo custom bot ' + name,
+            '[READY] Đã vào phòng ' + room + ' sẵn sàng làm việc!'
+          ]
+        };
+
+        const customAgents = JSON.parse(localStorage.getItem('antigravity_custom_agents') || '[]');
+        customAgents.push(newAgent);
+        localStorage.setItem('antigravity_custom_agents', JSON.stringify(customAgents));
+
+        agentList.push(newAgent);
+        spawnFloatingEmoji(`🎉 Đã tạo bot mới ${name} trong Studio!`);
+      }
+
+      resetAgentCustomForm();
+      renderWorld();
+      renderCustomizerAgentList();
+      selectAgent(agentId || currentSelectedId, false);
+      if (soundEngine && soundEngine.enabled) soundEngine.playMechanicalTyping();
+    }
+
+    function deleteCustomAgent(agentId) {
+      if (!confirm("Bạn có chắc muốn xóa bot tùy chỉnh này khỏi Studio?")) return;
+      let customAgents = JSON.parse(localStorage.getItem('antigravity_custom_agents') || '[]');
+      customAgents = customAgents.filter(a => a.id !== agentId);
+      localStorage.setItem('antigravity_custom_agents', JSON.stringify(customAgents));
+
+      agentList = agentList.filter(a => a.id !== agentId);
+      const charEl = document.getElementById('char-' + agentId);
+      if (charEl) charEl.remove();
+      const cardEl = document.getElementById('dash-card-' + agentId);
+      if (cardEl) cardEl.remove();
+
+      if (currentSelectedId === agentId) {
+        currentSelectedId = agentList[0] ? agentList[0].id : '';
+      }
+
+      renderWorld();
+      renderCustomizerAgentList();
+      spawnFloatingEmoji("🗑️ Đã xóa bot khỏi Studio!");
+    }
+
+    function openCustomizerForAgent(agentId) {
+      openCustomizerModal('agents');
+      editAgentInForm(agentId);
+    }
+
+    function openCustomizerModal(tab = 'theme') {
+      isCustomizerModalOpen = true;
+      const modal = document.getElementById('modal-studio-customizer');
+      if (modal) {
+        modal.classList.remove('hidden');
+        switchCustomizerTab(tab);
+        renderCustomizerAvatarGrid();
+        renderCustomizerMusicList();
+        renderCustomizerAgentList();
+        if (soundEngine && soundEngine.enabled) soundEngine.playLofiTune();
+      }
+    }
+
+    function closeCustomizerModal() {
+      isCustomizerModalOpen = false;
+      const modal = document.getElementById('modal-studio-customizer');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchCustomizerTab(tab) {
+      currentCustomizerTab = tab;
+      ['theme', 'music', 'agents'].forEach(t => {
+        const btn = document.getElementById(`customizer-tab-btn-${t}`);
+        const panel = document.getElementById(`customizer-panel-${t}`);
+        if (btn && panel) {
+          if (t === tab) {
+            btn.className = "flex-1 py-1.5 rounded-xl bg-amber-400 text-amber-950 shadow-2xs transition-all flex items-center justify-center gap-1.5 cursor-pointer font-black";
+            panel.classList.remove('hidden');
+          } else {
+            btn.className = "flex-1 py-1.5 rounded-xl text-[var(--text-muted)] hover:bg-white/60 transition-all flex items-center justify-center gap-1.5 cursor-pointer font-semibold";
+            panel.classList.add('hidden');
+          }
+        }
+      });
+      if (tab === 'music') renderCustomizerMusicList();
+      if (tab === 'agents') renderCustomizerAgentList();
+      if (soundEngine && soundEngine.enabled) soundEngine.playMechanicalTyping();
+    }
 
     function toggleJukeboxMenu() {
       isJukeboxMenuOpen = !isJukeboxMenuOpen;
@@ -4365,6 +5238,30 @@
       }
 
       if (freshAgents.length > 0) {
+        // Apply user customizations & merge custom user-created agents
+        try {
+          const agentOverrides = JSON.parse(localStorage.getItem('antigravity_agent_overrides') || '{}');
+          const customAgents = JSON.parse(localStorage.getItem('antigravity_custom_agents') || '[]');
+          customAgents.forEach(ca => {
+            if (!freshAgents.some(f => f.id === ca.id)) {
+              freshAgents.push(ca);
+            }
+          });
+
+          freshAgents.forEach(f => {
+            if (agentOverrides[f.id]) {
+              const ov = agentOverrides[f.id];
+              if (ov.name) f.name = ov.name;
+              if (ov.role) f.role = ov.role;
+              if (ov.avatarImg) f.avatarImg = ov.avatarImg;
+              if (ov.dialog) f.dialog = ov.dialog;
+              if (ov.houseRoom) f.houseRoom = ov.houseRoom;
+            }
+          });
+        } catch (e) {
+          console.warn("Error applying overrides in onAgentUpdate:", e);
+        }
+
         freshAgents.forEach((f) => {
           if (!f.avatarImg || f.avatarImg.endsWith('.jpg')) {
             f.avatarImg = getDiverseCharacterAvatar(f.id, f.characterType, f.prompt);
@@ -4459,8 +5356,14 @@
       if (e.key === 'h' || e.key === 'H') setViewMode(currentViewMode === 'house' ? 'dashboard' : 'house');
       if (e.key === 'u' || e.key === 'U') toggleModelsQuotaModal();
       if (e.key === 's' || e.key === 'S') openStepDetailModal(currentSelectedId);
+      if (e.key === 'c' || e.key === 'C') {
+        if (isCustomizerModalOpen) closeCustomizerModal();
+        else openCustomizerModal();
+      }
       if (e.key === 'Escape') {
-        if (currentZoomedRoom) {
+        if (isCustomizerModalOpen) {
+          closeCustomizerModal();
+        } else if (currentZoomedRoom) {
           resetRoomZoom();
         } else if (currentStepDetailAgentId) {
           closeStepDetailModal();
@@ -4515,6 +5418,33 @@
     // Watchdog: Auto clean hung processing states on start & every 15 seconds
     auditAndCleanStuckJobs();
     setInterval(auditAndCleanStuckJobs, 15000);
+
+    // Load Custom Theme & Custom Agents from localStorage on startup
+    try {
+      const savedTheme = localStorage.getItem('antigravity_custom_theme');
+      if (savedTheme) {
+        injectCustomThemeCSS(JSON.parse(savedTheme));
+      }
+      const customAgents = JSON.parse(localStorage.getItem('antigravity_custom_agents') || '[]');
+      customAgents.forEach(ca => {
+        if (!agentList.some(a => a.id === ca.id)) {
+          agentList.push(ca);
+        }
+      });
+      const agentOverrides = JSON.parse(localStorage.getItem('antigravity_agent_overrides') || '{}');
+      agentList.forEach(a => {
+        if (agentOverrides[a.id]) {
+          const ov = agentOverrides[a.id];
+          if (ov.name) a.name = ov.name;
+          if (ov.role) a.role = ov.role;
+          if (ov.avatarImg) a.avatarImg = ov.avatarImg;
+          if (ov.dialog) a.dialog = ov.dialog;
+          if (ov.houseRoom) a.houseRoom = ov.houseRoom;
+        }
+      });
+    } catch (e) {
+      console.warn("Error restoring custom studio configuration:", e);
+    }
 
     updateDiagnosticUI();
     updateJukeboxUI();

@@ -46,7 +46,12 @@ Say goodbye to rigid square avatars! Every agent receives a unique, freestanding
 * Accurate real-time counters: **Tất cả (Total)**, **⚡ Chạy (Active)**, **☕ Nghỉ (Idle)**.
 * **Built-in Watchdog**: Automatically resolves long-running or hung background tasks.
 
-### 4. 📻 Offline Web Audio Jukebox & Interactive SFX
+### 4. 🎨 Playful Studio Customizer Hub (Hotkeys: `C`)
+* **Custom Theme Colors**: Choose from 6 playful presets (*Mật Ong Ấm, Dâu Tây Sữa, Trà Xanh Mint, Kẹo Nho, Biển Xanh Cyan, Đêm Neon*) or design your own studio palette using real-time color pickers (Background, Wooden Floor, Glass Cards, Accent Aura, and Text).
+* **Custom Music Sources**: Listen to offline synthesized Lo-fi/Chiptune audio, add direct internet radio/MP3 streams (e.g. *Lofi Girl live*), or upload your favorite local audio tracks (`.mp3`, `.wav`, `.m4a`) directly from your machine into the Jukebox playlist.
+* **Custom AI Agents**: Create custom agents or customize existing ones with custom names, roles, default rooms, speech bubble dialogs, and select from the 14 transparent chibi characters or specify your own image avatar URL.
+
+### 5. 📻 Offline Web Audio Jukebox & Interactive SFX
 * 5 synthesized ambient soundtracks (100% Offline, 0 external audio dependencies):
   1. ☕ **Lo-fi Study Cafe**
   2. 🕹️ **8-Bit Chiptune Arcade**
@@ -92,6 +97,7 @@ Clone this repo and open `app.html` in Chrome, Brave, or Edge!
 
 | Key | Action |
 | :---: | :--- |
+| **`C`** | Open **🎨 Studio Customizer** (Theme, Custom Music & Custom Agents) |
 | **`H`** | Toggle between **🏡 2D Studio Map** and **🏢 List Dashboard** |
 | **`J`** | Toggle **📻 Jukebox & Music Player** |
 | **`D`** | Open **🩺 Antigravity System Diagnostics** |
