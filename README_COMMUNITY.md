@@ -40,7 +40,7 @@
    - Modal chi tiết (Phím `U`): Bảng thống kê hạn mức của từng model (Gemini 3.8 Flash, Claude Sonnet 4.6, Claude Opus 4.6, GPT-OSS 120B).
 
 6. **📱 Bản Web & Mobile Responsive**:
-   - Đã deploy sẵn tại: **[https://antigravity-monitor.surge.sh](https://antigravity-monitor.surge.sh)**
+   - Đã deploy sẵn tại: **[https://agy-monitor.surge.sh](https://agy-monitor.surge.sh)**
    - Thanh Quick Room Switcher trên mobile giúp bấm chuyển nhanh giữa 4 phòng bằng 1 ngón tay.
    - Tooltip thông minh tự căn chỉnh vị trí trên màn hình nhỏ, không bao giờ bị tràn hoặc che khuất.
 
@@ -72,7 +72,7 @@
 ## 🌐 Truy Cập Trực Tiếp Từ Điện Thoại (Web / Mobile)
 
 Không cần cài app, bạn có thể mở Safari hoặc Chrome trên iPhone / Android:
-👉 **[https://antigravity-monitor.surge.sh](https://antigravity-monitor.surge.sh)**
+👉 **[https://agy-monitor.surge.sh](https://agy-monitor.surge.sh)**
 
 *Mẹo: Chọn "Add to Home Screen" trên Safari để lưu app ra màn hình chính điện thoại như một Native App.*
 
@@ -109,7 +109,7 @@ swiftc -parse-as-library -target x86_64-apple-macos12.0 -O -o build/AntigravityM
 lipo -create -output dist/AntigravityMonitor.app/Contents/MacOS/AntigravityMonitor build/AntigravityMonitor_arm64 build/AntigravityMonitor_x86_64
 
 # Deploy web lên surge
-surge /tmp/antigravity_web_deploy --domain antigravity-monitor.surge.sh
+surge /tmp/antigravity_web_deploy --domain agy-monitor.surge.sh
 ```
 
 ---

@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/nconghau/AntigravityMonitor/releases"><img src="https://img.shields.io/badge/Release-v2.5_Universal-amber?style=for-the-badge&logo=apple" alt="Release v2.5 Universal"/></a>
-  <a href="https://antigravity-monitor.surge.sh"><img src="https://img.shields.io/badge/Live_Web-antigravity--monitor.surge.sh-6366f1?style=for-the-badge&logo=safari" alt="Live Web"/></a>
+  <a href="https://agy-monitor.surge.sh/download"><img src="https://img.shields.io/badge/Release-v2.5_Universal-amber?style=for-the-badge&logo=apple" alt="Release v2.5 Universal"/></a>
+  <a href="https://agy-monitor.surge.sh"><img src="https://img.shields.io/badge/Live_Web-agy--monitor.surge.sh-6366f1?style=for-the-badge&logo=safari" alt="Live Web"/></a>
   <a href="https://github.com/nconghau/AntigravityMonitor/stargazers"><img src="https://img.shields.io/github/stars/nconghau/AntigravityMonitor?style=for-the-badge&color=f59e0b" alt="GitHub Stars"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge" alt="License MIT"/></a>
 </p>
@@ -24,7 +24,7 @@
 Instead of staring at terminal text logs or wondering which agent is running, your agents wander, code, drink espresso, lounge on the sofa, and sleep in cozy pods based on their actual real-time execution state.
 
 <p align="center">
-  <img src="https://antigravity-monitor.surge.sh/assets/logo.jpg" width="700" style="border-radius: 16px; border: 2px solid #e2e8f0;" alt="Antigravity Studio Preview"/>
+  <img src="https://agy-monitor.surge.sh/assets/logo.jpg" width="700" style="border-radius: 16px; border: 2px solid #e2e8f0;" alt="Antigravity Studio Preview"/>
 </p>
 
 ---
@@ -73,10 +73,10 @@ Say goodbye to rigid square avatars! Every agent receives a unique, freestanding
 
 ## 🚀 Quick Download & Install (Cross-Platform)
 
-👉 **Visit the Download Landing Page**: **[https://antigravity-monitor.surge.sh/download](https://antigravity-monitor.surge.sh/download)**
+👉 **Visit the Download Landing Page**: **[https://agy-monitor.surge.sh/download](https://agy-monitor.surge.sh/download)**
 
 ### 🍏 macOS (Universal: Apple Silicon M1-M4 & Intel)
-1. Download **[AntigravityMonitor-macOS-Universal.dmg](https://github.com/nconghau/AntigravityMonitor/releases/download/v2.5/AntigravityMonitor-macOS-Universal.dmg)** *(9.2 MB)*.
+1. **Direct Download**: **[AntigravityMonitor-macOS-Universal.dmg](https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg)** *(12 MB)* or **[.ZIP](https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.zip)**.
 2. Drag `AntigravityMonitor.app` into `/Applications`.
 3. **Bypass macOS Gatekeeper on first launch**:
    ```bash
@@ -84,12 +84,77 @@ Say goodbye to rigid square avatars! Every agent receives a unique, freestanding
    ```
 
 ### 📱 Web & Mobile (iOS / Android / PWA)
-Open directly in your mobile browser:
-👉 **[https://antigravity-monitor.surge.sh](https://antigravity-monitor.surge.sh)**
-*(Tip: Tap "Add to Home Screen" in Safari or Chrome to use it like a native mobile app).*
+Open directly in your mobile or desktop browser:
+👉 **[https://agy-monitor.surge.sh](https://agy-monitor.surge.sh)**
+*(Tip: Tap "Add to Home Screen" in Safari or Chrome to use it full-screen like a native mobile app).*
 
-### 🐧 Windows & Linux
-Clone this repo and open `app.html` in Chrome, Brave, or Edge!
+---
+
+## 🪟 Windows & Linux Desktop Guide
+
+You can easily run Antigravity Monitor as a standalone desktop app on **Windows** and **Linux** without compiling Xcode / Swift:
+
+### 1. 🪟 Windows (Standalone App Mode)
+* **Method A (Instant Edge / Chrome App Window)**:
+  Open PowerShell in the project directory and run:
+  ```powershell
+  Start-Process msedge.exe -ArgumentList "--app=https://agy-monitor.surge.sh", "--window-size=1200,800"
+  ```
+  *(Or point directly to your local file: `--app="file://$PWD/app.html"`)*
+
+* **Method B (Install as Windows PWA)**:
+  1. Open [https://agy-monitor.surge.sh](https://agy-monitor.surge.sh) in Microsoft Edge or Google Chrome.
+  2. Click the **Install Antigravity Monitor** icon in the right side of the URL bar (or Menu `...` -> *Apps* -> *Install this site as an app*).
+  3. The app will launch in its own frameless window with a desktop shortcut and pin to your Windows Taskbar!
+
+### 2. 🐧 Linux (Ubuntu, Debian, Fedora, Arch)
+* **Method A (Chromium / Chrome App Mode)**:
+  ```bash
+  chromium-browser --app="https://agy-monitor.surge.sh" --window-size=1200,800
+  # Or with local HTML:
+  google-chrome --app="file://$(pwd)/app.html" --window-size=1200,800
+  ```
+
+* **Method B (Ultra-lightweight Python Webview Desktop)**:
+  ```bash
+  pip install pywebview
+  python3 -c "import webview; webview.create_window('Antigravity Monitor', 'app.html', width=1200, height=800); webview.start()"
+  ```
+
+* **Method C (Create a Linux Desktop Shortcut)**:
+  Create `~/.local/share/applications/antigravity-monitor.desktop`:
+  ```ini
+  [Desktop Entry]
+  Name=Antigravity Monitor
+  Comment=Pixel-Art Game Dev Studio Visualizer for AI Coding Agents
+  Exec=chromium --app=https://agy-monitor.surge.sh
+  Icon=/path/to/assets/logo.jpg
+  Terminal=false
+  Type=Application
+  Categories=Development;Utility;
+  ```
+
+---
+
+## 🌐 Deploy Your Own Free Web App to Surge.sh
+
+Want to host your own personal or team Antigravity Studio on your own custom subdomain (e.g., `my-studio.surge.sh`)? Surge provides 100% free static web hosting with unlimited traffic:
+
+```bash
+# 1. Install Surge CLI globally
+npm install --global surge
+
+# 2. Clone repository & enter directory
+git clone https://github.com/nconghau/AntigravityMonitor.git
+cd AntigravityMonitor
+
+# 3. Deploy to your custom domain
+surge . --domain my-ai-studio.surge.sh
+
+# 4. Access your live studio immediately at:
+# https://my-ai-studio.surge.sh
+```
+> **Tip**: Whenever you update `app.html` or customize bots/themes, simply run `surge . --domain my-ai-studio.surge.sh` again to update in under 5 seconds!
 
 ---
 

@@ -169,8 +169,9 @@ class AgentScanner: ObservableObject {
         let remainingPct = max(5, 100 - usedPct)
         let remainingCredits = max(50, 1000 - Int(Double(totalTokensUsed) / 1000.0))
 
+        let userAccount = ProcessInfo.processInfo.environment["ANTIGRAVITY_ACCOUNT"] ?? "\(NSUserName())@local"
         let quota: [String: Any] = [
-            "account": "ladosite.dev@gmail.com",
+            "account": userAccount,
             "tier": "Google AI Pro",
             "credits": remainingCredits,
             "remainingPct": remainingPct,

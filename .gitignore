@@ -21,3 +21,12 @@ AntigravityMonitor_universal
 dist/
 *.dmg
 *.zip
+
+# Private Personal Deployment & Configs (DO NOT COMMIT)
+deploy-personal.sh
+deploy_personal.sh
+*.private.*
+*personal*
+.env*
+private/
+

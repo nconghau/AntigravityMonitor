@@ -1327,7 +1327,7 @@
         <div class="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-purple-500/10 via-amber-500/10 to-indigo-500/10 border border-purple-200/80 flex flex-wrap items-center justify-between gap-2.5 shadow-xs">
           <div class="space-y-1">
             <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-purple-700 font-bold">Tài Khoản AI Của Bạn</div>
-            <div class="text-xs font-bold" id="quota-account">ladosite.dev@gmail.com</div>
+            <div class="text-xs font-bold" id="quota-account">developer@antigravity.ai</div>
             <div class="flex items-center gap-2 text-[10px]">
               <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 font-extrabold border border-purple-300" id="quota-tier">
                 Google AI Pro
@@ -3094,7 +3094,7 @@
     // Models & Quota Hub Modal (Phím tắt U)
     let isModelsQuotaOpen = false;
     let currentQuota = {
-      account: "ladosite.dev@gmail.com",
+      account: "developer@antigravity.ai",
       tier: "Google AI Pro",
       credits: 1000,
       remainingPct: 85,
@@ -3176,7 +3176,7 @@
       const acc = document.getElementById('quota-account');
       const tier = document.getElementById('quota-tier');
       const cred = document.getElementById('quota-credits');
-      if (acc) acc.innerText = currentQuota.account || 'ladosite.dev@gmail.com';
+      if (acc) acc.innerText = currentQuota.account || 'developer@antigravity.ai';
       if (tier) tier.innerText = currentQuota.tier || 'Google AI Pro';
       if (cred) cred.innerText = credits.toLocaleString();
 
