@@ -1470,6 +1470,12 @@
           <div id="inspect-prompt" class="text-[11px] font-semibold text-amber-700 truncate max-w-[280px] sm:max-w-md mt-0.5">
             "deploy new Cloudflare tunnel"
           </div>
+          <div id="inspect-runtime-summary" class="mt-1 flex flex-wrap items-center gap-1.5 text-[9px] font-mono text-zinc-500">
+            <span class="px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200"><span data-i18n="runtime_state_label">STATE</span>: <b id="inspect-runtime-state">IDLE</b></span>
+            <span class="px-1.5 py-0.5 rounded-md bg-purple-50 text-purple-700 border border-purple-200"><span data-i18n="runtime_process_label">PROCESS</span>: <b id="inspect-runtime-process">Antigravity</b></span>
+            <span class="px-1.5 py-0.5 rounded-md bg-cyan-50 text-cyan-700 border border-cyan-200"><span data-i18n="runtime_tool_label">TOOL</span>: <b id="inspect-runtime-tool">None</b></span>
+            <span class="px-1.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200"><span data-i18n="runtime_events_label">EVENTS</span>: <b id="inspect-runtime-events">0</b></span>
+          </div>
         </div>
       </div>
 
@@ -1520,6 +1526,12 @@
       </div>
       <div class="p-3 bg-zinc-950 text-zinc-200 font-mono text-xs max-h-36 overflow-y-auto space-y-1.5" id="inspect-logs">
         <!-- Dynamic logs injected -->
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 px-3 py-2 bg-zinc-900 border-t border-zinc-800 text-[9px] font-mono">
+        <div class="min-w-0"><div class="text-zinc-500 uppercase" data-i18n="runtime_last_event">Last event</div><div id="inspect-runtime-last-event" class="truncate text-zinc-200">—</div></div>
+        <div class="min-w-0"><div class="text-zinc-500 uppercase" data-i18n="runtime_file">Active file</div><div id="inspect-runtime-file" class="truncate text-cyan-300">—</div></div>
+        <div class="min-w-0"><div class="text-zinc-500 uppercase" data-i18n="runtime_command">Tool detail</div><div id="inspect-runtime-command" class="truncate text-amber-300">—</div></div>
+        <div class="min-w-0"><div class="text-zinc-500 uppercase" data-i18n="runtime_updated">Updated</div><div id="inspect-runtime-updated" class="truncate text-emerald-300">—</div></div>
       </div>
     </div>
   </section>
@@ -2512,6 +2524,14 @@
         terminal_stream_title: "LIVE ACTION TERMINAL STREAM",
         terminal_open_mac: "↗ Open macOS Terminal",
         terminal_collapse: "Collapse",
+        runtime_state_label: "STATE",
+        runtime_process_label: "PROCESS",
+        runtime_tool_label: "TOOL",
+        runtime_events_label: "EVENTS",
+        runtime_last_event: "Last event",
+        runtime_file: "Active file",
+        runtime_command: "Tool detail",
+        runtime_updated: "Updated",
         subagent_running: "● SUBAGENT RUNNING",
         subagent_done: "○ SUBAGENT COMPLETED",
         main_running: "● MAIN AGENT RUNNING",
@@ -2786,6 +2806,14 @@
         terminal_stream_title: "LIVE ACTION TERMINAL STREAM",
         terminal_open_mac: "↗ Mở macOS Terminal",
         terminal_collapse: "✕ Thu gọn",
+        runtime_state_label: "TRẠNG THÁI",
+        runtime_process_label: "PROCESS",
+        runtime_tool_label: "TOOL",
+        runtime_events_label: "EVENT",
+        runtime_last_event: "Event gần nhất",
+        runtime_file: "File đang mở",
+        runtime_command: "Chi tiết tool",
+        runtime_updated: "Cập nhật",
         subagent_running: "● SUBAGENT ĐANG CHẠY",
         subagent_done: "○ SUBAGENT HOÀN TẤT",
         main_running: "● MAIN AGENT ĐANG CHẠY",
@@ -5748,6 +5776,25 @@
       currentStepDetailAgentId = null;
     }
 
+    function renderInspectorRuntime(agent) {
+      if (!agent) return;
+      const logs = Array.isArray(agent.logs) ? agent.logs : [];
+      const latest = logs[logs.length - 1] || agent.mainStep || agent.dialog || '—';
+      const state = agent.isActive ? (agent.actionState || 'RUNNING').toUpperCase() : 'IDLE';
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = value || '—';
+      };
+      setText('inspect-runtime-state', state);
+      setText('inspect-runtime-process', agent.processName || (agent.env === 'IDE' ? 'Antigravity IDE' : 'Antigravity Desktop'));
+      setText('inspect-runtime-tool', agent.tool || 'None');
+      setText('inspect-runtime-events', `${agent.eventCount || agent.steps || logs.length || 0}`);
+      setText('inspect-runtime-last-event', latest);
+      setText('inspect-runtime-file', agent.activeFile || agent.workspacePath || '—');
+      setText('inspect-runtime-command', agent.toolDetail || agent.lastEventContent || agent.mainStep || '—');
+      setText('inspect-runtime-updated', agent.updatedAt || agent.time || '—');
+    }
+
     function setStepFilter(filter) {
       currentStepFilter = filter;
       document.querySelectorAll('.step-filter-pill').forEach(btn => {
@@ -6707,6 +6754,18 @@ function triggerRandomStudioEvent() {
     let isTerminalOpen = false;
     let terminalAutoCollapseTimer = null;
 
+    function appendTerminalLog(message, tone = 'text-zinc-300') {
+      const logsEl = document.getElementById('inspect-logs');
+      if (!logsEl || !message) return;
+      const empty = logsEl.querySelector('[data-terminal-empty]');
+      if (empty) empty.remove();
+      const line = document.createElement('div');
+      line.className = `leading-relaxed hover:bg-white/10 px-1 rounded transition-colors ${tone}`;
+      line.innerText = `[LIVE] ${message}`;
+      logsEl.appendChild(line);
+      logsEl.scrollTop = logsEl.scrollHeight;
+    }
+
     function toggleTerminalDrawer(forceState = null) {
       const drawer = document.getElementById('inspect-terminal-drawer');
       const badge = document.getElementById('terminal-badge');
@@ -6731,6 +6790,7 @@ function triggerRandomStudioEvent() {
         if (btn) btn.classList.add('border-emerald-400', 'bg-emerald-50');
         const logsEl = document.getElementById('inspect-logs');
         if (logsEl) logsEl.scrollTop = logsEl.scrollHeight;
+        requestAnimationFrame(() => drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
       } else {
         drawer.style.maxHeight = '0px';
         drawer.style.opacity = '0';
@@ -6745,6 +6805,7 @@ function triggerRandomStudioEvent() {
 
     function triggerActionTerminal(actionText = '') {
       toggleTerminalDrawer(true);
+      if (actionText) appendTerminalLog(actionText, 'text-amber-300 font-bold');
       const badge = document.getElementById('terminal-badge');
       if (badge) {
         badge.innerText = '⚡ Action';
@@ -7463,15 +7524,17 @@ function triggerRandomStudioEvent() {
 
       document.getElementById('inspect-prompt').innerText = `"${agent.prompt}"`;
 
+      renderInspectorRuntime(agent);
       const logsBox = document.getElementById('inspect-logs');
-      logsBox.innerHTML = agent.logs.map(log => {
+      const logs = Array.isArray(agent.logs) ? agent.logs : [];
+      logsBox.innerHTML = logs.length ? logs.map(log => {
         let col = "text-zinc-300";
         if (log.startsWith("[USER]")) col = "text-amber-300 font-bold";
         if (log.startsWith("[TOOL]")) col = "text-cyan-400";
         if (log.startsWith("[RESULT]")) col = "text-emerald-400 font-bold";
         if (log.startsWith("[STATUS]")) col = "text-indigo-300";
-        return `<div class="leading-relaxed hover:bg-white/10 px-1 rounded transition-colors ${col}">${log}</div>`;
-      }).join('');
+        return `<div class="leading-relaxed hover:bg-white/10 px-1 rounded transition-colors ${col}">${escapeHtml(log)}</div>`;
+      }).join('') : `<div class="text-zinc-500 italic py-2">${escapeHtml(currentLang === 'vi' ? 'Chưa có log execution.' : 'No execution log yet.')}</div>`;
       logsBox.scrollTop = logsBox.scrollHeight;
 
       renderWorld();

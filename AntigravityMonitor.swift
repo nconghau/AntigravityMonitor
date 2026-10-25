@@ -407,6 +407,9 @@ class AgentScanner: ObservableObject {
                 var lastContent = ""
                 var lastHasTools = false
                 var hasSentMessage = false
+                var lastToolDetail = ""
+                var activeFile = ""
+                var toolCallCount = 0
 
                 var isSubagent = subagentRegistry[cid] != nil
                 var parentId = subagentRegistry[cid]?.parentId
@@ -466,6 +469,7 @@ class AgentScanner: ObservableObject {
                                 if let range = rawContent.range(of: "Active Document: ") {
                                     let sub = String(rawContent[range.upperBound...])
                                     let doc = sub.components(separatedBy: " (LANGUAGE")[0].components(separatedBy: "\n")[0].trimmingCharacters(in: .whitespaces)
+                                    if !doc.isEmpty { activeFile = doc }
                                     let comps = doc.components(separatedBy: "/")
                                     if let pIdx = comps.firstIndex(where: { ["projects", "projectAI", "Documents", "Developer", "Workspace", "work", "src"].contains($0) }), pIdx + 1 < comps.count {
                                         workspacePath = comps[0...pIdx+1].joined(separator: "/")
@@ -492,6 +496,7 @@ class AgentScanner: ObservableObject {
                                 for t in tools {
                                     let tname = t["name"] as? String ?? "tool"
                                     lastTool = tname
+                                    toolCallCount += 1
 
                                     var args: [String: Any] = [:]
                                     if let a = t["args"] as? [String: Any] { args = a }
@@ -526,6 +531,7 @@ class AgentScanner: ObservableObject {
                                     }
 
                                     argDesc = argDesc.replacingOccurrences(of: "\"", with: "")
+                                    if !argDesc.isEmpty { lastToolDetail = argDesc }
                                     if !argDesc.isEmpty {
                                         collectedLogs.append("[TOOL] \(tname): \(argDesc)")
                                     } else {
@@ -693,6 +699,7 @@ class AgentScanner: ObservableObject {
                     "model": model,
                     "dialog": dialog,
                     "env": env,
+                    "processName": env == "IDE" ? "Antigravity IDE" : "Antigravity Desktop",
                     "steps": steps,
                     "tokensEst": tokensEst,
                     "tokensEstFormatted": tokensEst >= 1000 ? "\(tokensEst / 1000)k" : "\(tokensEst)",
@@ -706,6 +713,14 @@ class AgentScanner: ObservableObject {
                     "bubbleText": bubbleText,
                     "mainStep": mainStep,
                     "logs": Array(collectedLogs.suffix(20)),
+                    "eventCount": steps,
+                    "lastEventType": lastType,
+                    "lastEventContent": lastContent.isEmpty ? mainStep : String(lastContent.prefix(160)),
+                    "toolDetail": lastToolDetail.isEmpty ? lastTool : lastToolDetail,
+                    "activeFile": activeFile,
+                    "toolCallCount": toolCallCount,
+                    "logPath": logPath,
+                    "updatedAt": timeFormatter.string(from: mdate),
                     "mtime_raw": mdate.timeIntervalSince1970
                 ]
                 list.append(dict)
