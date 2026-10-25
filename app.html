@@ -5010,7 +5010,7 @@
             ? `${remH}h ${String(remM).padStart(2, '0')}m ${String(remS).padStart(2, '0')}s` 
             : `${String(remM).padStart(2, '0')}m ${String(remS).padStart(2, '0')}s`;
 
-          countdownText = `<span class="font-mono font-black text-amber-900">⏳ ${timeFormatted}</span> <span class="text-zinc-500 font-normal">${t('sprint_remaining', 'còn lại')}</span>`;
+          countdownText = `<span data-sprint-time class="font-mono font-black text-amber-900">⏳ ${timeFormatted}</span> <span class="text-zinc-500 font-normal">${t('sprint_remaining', 'còn lại')}</span>`;
 
           const totalDuration = Math.max(1000, task.targetTimestamp - task.createdAt);
           const elapsed = Math.max(0, now - task.createdAt);
@@ -5040,7 +5040,7 @@
             <div class="space-y-1">
               <div class="flex items-center justify-between text-[11px]" id="sprint-timer-text-${task.id}">
                 ${countdownText}
-                <span class="font-mono text-[10px] text-zinc-400 font-bold">${progressPct}%</span>
+                <span data-sprint-percent class="font-mono text-[10px] text-zinc-400 font-bold">${progressPct}%</span>
               </div>
               <div class="h-2 w-full rounded-full bg-zinc-200/80 overflow-hidden p-0.5 border border-zinc-200">
                 <div id="sprint-progress-bar-${task.id}" class="h-full rounded-full ${barColor} transition-all duration-700" style="width: ${progressPct}%"></div>
@@ -5272,8 +5272,49 @@
       }).join('');
     }
 
+    // Minimal clock pass: keep the actual countdown independent from the
+    // heavier hero/activity renderers and icon hydration observer.
+    function updateSprintClockOnly(now = Date.now()) {
+      const topTask = sprintTasks
+        .filter(task => !task.isCompleted)
+        .sort((a, b) => Number(a.targetTimestamp) - Number(b.targetTimestamp))[0];
+      const boxHours = document.getElementById('sprint-box-hours');
+      const boxMins = document.getElementById('sprint-box-mins');
+      const boxSecs = document.getElementById('sprint-box-secs');
+      if (!boxHours || !boxMins || !boxSecs || !topTask) return;
+
+      const diffMs = Number(topTask.targetTimestamp) - now;
+      const totalSeconds = Math.max(0, Math.ceil(Math.abs(diffMs) / 1000));
+      const hours = Math.floor(totalSeconds / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+      boxHours.textContent = String(hours).padStart(2, '0');
+      boxMins.textContent = String(mins).padStart(2, '0');
+      boxSecs.textContent = String(secs).padStart(2, '0');
+
+      sprintTasks.forEach(task => {
+        if (task.isCompleted) return;
+        const timerTextEl = document.getElementById(`sprint-timer-text-${task.id}`);
+        if (!timerTextEl) return;
+        const taskDiff = Number(task.targetTimestamp) - now;
+        if (taskDiff <= 0) return;
+        const remaining = Math.max(0, Math.ceil(taskDiff / 1000));
+        const h = Math.floor(remaining / 3600);
+        const m = Math.floor((remaining % 3600) / 60);
+        const s = remaining % 60;
+        const formatted = h > 0
+          ? `${h}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`
+          : `${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+        const percentEl = timerTextEl.querySelector('[data-sprint-percent]');
+        const timeEl = timerTextEl.querySelector('[data-sprint-time]');
+        if (timeEl) timeEl.textContent = `⏳ ${formatted}`;
+        if (percentEl) percentEl.textContent = `${Math.min(100, Math.max(5, Math.round(((now - task.createdAt) / Math.max(1000, task.targetTimestamp - task.createdAt)) * 100)))}%`;
+      });
+    }
+
     function updateSprintTimer() {
       const now = Date.now();
+      updateSprintClockOnly(now);
       const pillBtn = document.getElementById('btn-sprint-countdown');
       const pillIcon = document.getElementById('sprint-pill-icon');
       const pillText = document.getElementById('sprint-pill-text');
@@ -7960,8 +8001,8 @@ function triggerRandomStudioEvent() {
 
     applyLanguage(currentLang);
     updateMobileRoomTabs(null);
-    initSprintTasks();
     startSprintTimerLoop();
+    initSprintTasks();
     updateDiagnosticUI();
     updateJukeboxUI();
     updateQuotaUI();
