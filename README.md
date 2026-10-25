@@ -140,12 +140,24 @@ surge . --domain my-ai-studio.surge.sh
 
 Ứng dụng kết hợp giữa **SwiftUI / AppKit** (native MenuBar) và **HTML5 / Web Audio** trong `WKWebView`:
 
+Mỗi bản phát hành dùng một version riêng trong `VERSION` và không ghi đè các bản đã build:
+
 ```bash
-# Compile Universal Binary (Apple Silicon + Intel)
-swiftc -parse-as-library -target arm64-apple-macos12.0 -O -o build/AntigravityMonitor_arm64 AntigravityMonitor.swift
-swiftc -parse-as-library -target x86_64-apple-macos12.0 -O -o build/AntigravityMonitor_x86_64 AntigravityMonitor.swift
-lipo -create -output dist/AntigravityMonitor.app/Contents/MacOS/AntigravityMonitor build/AntigravityMonitor_arm64 build/AntigravityMonitor_x86_64
-codesign --force --deep -s - dist/AntigravityMonitor.app
+# Xem version hiện tại
+cat VERSION
+
+# Build theo VERSION (ví dụ 2.0.0)
+./scripts/build-version.sh
+
+# Build version mới; thư mục releases/v2.1.0 sẽ được tạo riêng
+./scripts/build-version.sh 2.1.0
+```
+
+Kết quả được lưu tại `releases/v<version>/`, gồm app Universal, file ZIP và `build-info.txt`. Script sẽ dừng nếu version đã tồn tại để tránh ghi đè lịch sử build. Muốn cài một bản cụ thể vào Dock/Applications:
+
+```bash
+ditto releases/v2.1.0/AntigravityMonitor.app /Applications/AntigravityMonitor.app
+open /Applications/AntigravityMonitor.app
 ```
 
 ---

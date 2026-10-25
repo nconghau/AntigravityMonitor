@@ -19,6 +19,8 @@ AntigravityMonitor_universal
 
 # Release Archives (Upload these to GitHub Releases)
 dist/
+releases/*
+!releases/.gitkeep
 *.dmg
 *.zip
 
