@@ -1062,14 +1062,14 @@
       <!-- Studio HUD Header (Game Dev Story Style - Desktop Only to keep Mobile Clean) -->
       <div class="hidden md:flex items-center justify-between gap-2 px-2.5 sm:px-3 py-1.5 bg-white/90 backdrop-blur-xs rounded-2xl border border-[var(--card-border)] shadow-xs relative z-30">
         <div class="flex items-center gap-2">
-          <span class="text-base">🎮</span>
+          <span class="ui-icon icon-bot icon-lg" aria-hidden="true"></span>
           <div>
             <div class="font-extrabold text-xs text-[var(--text-main)] flex items-center gap-1.5">
               <span>Antigravity Game Studio</span>
               <span class="px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-800 text-[9px] font-bold border border-amber-300">Lv.4 Indie</span>
             </div>
             <div class="text-[9px] font-mono text-[var(--text-muted)]">
-              💡 Click floor or furniture to send Agent • Click Agent to select
+              <span class="ui-icon icon-target" aria-hidden="true"></span> Click floor or furniture to send Agent • Click Agent to select
             </div>
           </div>
         </div>
@@ -1097,7 +1097,7 @@
         <!-- ZOOMED ROOM HUD (Desktop Full Navigation) -->
         <div id="zoomed-room-hud" class="hidden absolute top-2 left-2 right-2 z-40 md:flex flex-wrap items-center justify-between gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-md rounded-2xl border-2 border-amber-300 shadow-md">
           <div class="flex items-center gap-2">
-            <span id="zoomed-room-icon" class="text-base">💻</span>
+            <span id="zoomed-room-icon" class="ui-icon icon-code" aria-hidden="true"></span>
             <div>
               <div class="flex items-center gap-1.5">
                 <h4 id="zoomed-room-title" class="font-black text-xs text-slate-900">DEV LAB • CODING ROOM (FULL VIEW)</h4>
@@ -1205,7 +1205,7 @@
         <!-- Dev Lab: Dual-Monitor Coding Desk -->
         <div class="furniture-hotspot" style="left: 23%; top: 16%;" onclick="event.stopPropagation(); onFurnitureClick('desk1')" title="Code Desk: Click to seat agent for coding!">
           <div class="hotspot-chip hotspot-blue">
-            <span>💻</span>
+              <span class="ui-icon icon-code" aria-hidden="true"></span>
             <span>Code Desk</span>
           </div>
         </div>
@@ -1229,7 +1229,7 @@
         <!-- Dev Lab: Monstera Potted Plant -->
         <div class="furniture-hotspot" style="left: 31%; top: 14%;" onclick="event.stopPropagation(); spawnFloatingEmoji(currentLang === 'vi' ? '🌿 Cây Monstera xanh mát!' : '🌿 Fresh Monstera plant!')" title="Monstera Plant: Click to water!">
           <div class="hotspot-chip hotspot-blue">
-            <span>🪴</span>
+              <span class="ui-icon icon-home" aria-hidden="true"></span>
             <span>Plant</span>
           </div>
         </div>
@@ -1285,7 +1285,7 @@
         <!-- Studio Lounge: Cream Sectional Sofa -->
         <div class="furniture-hotspot" style="left: 68%; top: 67%;" onclick="event.stopPropagation(); onFurnitureClick('sofa')" title="Living Sofa: Click to chill on sofa!">
           <div class="hotspot-chip hotspot-pink">
-            <span>🛋️</span>
+              <span class="ui-icon icon-home" aria-hidden="true"></span>
             <span>Sofa Chill</span>
           </div>
         </div>
@@ -7497,19 +7497,36 @@ function triggerRandomStudioEvent() {
         '📊': 'code', '📌': 'target', '📍': 'target', '📝': 'code', '📱': 'code', '📺': 'music',
         '🔊': 'music', '🔕': 'music', '😴': 'sleep', '🚶': 'bot', '🛌': 'sleep', '🛠': 'code',
         '🖥': 'code', '🖼': 'home', '🟢': 'check', '🥪': 'pizza', '🧃': 'coffee', '🩺': 'check',
-        '🪑': 'home', '🪴': 'home'
+        '🪑': 'home', '🪴': 'home', '🪴️': 'home', '🖥️': 'code', '🖥': 'code',
+        '🧑‍💻': 'code', '🔧': 'code', '🕹️': 'bot', '🕹': 'bot', '🎧': 'music',
+        '📣': 'bell', '🔗': 'focus', '🧩': 'target', '🗂️': 'code', '🗂': 'code',
+        '📱': 'code', '🏡': 'home', '🏢': 'home', '▶️': 'rocket', '♫': 'music', '🌐': 'home',
+        '☀️': 'home', '🔕': 'bell', '↗': 'focus', '↙': 'focus', '⏸️': 'focus', '🖼️': 'home',
+        '🛠️': 'code', '🗑️': 'trash', '🏛️': 'home', '🧭': 'focus', '📍': 'target', '🔒': 'bell',
+        '🧠': 'bot', '📥': 'code', '📂': 'code', '📊': 'code', '👥': 'bot', '👤': 'bot',
+        '💖': 'check', '💤': 'sleep', '🛌': 'sleep', '🌍': 'home', '🌊': 'home', '🌿': 'home',
+        '🍯': 'coffee', '🍓': 'pizza', '🍵': 'coffee', '🍇': 'pizza', '🎲': 'bot', '🎭': 'bot',
+        '🏆': 'check', '🏛': 'home', '🥪': 'pizza', '🧃': 'coffee', '😴': 'sleep', '♨️': 'coffee',
+        '♨': 'coffee', '🛍️': 'home', '🛍': 'home', '🧪': 'code', '🛡️': 'check', '🛡': 'check',
+        '🟢': 'check', '⏱': 'clock', '⏱️': 'clock', '🛏': 'sleep', '⚙': 'focus', 'ℹ': 'target',
+        '✏': 'code', '🛋': 'home', '📡': 'clock', '🖼': 'home', '🛠': 'code', '⚠': 'bell',
+        '🏛': 'home', '🖥': 'code'
       };
       const emojiPattern = new RegExp(Object.keys(iconByEmoji).sort((a, b) => b.length - a.length).map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'gu');
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      // Avoid TreeWalker/NodeFilter differences between Safari and native WKWebView.
+      // Direct child scanning is deliberately boring but deterministic for static and dynamic DOM.
       const textNodes = [];
-      let current;
-      while ((current = walker.nextNode())) {
-        const parent = current.parentElement;
-        if (parent && !parent.closest('script, style, textarea, .ui-icon') && emojiPattern.test(current.nodeValue)) {
-          textNodes.push(current);
-        }
-        emojiPattern.lastIndex = 0;
-      }
+      const seen = new Set();
+      const candidates = [root, ...root.querySelectorAll('*')];
+      candidates.forEach(parent => {
+        if (parent.matches && parent.matches('script, style, textarea, .ui-icon')) return;
+        [...parent.childNodes].forEach(node => {
+          if (node.nodeType !== 3 || seen.has(node)) return;
+          seen.add(node);
+          if (emojiPattern.test(node.nodeValue)) textNodes.push(node);
+          emojiPattern.lastIndex = 0;
+        });
+      });
       textNodes.forEach(node => {
         const fragment = document.createDocumentFragment();
         let lastIndex = 0;
@@ -7538,6 +7555,9 @@ function triggerRandomStudioEvent() {
     selectAgent(currentSelectedId, false);
     hydratePlayfulIcons();
     new MutationObserver(() => hydratePlayfulIcons()).observe(document.body, { childList: true, subtree: true });
+    // Native WKWebView can finish layout after the initial script pass; hydrate once more after paint.
+    requestAnimationFrame(() => hydratePlayfulIcons());
+    setTimeout(() => hydratePlayfulIcons(), 250);
   </script>
 </body>
 </html>
