@@ -37,6 +37,7 @@
 * 🎭 **14 Nhân Vật Chibi 3D Độc Bản (Playful UI Style)**: Mỗi agent được gán một nhân vật 3D mềm mại, biểu cảm dễ thương, tự do di chuyển và tương tác sinh động.
 * ⚡ **100% Live Sync & DOM Diffing Không Chớp**: Cập nhật in-place từng bot theo ID mượt mà 60 FPS, không bao giờ nhấp nháy hay reload màn hình.
 * 🛡️ **Anti-Hang Watchdog Tự Động**: Nhận diện thông minh và giải phóng ngay các job đã hoàn thành hoặc chạy quá lâu, không lo bị kẹt trạng thái processing.
+* 🌐 **Hỗ Trợ Song Ngữ Anh / Việt (Bilingual EN / VI - Mặc định tiếng Anh)**: Tự động ghi nhớ tùy chọn ngôn ngữ, chuyển đổi 1-click tức thì toàn bộ giao diện, modal, dialog nhân vật và tooltip không cần reload.
 * 📻 **Lo-fi Jukebox Ưu Tiên Nguồn Nhạc Việt Nam**: Mặc định tuyển tập giai điệu Việt Nam ấm áp (Cà phê sáng Sài Gòn, Hà Nội mùa thu mưa phùn, Đàn tranh & sáo trúc ngũ cung, Radio trực tuyến) tự sinh 100% offline qua Web Audio API cùng hiệu ứng pháo hoa Confetti và tiếng gõ phím cơ.
 * 🎨 **Studio Customizer Hub (Phím `C`)**: Tự do đổi 6 theme màu Playful, thêm nhạc MP3 stream/upload từ máy tính, và tự tạo Bot AI riêng.
 * 🩺 **Bác Sĩ Cấu Hình (Auto-Diagnostics)**: Quét tự động `~/.gemini/antigravity/brain`, cảnh báo trạng thái và hỗ trợ tạo thư mục mẫu chỉ với 1 click.

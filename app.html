@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="cozy-day">
+<html lang="en" data-theme="cozy-day">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
@@ -718,11 +718,11 @@
             <span class="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-600 font-semibold border border-zinc-200 hidden sm:inline-block">v2.0 House Edition</span>
           </div>
           <div class="text-[10px] sm:text-[11px] font-medium flex items-center gap-1.5 sm:gap-2 flex-wrap" style="color: var(--text-muted)">
-            <span>Đồng bộ: <span id="clock" class="font-mono font-bold text-amber-600">18:41:00</span></span>
+            <span><span data-i18n="sync">Sync:</span> <span id="clock" class="font-mono font-bold text-amber-600">18:41:00</span></span>
             <span>•</span>
-            <span>Steps: <b id="total-steps" class="font-mono text-indigo-600">4,950</b></span>
+            <span><span data-i18n="steps">Steps:</span> <b id="total-steps" class="font-mono text-indigo-600">4,950</b></span>
             <span>•</span>
-            <span>Tokens: <b id="total-tokens-badge" class="font-mono text-purple-600">~245k</b></span>
+            <span><span data-i18n="tokens">Tokens:</span> <b id="total-tokens-badge" class="font-mono text-purple-600">~245k</b></span>
             <span class="hidden sm:inline">•</span>
             <span class="text-emerald-600 font-bold hidden sm:inline-flex items-center gap-1">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> IDE Bridge Active
@@ -734,7 +734,7 @@
       <!-- LIVE DATA REFRESH BUTTON (Visible on Top-Right on Mobile & Desktop) -->
       <button onclick="refreshLiveData(true)" id="btn-refresh-live" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 active:scale-95 text-white text-xs font-black shadow-xs flex items-center gap-1.5 transition-all cursor-pointer shrink-0" title="Ép buộc làm mới tất cả dữ liệu & trạng thái Agent ngay lập tức (Phím tắt R)">
         <span id="refresh-spinner" class="inline-block transition-transform duration-500">🔄</span>
-        <span class="hidden sm:inline">Làm Mới Live</span>
+        <span class="hidden sm:inline" data-i18n="refresh_live">Refresh Live</span>
         <span class="sm:hidden">Live</span>
         <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
       </button>
@@ -742,6 +742,12 @@
 
     <!-- Controls Toolbar: Streamlined & Minimalist (Focus on Animation) -->
     <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+      <!-- Language Switcher Pill (EN / VI - Default English) -->
+      <button onclick="toggleAppLanguage()" id="btn-lang-toggle" class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold border border-amber-200 shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap" title="Switch Language / Đổi Ngôn Ngữ (EN / VI)">
+        <span>🌐</span>
+        <span id="lang-current-label" class="font-extrabold tracking-wide">EN</span>
+      </button>
+
       <!-- Models & Quota Hub Trigger (Shows % Quota Remaining) -->
       <button onclick="toggleModelsQuotaModal()" id="btn-models-quota" class="px-2.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold border border-purple-200 shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap" title="Xem Models khả dụng & % Quota còn lại (Phím tắt U)">
         <span>🧠</span>
@@ -766,7 +772,7 @@
             <!-- Dynamically populated -->
           </div>
           <div class="flex items-center justify-between text-[11px] pt-2 border-t border-indigo-100">
-            <span class="text-zinc-500 font-semibold">Âm lượng:</span>
+            <span class="text-zinc-500 font-semibold" data-i18n="jukebox_vol">Volume:</span>
             <input type="range" id="jukebox-volume" min="0" max="100" value="35" oninput="setJukeboxVolume(this.value)" class="w-24 accent-indigo-600 cursor-pointer"/>
           </div>
         </div>
@@ -774,17 +780,17 @@
 
       <!-- VIEW MODE SWITCHER (Studio vs List) -->
       <div class="flex items-center bg-[var(--floor-color)] p-0.5 rounded-xl border border-[var(--card-border)] shrink-0">
-        <button onclick="setViewMode('house')" id="btn-mode-house" class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-amber-400 text-amber-950 shadow-xs flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer">
+        <button onclick="setViewMode('house')" id="btn-mode-house" class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-amber-400 text-amber-950 shadow-xs flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer" data-i18n="view_studio">
           🏡 Studio
         </button>
-        <button onclick="setViewMode('dashboard')" id="btn-mode-dashboard" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer">
-          🏢 Danh Sách
+        <button onclick="setViewMode('dashboard')" id="btn-mode-dashboard" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-main)] flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer" data-i18n="view_list">
+          🏢 List
         </button>
       </div>
 
       <!-- Studio Customizer Trigger (Playful Button) -->
-      <button onclick="openCustomizerModal()" id="btn-customizer" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 hover:from-amber-500 hover:to-rose-500 active:scale-95 text-white text-xs font-black shadow-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0" title="Tùy chỉnh Giao diện, Nhạc & Các Agent (Phím tắt C)">
-        <span>🎨 Custom</span>
+      <button onclick="openCustomizerModal()" id="btn-customizer" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 hover:from-amber-500 hover:to-rose-500 active:scale-95 text-white text-xs font-black shadow-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0" title="Customize Theme, Music & Agents (Shortcut C)">
+        <span>🎨</span> <span data-i18n="customizer_btn">Custom</span>
       </button>
 
       <!-- Quick Settings Unified Menu (Tinh gọn gom nhóm) -->
@@ -794,7 +800,16 @@
         </button>
 
         <div id="quick-settings-menu" class="hidden absolute right-0 top-full mt-2 w-56 p-2.5 bg-white/95 backdrop-blur-md rounded-2xl border border-[var(--card-border)] shadow-xl z-50 text-xs text-[var(--text-main)] pop-in space-y-1.5">
-          <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-1">Tiện Ích Nhanh</div>
+          <div class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-1" data-i18n="quick_utilities_header">Quick Utilities</div>
+          
+          <!-- Language Selector in Quick Settings -->
+          <div class="p-1.5 rounded-lg hover:bg-zinc-50 flex items-center justify-between transition-colors">
+            <span class="flex items-center gap-1.5 text-zinc-700 font-semibold">🌐 <span data-i18n="lang_setting">Language</span></span>
+            <select id="quick-lang-select" onchange="applyLanguage(this.value)" class="bg-zinc-100 text-zinc-800 font-bold text-[11px] px-1.5 py-0.5 rounded outline-none cursor-pointer">
+              <option value="en">English (Default)</option>
+              <option value="vi">Tiếng Việt</option>
+            </select>
+          </div>
           
           <button onclick="openCustomizerModal(); toggleQuickSettingsMenu();" class="w-full text-left p-1.5 rounded-lg hover:bg-amber-50 flex items-center justify-between text-amber-900 font-bold transition-colors cursor-pointer">
             <span class="flex items-center gap-1.5">🎨 <span>Studio Customizer</span></span>
@@ -847,7 +862,7 @@
 
     <!-- Search Input: Compact & Clean -->
     <div class="flex items-center gap-2">
-      <input type="text" id="agent-search" oninput="onSearch(this.value)" placeholder="🔍 Tìm agent, task..." class="w-40 sm:w-52 px-2.5 py-1 text-xs rounded-lg bg-[var(--floor-color)] border border-[var(--card-border)] outline-none focus:border-amber-400 font-medium"/>
+      <input type="text" id="agent-search" oninput="onSearch(this.value)" placeholder="🔍 Search agents, tasks..." data-i18n-placeholder="search_placeholder" class="w-40 sm:w-52 px-2.5 py-1 text-xs rounded-lg bg-[var(--floor-color)] border border-[var(--card-border)] outline-none focus:border-amber-400 font-medium"/>
     </div>
   </div>
 
@@ -1152,21 +1167,21 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 h-full relative z-10">
         <div class="room-box p-3.5 flex flex-col justify-between bg-white">
           <div class="flex items-center justify-between border-b border-[var(--card-border)] pb-2 mb-2 font-bold text-xs">
-            <span>⭐ Main Agents (Lead Coder)</span>
+            <span data-i18n="col_main_title">⭐ Main Agents (Lead Coder)</span>
             <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">Main Tasks</span>
           </div>
           <div class="space-y-3 my-auto" id="zone-dev-desks"></div>
         </div>
         <div class="room-box p-3.5 flex flex-col justify-between bg-white">
           <div class="flex items-center justify-between border-b border-[var(--card-border)] pb-2 mb-2 font-bold text-xs">
-            <span>🤖 Subagents (Nhiệm Vụ Nhánh)</span>
+            <span data-i18n="col_sub_title">🤖 Subagents (Child Workers)</span>
             <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">Child Workers</span>
           </div>
           <div class="space-y-3 my-auto" id="zone-ops-desks"></div>
         </div>
         <div class="room-box p-3.5 flex flex-col justify-between bg-white">
           <div class="flex items-center justify-between border-b border-[var(--card-border)] pb-2 mb-2 font-bold text-xs">
-            <span>☕ Quầy Cà Phê & Xong Việc</span>
+            <span data-i18n="col_lounge_title">☕ Coffee Bar & Done</span>
             <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Completed / Idle</span>
           </div>
           <div class="space-y-3 my-auto" id="zone-lounge-desks"></div>
@@ -1182,7 +1197,7 @@
     <div class="px-2.5 sm:px-3.5 py-1.5 bg-[var(--floor-color)]/50 border-b border-[var(--card-border)] flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2">
       <div class="flex items-center gap-2 sm:gap-2.5">
         <!-- Transparent Cutout Avatar Container -->
-        <div class="w-11 h-11 flex items-center justify-center relative cursor-pointer group shrink-0" onclick="giveTreatToActiveAgent('🍕')" title="Tặng Pizza tiếp sức cho Agent này!">
+        <div class="w-11 h-11 flex items-center justify-center relative cursor-pointer group shrink-0" onclick="giveTreatToActiveAgent('🍕')" title="Give Pizza to recharge this Agent!" data-i18n-title="treat_title">
           <img id="inspect-avatar-img" src="./assets/deployer_bot.png" onerror="this.onerror=null; this.src='./assets/dev_bot.png'" class="w-full h-full object-contain filter drop-shadow(0 2px 4px rgba(0,0,0,0.18)) group-hover:scale-115 transition-transform"/>
           <span class="absolute bottom-0 right-0 text-[10px]">🍕</span>
         </div>
@@ -1208,8 +1223,8 @@
             </button>
 
             <!-- CUSTOMIZE BOT BUTTON -->
-            <button onclick="openCustomizerForAgent(currentSelectedId)" class="px-2 py-0.5 rounded-md bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold text-[9px] border border-purple-200 flex items-center gap-1 transition-colors cursor-pointer shadow-2xs whitespace-nowrap" title="Tùy chỉnh tên, vai trò và avatar của bot này">
-              ✏️ Sửa Bot
+            <button onclick="openCustomizerForAgent(currentSelectedId)" class="px-2 py-0.5 rounded-md bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold text-[9px] border border-purple-200 flex items-center gap-1 transition-colors cursor-pointer shadow-2xs whitespace-nowrap" title="Customize bot name, role & avatar">
+              <span data-i18n="btn_edit_bot">✏️ Edit Bot</span>
             </button>
           </div>
 
@@ -1233,8 +1248,8 @@
         <span class="text-zinc-300 shrink-0">|</span>
 
         <!-- Developer Direct Tools -->
-        <button onclick="bridgeNative('openWorkspace')" class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200 shadow-2xs flex items-center gap-1 transition-colors whitespace-nowrap shrink-0" title="Mở thẳng thư mục dự án trong Antigravity IDE / VS Code">
-          💻 Mở IDE
+        <button onclick="bridgeNative('openWorkspace')" class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200 shadow-2xs flex items-center gap-1 transition-colors whitespace-nowrap shrink-0" title="Open project directly in Antigravity IDE / VS Code">
+          <span data-i18n="btn_open_ide">💻 Open IDE</span>
         </button>
         <!-- Toggle Terminal Button with State Badge -->
         <button id="btn-terminal-toggle" onclick="toggleTerminalDrawer()" class="px-2.5 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-bold border border-zinc-300 shadow-2xs flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0" title="Bật/Tắt xem Terminal Logs (Tự động mở khi có Action)">
@@ -1253,14 +1268,14 @@
       <div class="px-3.5 py-1.5 bg-zinc-900 border-t border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-400">
         <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>⚡ LIVE ACTION TERMINAL STREAM</span>
+          <span data-i18n="terminal_stream_title">⚡ LIVE ACTION TERMINAL STREAM</span>
         </span>
         <div class="flex items-center gap-2">
-          <button onclick="bridgeNative('openTerminal')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors" title="Mở trong macOS Terminal.app">
-            ↗ Mở macOS Terminal
+          <button onclick="bridgeNative('openTerminal')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors" title="Open in macOS Terminal.app">
+            <span data-i18n="terminal_open_mac">↗ Open macOS Terminal</span>
           </button>
-          <button onclick="toggleTerminalDrawer(false)" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-red-950 text-zinc-400 hover:text-red-300 transition-colors" title="Thu gọn Terminal để tối đa không gian phòng">
-            ✕ Thu gọn
+          <button onclick="toggleTerminalDrawer(false)" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-red-950 text-zinc-400 hover:text-red-300 transition-colors" title="Collapse Terminal">
+            <span data-i18n="terminal_collapse">✕ Collapse</span>
           </button>
         </div>
       </div>
@@ -1281,10 +1296,10 @@
           </div>
           <div>
             <h3 class="font-extrabold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2">
-              <span>Hệ Thống Models & Token Usage</span>
+              <span data-i18n="quota_header_title">Models System & Token Usage</span>
               <span class="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-300">Live Sync</span>
             </h3>
-            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)]">Thông tin tài khoản Antigravity, gói dịch vụ & lượng token tiêu thụ</p>
+            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)]" data-i18n="quota_header_sub">Antigravity account info, service tier & token consumption</p>
           </div>
         </div>
         <button onclick="toggleModelsQuotaModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--floor-color)] hover:bg-zinc-200 text-zinc-600 font-bold flex items-center justify-center text-xs transition-colors shrink-0">
@@ -1300,7 +1315,7 @@
             <div class="flex items-center gap-2">
               <span class="text-xl">⚡</span>
               <div>
-                <div class="text-[10px] font-mono uppercase tracking-wider text-emerald-800 font-extrabold">Hạn Mức Khả Dụng Trong Ngày (Quota)</div>
+                <div class="text-[10px] font-mono uppercase tracking-wider text-emerald-800 font-extrabold" data-i18n="quota_limit_title">Daily Available Limit (Quota)</div>
                 <div class="text-base sm:text-lg font-black text-emerald-950 flex items-center gap-2">
                   <span id="quota-modal-pct-text">Còn lại: 85%</span>
                   <span class="text-xs font-mono font-normal text-zinc-600" id="quota-modal-tokens-detail">(850k / 1.0M tokens)</span>
@@ -1326,7 +1341,7 @@
         <!-- Account & Tier Card -->
         <div class="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-purple-500/10 via-amber-500/10 to-indigo-500/10 border border-purple-200/80 flex flex-wrap items-center justify-between gap-2.5 shadow-xs">
           <div class="space-y-1">
-            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-purple-700 font-bold">Tài Khoản AI Của Bạn</div>
+            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-purple-700 font-bold" data-i18n="quota_account_title">Your AI Account</div>
             <div class="text-xs font-bold" id="quota-account">developer@antigravity.ai</div>
             <div class="flex items-center gap-2 text-[10px]">
               <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 font-extrabold border border-purple-300" id="quota-tier">
@@ -1338,9 +1353,9 @@
             </div>
           </div>
           <div class="text-left sm:text-right">
-            <div class="text-[9px] sm:text-[10px] text-zinc-500 font-mono">Credits Khả Dụng</div>
+            <div class="text-[9px] sm:text-[10px] text-zinc-500 font-mono" data-i18n="quota_credits_title">Available Credits</div>
             <div class="text-base sm:text-lg font-extrabold text-purple-700 font-mono" id="quota-credits">1,000</div>
-            <div class="text-[9px] sm:text-[10px] text-emerald-600 font-bold">Không giới hạn tốc độ</div>
+            <div class="text-[9px] sm:text-[10px] text-emerald-600 font-bold" data-i18n="quota_unlimited_speed">Unlimited Speed</div>
           </div>
         </div>
 
@@ -1348,7 +1363,7 @@
         <div>
           <div class="text-xs font-extrabold mb-2 flex items-center justify-between">
             <div class="flex items-center gap-1.5">
-              <span>🚀</span> <span>Models Khả Dụng Trong Antigravity</span>
+              <span>🚀</span> <span data-i18n="quota_models_title">Models Available in Antigravity</span>
             </div>
             <span class="text-[10px] font-mono text-[var(--text-muted)]">4 Models Sẵn Sàng</span>
           </div>
@@ -1439,10 +1454,10 @@
           </div>
           <div>
             <h3 class="font-extrabold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2">
-              <span>Kiểm Tra Cấu Hình Antigravity Máy Tính</span>
+              <span data-i18n="diag_header_title">Computer Antigravity System Diagnostics</span>
               <span id="diag-modal-badge" class="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-300">Chuẩn 100%</span>
             </h3>
-            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)]">Tự động chẩn đoán lỗi thiếu cấu hình, phân quyền hoặc chia sẻ cho máy khác</p>
+            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)]" data-i18n="diag_header_sub">Auto diagnostic for configuration, permissions or sharing with others</p>
           </div>
         </div>
         <button onclick="toggleDiagnosticsModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--floor-color)] hover:bg-zinc-200 text-zinc-600 font-bold flex items-center justify-center text-xs transition-colors shrink-0 cursor-pointer">
@@ -1463,14 +1478,14 @@
 
         <!-- System Checklist Items -->
         <div class="space-y-2">
-          <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">Chi Tiết Kiểm Tra Môi Trường</div>
+          <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold" data-i18n="diag_env_details">Environment Check Details</div>
 
           <!-- Check 1: Antigravity Desktop Engine -->
           <div class="p-2.5 rounded-xl border border-[var(--card-border)] bg-white flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span id="diag-check-desktop-icon" class="text-sm">📁</span>
               <div>
-                <div class="font-bold text-xs">Thư mục Antigravity CLI / Desktop</div>
+                <div class="font-bold text-xs" data-i18n="diag_check_cli">Antigravity CLI / Desktop Directory</div>
                 <div class="text-[10px] text-zinc-500 font-mono">~/.gemini/antigravity/brain</div>
               </div>
             </div>
@@ -1482,7 +1497,7 @@
             <div class="flex items-center gap-2">
               <span id="diag-check-ide-icon" class="text-sm">💻</span>
               <div>
-                <div class="font-bold text-xs">Thư mục Antigravity IDE Engine</div>
+                <div class="font-bold text-xs" data-i18n="diag_check_ide">Antigravity IDE Engine Directory</div>
                 <div class="text-[10px] text-zinc-500 font-mono">~/.gemini/antigravity-ide/brain</div>
               </div>
             </div>
@@ -1494,7 +1509,7 @@
             <div class="flex items-center gap-2">
               <span class="text-sm">🤖</span>
               <div>
-                <div class="font-bold text-xs">Số Lượng Agent Phát Hiện Được</div>
+                <div class="font-bold text-xs" data-i18n="diag_check_count">Detected Agent Count</div>
                 <div class="text-[10px] text-zinc-500 font-mono" id="diag-conversations-detail">Quét trong 18 giờ gần nhất</div>
               </div>
             </div>
@@ -1505,20 +1520,20 @@
         <!-- Sharing for Others / Community Guide -->
         <div class="p-3 rounded-2xl bg-amber-50/80 border border-amber-200/80 space-y-2">
           <div class="text-xs font-extrabold text-amber-950 flex items-center gap-1.5">
-            <span>👥</span> <span>Chia Sẻ Cho Người Khác / Máy Khác Sử Dụng:</span>
+            <span data-i18n="diag_share_title">👥 Sharing with Others / Other Computers:</span>
           </div>
           <p class="text-[11px] text-amber-900 leading-relaxed">
-            Khi gửi app cho đồng nghiệp hoặc người dùng khác, nếu máy của họ chưa từng cài đặt Antigravity hoặc bị thiếu thư mục cấu hình:
+            When sharing this app with colleagues who have not installed Antigravity yet or are missing config folders:
           </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
             <button onclick="autoCreateSampleConfig()" class="p-2 rounded-xl bg-white hover:bg-amber-100/60 border border-amber-300 text-amber-950 font-bold text-[11px] flex items-center justify-center gap-1.5 shadow-2xs transition-colors cursor-pointer text-center">
-              📥 Tự Động Khởi Tạo Cấu Hình
+              <span data-i18n="diag_btn_auto_create">📥 Auto Initialize Sample Config</span>
             </button>
             <button onclick="copyTerminalSetupCommand()" class="p-2 rounded-xl bg-white hover:bg-amber-100/60 border border-amber-300 text-amber-950 font-bold text-[11px] flex items-center justify-center gap-1.5 shadow-2xs transition-colors cursor-pointer text-center">
-              📋 Copy Lệnh Terminal Setup
+              <span data-i18n="diag_btn_copy_cmd">📋 Copy Terminal Setup Command</span>
             </button>
             <button onclick="bridgeNative('revealBrainInFinder')" class="p-2 rounded-xl bg-white hover:bg-zinc-100 border border-zinc-300 text-zinc-800 font-bold text-[11px] flex items-center justify-center gap-1.5 shadow-2xs transition-colors cursor-pointer text-center sm:col-span-2">
-              📂 Mở Thư Mục Cấu Hình trong Finder
+              <span data-i18n="diag_btn_reveal_finder">📂 Reveal Config Folder in Finder</span>
             </button>
           </div>
         </div>
@@ -1526,9 +1541,9 @@
 
       <!-- Footer -->
       <div class="pt-2.5 sm:pt-3 border-t border-[var(--card-border)] mt-3 flex items-center justify-between text-[11px] text-[var(--text-muted)]">
-        <span>Tự động cập nhật mỗi khi kết nối Antigravity</span>
-        <button onclick="toggleDiagnosticsModal()" class="px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors cursor-pointer">
-          Đã Hiểu
+        <span data-i18n="diag_footer_sync">Auto-refreshes whenever Antigravity connects</span>
+        <button onclick="toggleDiagnosticsModal()" class="px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors cursor-pointer" data-i18n="diag_btn_gotit">
+          Got It
         </button>
       </div>
     </div>
@@ -1548,7 +1563,7 @@
               <span>Studio Customizer Hub</span>
               <span class="text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-300">Playful Edition</span>
             </h3>
-            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)] font-medium">Tự do tùy chỉnh Theme màu, Nguồn nhạc & Nhân vật AI theo phong cách của bạn</p>
+            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)] font-medium" data-i18n="cust_header_sub">Freely customize Color Themes, Music Sources & AI Characters</p>
           </div>
         </div>
         <button onclick="closeCustomizerModal()" class="w-8 h-8 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-800 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer">
@@ -1574,8 +1589,8 @@
         <!-- Preset Palettes -->
         <div class="p-3 rounded-2xl bg-[var(--floor-color)]/70 border border-[var(--card-border)]">
           <div class="text-[11px] font-extrabold text-amber-900 mb-2 flex items-center gap-1.5">
-            <span>✨ Bảng Màu Playful Có Sẵn</span>
-            <span class="text-[9px] text-zinc-500 font-normal">(Bấm để đổi ngay)</span>
+            <span data-i18n="cust_theme_presets_title">✨ Preset Playful Palettes</span>
+            <span class="text-[9px] text-zinc-500 font-normal" data-i18n="cust_theme_presets_hint">(Click to apply)</span>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <button onclick="applyPresetTheme('cozy-amber')" class="p-2 rounded-xl bg-[#faf5ee] border-2 border-amber-300 hover:scale-102 transition-transform text-left cursor-pointer flex items-center justify-between">
@@ -1626,34 +1641,34 @@
         <!-- Custom Color Pickers -->
         <div class="p-3 rounded-2xl bg-white border border-[var(--card-border)] space-y-2.5">
           <div class="text-[11px] font-extrabold text-zinc-800 flex items-center justify-between">
-            <span class="flex items-center gap-1.5">🎨 <span>Tự Chọn Bảng Màu Riêng</span></span>
+            <span class="flex items-center gap-1.5">🎨 <span data-i18n="cust_theme_custom_title">Custom Color Palette</span></span>
             <span class="text-[9px] text-zinc-400 font-normal">Tự do chọn màu theo sở thích</span>
           </div>
           
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
             <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
-              <label class="block text-[10px] font-bold text-zinc-600 mb-1">Nền Thế Giới</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-1" data-i18n="cust_theme_bg">World Background</label>
               <div class="flex items-center gap-1.5">
                 <input type="color" id="cust-color-bg" value="#faf5ee" oninput="updateCustomThemePreview()" class="w-7 h-7 rounded-lg border-0 cursor-pointer p-0"/>
                 <input type="text" id="cust-hex-bg" value="#faf5ee" class="w-full px-1.5 py-0.5 rounded text-[10px] font-mono border border-zinc-300 uppercase"/>
               </div>
             </div>
             <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
-              <label class="block text-[10px] font-bold text-zinc-600 mb-1">Sàn Studio</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-1" data-i18n="cust_theme_floor">Studio Floor</label>
               <div class="flex items-center gap-1.5">
                 <input type="color" id="cust-color-floor" value="#f7eedd" oninput="updateCustomThemePreview()" class="w-7 h-7 rounded-lg border-0 cursor-pointer p-0"/>
                 <input type="text" id="cust-hex-floor" value="#f7eedd" class="w-full px-1.5 py-0.5 rounded text-[10px] font-mono border border-zinc-300 uppercase"/>
               </div>
             </div>
             <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
-              <label class="block text-[10px] font-bold text-zinc-600 mb-1">Màu Nhấn (Accent)</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-1" data-i18n="cust_theme_accent">Accent Color</label>
               <div class="flex items-center gap-1.5">
                 <input type="color" id="cust-color-accent" value="#f59e0b" oninput="updateCustomThemePreview()" class="w-7 h-7 rounded-lg border-0 cursor-pointer p-0"/>
                 <input type="text" id="cust-hex-accent" value="#f59e0b" class="w-full px-1.5 py-0.5 rounded text-[10px] font-mono border border-zinc-300 uppercase"/>
               </div>
             </div>
             <div class="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
-              <label class="block text-[10px] font-bold text-zinc-600 mb-1">Màu Thẻ Card</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-1" data-i18n="cust_theme_card">Card Color</label>
               <div class="flex items-center gap-1.5">
                 <input type="color" id="cust-color-card" value="#ffffff" oninput="updateCustomThemePreview()" class="w-7 h-7 rounded-lg border-0 cursor-pointer p-0"/>
                 <input type="text" id="cust-hex-card" value="#ffffff" class="w-full px-1.5 py-0.5 rounded text-[10px] font-mono border border-zinc-300 uppercase"/>
@@ -1663,10 +1678,10 @@
 
           <div class="flex items-center justify-end gap-2 pt-1">
             <button onclick="resetDefaultTheme()" class="px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold text-xs transition-colors cursor-pointer">
-              🔄 Đặt Lại Mặc Định
+              <span data-i18n="cust_theme_btn_reset">🔄 Reset Default</span>
             </button>
             <button onclick="applyCustomThemeFromInputs()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-amber-950 font-black text-xs shadow-xs transition-transform active:scale-95 cursor-pointer flex items-center gap-1.5">
-              <span>💾 Lưu & Áp Dụng Theme</span>
+              <span data-i18n="cust_theme_btn_save">💾 Save & Apply Theme</span>
             </button>
           </div>
         </div>
@@ -1677,7 +1692,7 @@
         <!-- Current Jukebox Playlist -->
         <div class="p-3 rounded-2xl bg-[var(--floor-color)]/70 border border-[var(--card-border)]">
           <div class="text-[11px] font-extrabold text-indigo-950 mb-2 flex items-center justify-between">
-            <span class="flex items-center gap-1.5">📻 <span>Danh Sách Bài Hát Hiện Có</span></span>
+            <span class="flex items-center gap-1.5">📻 <span data-i18n="cust_music_playlist_title">Current Jukebox Tracks</span></span>
             <span class="text-[9px] text-zinc-500 font-mono" id="custom-music-count">5 bài hát</span>
           </div>
           <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1" id="custom-music-track-list">
@@ -1688,19 +1703,19 @@
         <!-- Add Custom Music Source Form -->
         <div class="p-3 rounded-2xl bg-white border border-[var(--card-border)] space-y-2.5">
           <div class="text-[11px] font-extrabold text-zinc-800 flex items-center justify-between">
-            <span class="flex items-center gap-1.5">➕ <span>Thêm Nguồn Nhạc Của Bạn</span></span>
-            <span class="text-[9px] text-zinc-400 font-normal">Hỗ trợ MP3, Audio Stream & File máy tính</span>
+            <span class="flex items-center gap-1.5">➕ <span data-i18n="cust_music_add_title">➕ Add Your Music Source</span></span>
+            <span class="text-[9px] text-zinc-400 font-normal" data-i18n="cust_music_add_sub">Supports MP3, Audio Stream & Local Files</span>
           </div>
 
           <div class="space-y-2">
             <div>
-              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Tên bản nhạc:</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5" data-i18n="cust_music_name_label">Track Name:</label>
               <input type="text" id="cust-music-name" placeholder="VD: Lofi Girl 24/7 Stream..." class="w-full px-2.5 py-1.5 rounded-xl bg-zinc-50 border border-zinc-200 outline-none focus:border-indigo-400 text-xs font-medium"/>
             </div>
 
             <!-- Radio stream presets quick click -->
             <div>
-              <div class="text-[10px] font-bold text-zinc-500 mb-1">Gợi ý luồng nhạc Việt Nam & Lo-fi trực tuyến miễn phí:</div>
+              <div class="text-[10px] font-bold text-zinc-500 mb-1" data-i18n="cust_music_suggestions_label">Suggested Vietnamese & Lo-fi Online Streams:</div>
               <div class="flex items-center gap-1.5 flex-wrap">
                 <button onclick="setMusicStreamPreset('📻 Hà Nội Community Radio', 'https://ha-noi-community-radio.radiocult.fm/stream')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[10px] border border-emerald-300 cursor-pointer">
                   + 🇻🇳 Hà Nội Community
@@ -1718,17 +1733,17 @@
             </div>
 
             <div>
-              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Link luồng trực tuyến (Audio Stream URL):</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5" data-i18n="cust_music_url_label">Audio Stream URL:</label>
               <input type="text" id="cust-music-url" placeholder="https://...mp3 hoặc URL stream online" class="w-full px-2.5 py-1.5 rounded-xl bg-zinc-50 border border-zinc-200 outline-none focus:border-indigo-400 text-xs font-mono"/>
             </div>
 
             <div class="flex items-center gap-2 pt-1">
               <label class="px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-bold text-xs cursor-pointer flex items-center gap-1.5 border border-zinc-300">
-                <span>📁 Chọn File Nhạc Từ Máy</span>
+                <span data-i18n="cust_music_btn_choose_file">📁 Choose Local MP3 File</span>
                 <input type="file" id="cust-music-file" accept="audio/*" onchange="handleAudioFileUpload(event)" class="hidden"/>
               </label>
               <button onclick="addCustomAudioTrackFromForm()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-xs transition-transform active:scale-95 cursor-pointer ml-auto flex items-center gap-1.5">
-                <span>➕ Thêm Vào Jukebox</span>
+                <span data-i18n="cust_music_btn_add">➕ Add to Jukebox</span>
               </button>
             </div>
           </div>
@@ -1740,9 +1755,9 @@
         <!-- Form: Create / Edit Agent -->
         <div class="p-3 rounded-2xl bg-white border border-[var(--card-border)] space-y-2.5 shadow-2xs">
           <div class="text-[11px] font-extrabold text-amber-950 flex items-center justify-between pb-1 border-b border-zinc-100">
-            <span id="cust-agent-form-title" class="flex items-center gap-1.5">✨ <span>Tạo Bot Mới / Tùy Chỉnh Bot</span></span>
+            <span id="cust-agent-form-title" class="flex items-center gap-1.5">✨ <span data-i18n="cust_agent_form_title">✨ Create New Bot / Edit Bot</span></span>
             <button onclick="resetAgentCustomForm()" class="text-[10px] text-zinc-500 hover:text-zinc-800 font-bold cursor-pointer">
-              Làm mới form
+              <span data-i18n="cust_agent_btn_reset_form">Reset form</span>
             </button>
           </div>
 
@@ -1750,18 +1765,18 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div>
-              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Tên Bot:</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5" data-i18n="cust_agent_name_label">Bot Name:</label>
               <input type="text" id="cust-agent-name" placeholder="VD: Pango AI Coder..." class="w-full px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-bold outline-none focus:border-amber-400"/>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Vai trò (Role):</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5" data-i18n="cust_agent_role_label">Role:</label>
               <input type="text" id="cust-agent-role" placeholder="VD: Frontend Lead & Animation..." class="w-full px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-medium outline-none focus:border-amber-400"/>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div>
-              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Phòng làm việc:</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5" data-i18n="cust_agent_room_label">Work Room:</label>
               <select id="cust-agent-room" class="w-full px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-bold outline-none cursor-pointer">
                 <option value="office">💻 Dev Lab (Phòng Code)</option>
                 <option value="kitchen">🍳 Kitchen & Cafe (Bếp Ăn)</option>
@@ -1770,7 +1785,7 @@
               </select>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5">Câu thoại suy nghĩ (Bong bóng):</label>
+              <label class="block text-[10px] font-bold text-zinc-600 mb-0.5" data-i18n="cust_agent_dialog_label">Thought Dialog (Bubble):</label>
               <input type="text" id="cust-agent-dialog" placeholder="VD: Đang build tính năng cho sếp!" class="w-full px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-medium outline-none focus:border-amber-400"/>
             </div>
           </div>
@@ -1778,7 +1793,7 @@
           <!-- Character Avatar Picker: 14 Playful Chibi Cutout Characters -->
           <div>
             <div class="flex items-center justify-between mb-1">
-              <label class="text-[10px] font-bold text-zinc-600">Chọn Avatar Playful (Trong suốt):</label>
+              <label class="text-[10px] font-bold text-zinc-600" data-i18n="cust_agent_avatar_label">Pick Playful Avatar (Transparent):</label>
               <span id="cust-selected-avatar-label" class="text-[9px] font-mono font-bold text-amber-700">Dev Bot</span>
             </div>
             <input type="hidden" id="cust-agent-avatar" value="./assets/dev_bot.png"/>
@@ -1791,12 +1806,12 @@
           <!-- Custom Avatar URL -->
           <div class="flex items-center gap-2">
             <input type="text" id="cust-agent-avatar-custom-url" placeholder="Hoặc dán URL ảnh ngoài (.png/.svg trong suốt)..." class="flex-1 px-2.5 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-xs font-mono outline-none focus:border-amber-400"/>
-            <button onclick="applyCustomAvatarUrl()" class="px-2.5 py-1 rounded-lg bg-zinc-100 hover:bg-zinc-200 font-bold text-[11px] cursor-pointer">Dùng URL</button>
+            <button onclick="applyCustomAvatarUrl()" class="px-2.5 py-1 rounded-lg bg-zinc-100 hover:bg-zinc-200 font-bold text-[11px] cursor-pointer"><span data-i18n="cust_agent_btn_use_url">Use URL</span></button>
           </div>
 
           <div class="flex items-center justify-end gap-2 pt-1">
             <button onclick="saveAgentCustomization()" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-amber-950 font-black text-xs shadow-xs transition-transform active:scale-95 cursor-pointer flex items-center gap-1.5">
-              <span>💾 Lưu Bot Vào Studio</span>
+              <span data-i18n="cust_agent_btn_save">💾 Save Bot to Studio</span>
             </button>
           </div>
         </div>
@@ -1804,7 +1819,7 @@
         <!-- Active Agents List -->
         <div class="p-3 rounded-2xl bg-[var(--floor-color)]/70 border border-[var(--card-border)] space-y-2">
           <div class="text-[11px] font-extrabold text-amber-950 flex items-center justify-between">
-            <span>👥 Danh Sách Bot Đang Hoạt Động Trong Studio</span>
+            <span data-i18n="cust_agent_list_title">Active Bots in Studio</span>
             <span class="text-[9px] text-zinc-500 font-mono" id="custom-agents-count">4 bots</span>
           </div>
           <div class="space-y-1.5 max-h-44 overflow-y-auto pr-1" id="custom-agents-list">
@@ -1815,9 +1830,9 @@
 
       <!-- Footer -->
       <div class="pt-2.5 sm:pt-3 border-t border-[var(--card-border)] mt-3 flex items-center justify-between text-[11px] text-[var(--text-muted)]">
-        <span>Tự động lưu vào trình duyệt của bạn</span>
-        <button onclick="closeCustomizerModal()" class="px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors cursor-pointer">
-          Xong
+        <span data-i18n="cust_footer_autosave">Auto-saved to your browser</span>
+        <button onclick="closeCustomizerModal()" class="px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors cursor-pointer" data-i18n="cust_btn_done">
+          Done
         </button>
       </div>
     </div>
@@ -1851,19 +1866,19 @@
       <!-- Quick Metrics Strip -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2.5 bg-[var(--floor-color)]/70 p-2 sm:p-2.5 rounded-2xl border border-[var(--card-border)] text-[10px] sm:text-[11px]">
         <div>
-          <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase">📁 Dự Án</div>
+          <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase" data-i18n="step_modal_project">📁 Project</div>
           <div id="step-modal-project" class="font-bold truncate text-amber-700">optiflow-svc</div>
         </div>
         <div>
-          <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase">🌿 Branch</div>
+          <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase" data-i18n="step_modal_branch">🌿 Branch</div>
           <div id="step-modal-branch" class="font-bold truncate text-emerald-700">main</div>
         </div>
         <div>
-          <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase">🧠 AI Model</div>
+          <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase" data-i18n="step_modal_model">🧠 AI Model</div>
           <div id="step-modal-model" class="font-bold truncate text-cyan-700">Gemini 3.8 Flash</div>
         </div>
         <div>
-          <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase">📊 Tiêu Thụ</div>
+          <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase" data-i18n="step_modal_tokens">📊 Token Usage</div>
           <div id="step-modal-tokens" class="font-bold truncate text-purple-700">42.8k (4.2%)</div>
         </div>
       </div>
@@ -1871,7 +1886,7 @@
       <!-- Current Goal Box -->
       <div class="mb-2.5 bg-amber-500/10 border border-amber-300/60 rounded-2xl p-2 sm:p-2.5">
         <div class="flex items-center justify-between text-[9px] sm:text-[10px] font-bold text-amber-800 uppercase tracking-wide mb-1">
-          <span class="flex items-center gap-1">🎯 Mục tiêu đang thực thi</span>
+          <span class="flex items-center gap-1" data-i18n="step_modal_current_goal">🎯 Current Goal</span>
           <span id="step-modal-time" class="font-mono text-zinc-500">18:37:00</span>
         </div>
         <div id="step-modal-prompt" class="text-xs font-semibold text-amber-950 leading-relaxed">
@@ -1882,14 +1897,14 @@
       <!-- Filter Pills & Search Bar (Mobile Friendly) -->
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pb-2 mb-2 border-b border-[var(--card-border)]">
         <div class="flex items-center gap-1 text-[10px] overflow-x-auto no-scrollbar py-0.5" id="step-filter-pills">
-          <button onclick="setStepFilter('ALL')" id="filter-pill-ALL" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-amber-400 text-amber-950 shadow-2xs cursor-pointer whitespace-nowrap shrink-0">Tất cả</button>
-          <button onclick="setStepFilter('USER')" id="filter-pill-USER" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0">👤 User</button>
-          <button onclick="setStepFilter('TOOL')" id="filter-pill-TOOL" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0">🛠️ Tools</button>
-          <button onclick="setStepFilter('CMD')" id="filter-pill-CMD" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0">💻 Cmd</button>
-          <button onclick="setStepFilter('RESULT')" id="filter-pill-RESULT" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0">🟢 Kết quả</button>
+          <button onclick="setStepFilter('ALL')" id="filter-pill-ALL" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-amber-400 text-amber-950 shadow-2xs cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_all">All</button>
+          <button onclick="setStepFilter('USER')" id="filter-pill-USER" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_user">👤 User</button>
+          <button onclick="setStepFilter('TOOL')" id="filter-pill-TOOL" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_tool">🛠️ Tools</button>
+          <button onclick="setStepFilter('CMD')" id="filter-pill-CMD" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_cmd">💻 Cmd</button>
+          <button onclick="setStepFilter('RESULT')" id="filter-pill-RESULT" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_result">🟢 Results</button>
         </div>
         <div class="relative w-full sm:w-auto">
-          <input type="text" id="step-search-input" oninput="filterStepDetailList()" placeholder="🔍 Lọc từ khoá step..." 
+          <input type="text" id="step-search-input" oninput="filterStepDetailList()" placeholder="🔍 Filter step keywords..." data-i18n-placeholder="step_search_placeholder" 
                  class="w-full sm:w-44 text-[11px] px-2.5 py-1 rounded-xl bg-white border border-[var(--card-border)] focus:outline-none focus:border-amber-400 text-[var(--text-main)]" />
         </div>
       </div>
@@ -1903,7 +1918,7 @@
       <div class="pt-2.5 sm:pt-3 border-t border-[var(--card-border)] mt-2.5 flex flex-wrap items-center justify-between gap-2 text-[11px]">
         <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
           <button onclick="copyStepModalLogs()" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-bold border border-zinc-300 flex items-center gap-1 transition-colors cursor-pointer whitespace-nowrap shrink-0">
-            📋 Copy Steps
+            <span data-i18n="step_copy_btn">📋 Copy Steps</span>
           </button>
           <button onclick="bridgeNative('openWorkspace')" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold border border-blue-200 flex items-center gap-1 transition-colors cursor-pointer whitespace-nowrap shrink-0">
             💻 IDE
@@ -1912,14 +1927,642 @@
             ⌨️ Terminal
           </button>
         </div>
-        <button onclick="closeStepDetailModal()" class="px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors cursor-pointer whitespace-nowrap">
-          Đóng (Esc)
+        <button onclick="closeStepDetailModal()" class="px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors cursor-pointer whitespace-nowrap" data-i18n="step_close_btn">
+          Close (Esc)
         </button>
       </div>
     </div>
   </div>
 
   <script>
+
+    // ==========================================
+    // 🌐 INTERNATIONALIZATION (i18n) ENGINE
+    // Default: English ('en') | Supported: 'en', 'vi'
+    // ==========================================
+    const TRANSLATIONS = {
+      en: {
+        brand_sub: "v2.0 House Edition",
+        cheer_title: "Click to cheer all Agents!",
+        sync: "Sync:",
+        steps: "Steps:",
+        tokens: "Tokens:",
+        ide_bridge_active: "IDE Bridge Active",
+        refresh_live: "Refresh Live",
+        refresh_title: "Force refresh all agent states & data immediately (Shortcut R)",
+        quota_btn_title: "View Available Models & Remaining Quota % (Shortcut U)",
+        jukebox_btn_title: "Play relaxing Lo-fi & acoustic tunes while coding (Shortcut J)",
+        jukebox_header: "Jukebox Music",
+        jukebox_play: "▶️ Play",
+        jukebox_pause: "⏸️ Pause",
+        jukebox_vol: "Volume:",
+        view_studio: "🏡 Studio",
+        view_list: "🏢 List",
+        customizer_btn: "Custom",
+        customizer_btn_title: "Customize Theme, Music & Agents (Shortcut C)",
+        quick_settings_title: "Quick Settings & Utilities",
+        quick_utilities_header: "Quick Utilities",
+        turbo_fever: "⚡ Turbo (Fever)",
+        turbo_toggle: "Toggle",
+        lang_setting: "Language",
+        theme_setting: "Theme",
+        theme_cozy: "☀️ Cozy Amber",
+        theme_sweet: "🌸 Sweet Strawberry",
+        theme_nordic: "🌿 Nordic Clean",
+        theme_retro: "☕ Retro Cafe",
+        theme_dark: "🌙 Cyber Dark",
+        sound_fx: "Click Sound FX",
+        sound_off: "Off",
+        sound_on: "On",
+        diagnostics_btn: "System Diagnostics",
+        pin_window: "Always on Top",
+
+        // Filter Bar
+        tab_all: "All",
+        tab_running: "Running",
+        tab_idle: "Idle",
+        search_placeholder: "🔍 Search agents, tasks...",
+
+        // Mobile rooms
+        mob_4rooms: "🏠 4 Rooms",
+        mob_office: "💻 Dev Lab",
+        mob_kitchen: "🍳 Kitchen",
+        mob_living: "🛋️ Lounge",
+        mob_bedroom: "🛏️ Sleep",
+
+        // Studio HUD
+        studio_brand: "Antigravity Game Studio",
+        studio_level: "Lv.4 Indie",
+        studio_hint: "💡 Click floor or furniture to send Agent • Click Agent to select",
+        btn_desk: "💻 Code Desk",
+        btn_coffee: "☕ Coffee",
+        btn_sofa: "🛋️ Sofa TV",
+        btn_sleep: "🛏️ Sleep Pod",
+        studio_desk_title: "Send Agent to coding desk",
+        studio_coffee_title: "Send Agent to coffee & pizza counter",
+        studio_sofa_title: "Send Agent to sofa to relax",
+        studio_sleep_title: "Send Agent to sleep pod",
+        zoomed_title_suffix: "(FULL VIEW)",
+        zoomed_desc: "Detailed step-by-step room view",
+        back_4rooms: "🏠 4 Rooms",
+
+        // Rugs
+        rug_office_title: "💻 DEV LAB • CODING ROOM",
+        rug_office_tag: "60 WPM • 0 Bugs",
+        rug_kitchen_title: "🍳 KITCHEN & COFFEE BAR",
+        rug_kitchen_tag: "Hot Pizza • Fresh Coffee",
+        rug_living_title: "🛋️ LIVING ROOM & LOUNGE",
+        rug_living_tag: "Lo-fi Beats • TV Chill",
+        rug_bedroom_title: "🛏️ SLEEP POD & BEDROOM",
+        rug_bedroom_tag: "Sleep Mode • Fast Charge",
+
+        // Furniture Hotspots
+        hs_desk1: "Dev Desk 1: Click to code at workstation",
+        hs_desk2: "Dev Desk 2: Click to run unit tests",
+        hs_server: "Server Rack: Click to monitor cloud infra",
+        hs_board: "Whiteboard: Click to design architecture",
+        hs_armchair: "Armchair: Click to read documentation",
+        hs_moon: "Moon & Stars: Peaceful night sky",
+        hs_table: "Pizza Table: Click to grab a slice!",
+        hs_espresso: "Espresso Bar: Click to brew fresh coffee!",
+        hs_water: "Water Cooler: Click to drink fresh water!",
+        hs_sofa: "Living Sofa: Click to chill on sofa!",
+        hs_tv: "Smart TV: Enjoy Lo-fi beats animation!",
+        hs_cat: "Butter the Cat: Click to pet & hear purr!",
+
+        // Studio Footer
+        cat_prefix: "🐾 Butter the Cat:",
+        cat_sleeping: "Sleeping on sofa",
+        cat_purring: "Purring happily!",
+        shortcuts_hint: "Shortcuts: Click floor to walk •",
+        engine_active: "⚡ 60 FPS Engine Active",
+
+        // Mode 2 Dashboard
+        col_main_title: "⭐ Main Agents (Lead Coder)",
+        col_main_tag: "Main Tasks",
+        col_sub_title: "🤖 Subagents (Child Workers)",
+        col_sub_tag: "Child Workers",
+        col_lounge_title: "☕ Coffee Bar & Done",
+        col_lounge_tag: "Completed / Idle",
+
+        // Inspector
+        treat_title: "Give Pizza to recharge this Agent!",
+        btn_steps: "ℹ️ Steps",
+        btn_mark_done: "✓ Mark Done",
+        btn_done_idle: "✓ Completed",
+        btn_edit_bot: "✏️ Edit Bot",
+        room_label: "Room:",
+        btn_open_ide: "💻 Open IDE",
+        btn_terminal: "⌨️ Terminal",
+        terminal_hidden: "Hide",
+        terminal_visible: "Show",
+        btn_copy_id: "📋 Copy ID",
+        terminal_stream_title: "⚡ LIVE ACTION TERMINAL STREAM",
+        terminal_open_mac: "↗ Open macOS Terminal",
+        terminal_collapse: "✕ Collapse",
+        subagent_running: "● SUBAGENT RUNNING",
+        subagent_done: "○ SUBAGENT COMPLETED",
+        main_running: "● MAIN AGENT RUNNING",
+        main_idle: "○ MAIN AGENT IDLE",
+
+        // Tooltip & Cards
+        room_coding: "Coding",
+        room_dining: "Dining",
+        room_sleeping: "Sleeping",
+        room_relaxing: "TV Chill",
+        tooltip_current_task: "🎯 Current Goal / Task",
+        tooltip_project: "Project:",
+        tooltip_branch: "Branch:",
+        tooltip_model: "Model:",
+        tooltip_tokens: "Tokens:",
+        tooltip_tool: "Tool:",
+        tooltip_room: "Room:",
+        tooltip_steps_progress: "📋 Step Progress",
+        tooltip_view_details: "🔍 View Step Details",
+        tooltip_no_history: "No step history yet",
+        tooltip_child_of: "Child of Main #",
+
+        // Step Detail Modal
+        step_modal_project: "📁 Project",
+        step_modal_branch: "🌿 Branch",
+        step_modal_model: "🧠 AI Model",
+        step_modal_tokens: "📊 Token Usage",
+        step_modal_current_goal: "🎯 Current Goal",
+        step_filter_all: "All",
+        step_filter_user: "👤 User",
+        step_filter_tool: "🛠️ Tools",
+        step_filter_cmd: "💻 Cmd",
+        step_filter_result: "🟢 Results",
+        step_search_placeholder: "🔍 Filter step keywords...",
+        step_copy_btn: "📋 Copy Steps",
+        step_close_btn: "Close (Esc)",
+        step_status_completed: "Completed",
+        step_status_received: "Received",
+        step_no_match: "No steps found matching filter",
+        step_status_live: "● LIVE RUNNING",
+        step_status_idle: "○ IDLE",
+
+        // Models & Quota Modal
+        quota_header_title: "Models System & Token Usage",
+        quota_header_sub: "Antigravity account info, service tier & token consumption",
+        quota_limit_title: "Daily Available Limit (Quota)",
+        quota_remaining_label: "Remaining:",
+        quota_badge_comfortable: "🟢 Very Comfortable",
+        quota_used_label: "Used:",
+        quota_auto_refresh: "Auto refresh: 00:00 UTC (Daily)",
+        quota_account_title: "Your AI Account",
+        quota_credits_title: "Available Credits",
+        quota_unlimited_speed: "Unlimited Speed",
+        quota_models_title: "Models Available in Antigravity",
+        quota_models_ready: "{count} Models Ready",
+        quota_table_agent: "Agent",
+        quota_table_model: "AI Model",
+        quota_table_tokens: "Est Tokens",
+        quota_table_context: "Context %",
+        quota_footer_sync: "Auto-synced with Google AI Studio & Antigravity IDE",
+        quota_btn_gotit: "Got It",
+
+        // Diagnostics Modal
+        diag_header_title: "Computer Antigravity System Diagnostics",
+        diag_header_sub: "Auto diagnostic for configuration, permissions or sharing with others",
+        diag_badge_ready: "100% Ready",
+        diag_status_ready_title: "System 100% Ready!",
+        diag_status_ready_desc: "Found valid Antigravity Brain folder and active agent logs on this machine.",
+        diag_env_details: "Environment Check Details",
+        diag_check_cli: "Antigravity CLI / Desktop Directory",
+        diag_check_ide: "Antigravity IDE Engine Directory",
+        diag_check_count: "Detected Agent Count",
+        diag_scanned_recent: "Scanned in last 18 hours",
+        diag_ready_badge: "✅ Ready",
+        diag_share_title: "👥 Sharing with Others / Other Computers:",
+        diag_share_desc: "When sharing this app with colleagues who have not installed Antigravity yet:",
+        diag_btn_auto_create: "📥 Auto Initialize Sample Config",
+        diag_btn_copy_cmd: "📋 Copy Terminal Setup Command",
+        diag_btn_reveal_finder: "📂 Reveal Config Folder in Finder",
+        diag_footer_sync: "Auto-refreshes whenever Antigravity connects",
+        diag_btn_gotit: "Got It",
+
+        // Studio Customizer Modal
+        cust_header_title: "Studio Customizer Hub",
+        cust_header_sub: "Freely customize Color Themes, Music Sources & AI Characters",
+        cust_tab_theme: "Color Themes",
+        cust_tab_music: "Music Sources",
+        cust_tab_agents: "Customize Agents",
+        cust_theme_presets_title: "✨ Preset Playful Palettes",
+        cust_theme_presets_hint: "(Click to apply)",
+        cust_theme_custom_title: "Custom Color Palette",
+        cust_theme_custom_hint: "Choose your favorite colors",
+        cust_theme_bg: "World Background",
+        cust_theme_floor: "Studio Floor",
+        cust_theme_accent: "Accent Color",
+        cust_theme_card: "Card Color",
+        cust_theme_btn_reset: "🔄 Reset Default",
+        cust_theme_btn_save: "💾 Save & Apply Theme",
+        cust_music_playlist_title: "Current Jukebox Tracks",
+        cust_music_tracks_count: "{count} tracks",
+        cust_music_add_title: "➕ Add Your Music Source",
+        cust_music_add_sub: "Supports MP3, Audio Stream & Local Files",
+        cust_music_name_label: "Track Name:",
+        cust_music_name_placeholder: "e.g. Lofi Girl 24/7 Stream...",
+        cust_music_suggestions_label: "Suggested Vietnamese & Lo-fi Online Streams:",
+        cust_music_url_label: "Audio Stream URL:",
+        cust_music_btn_choose_file: "📁 Choose Local MP3 File",
+        cust_music_btn_add: "➕ Add to Jukebox",
+        cust_agent_form_title: "✨ Create New Bot / Edit Bot",
+        cust_agent_btn_reset_form: "Reset form",
+        cust_agent_name_label: "Bot Name:",
+        cust_agent_role_label: "Role:",
+        cust_agent_room_label: "Work Room:",
+        cust_agent_dialog_label: "Thought Dialog (Bubble):",
+        cust_agent_avatar_label: "Pick Playful Avatar (Transparent):",
+        cust_agent_avatar_url_placeholder: "Or paste external transparent image URL (.png/.svg)...",
+        cust_agent_btn_use_url: "Use URL",
+        cust_agent_btn_save: "💾 Save Bot to Studio",
+        cust_agent_list_title: "Active Bots in Studio",
+        cust_agent_list_count: "{count} bots",
+        cust_footer_autosave: "Auto-saved to your browser",
+        cust_btn_done: "Done"
+      },
+      vi: {
+        brand_sub: "v2.0 House Edition",
+        cheer_title: "Bấm để cổ vũ tất cả Agent!",
+        sync: "Đồng bộ:",
+        steps: "Steps:",
+        tokens: "Tokens:",
+        ide_bridge_active: "IDE Bridge Đang Chạy",
+        refresh_live: "Làm Mới Live",
+        refresh_title: "Ép buộc làm mới tất cả dữ liệu & trạng thái Agent ngay lập tức (Phím tắt R)",
+        quota_btn_title: "Xem Models khả dụng & % Quota còn lại (Phím tắt U)",
+        jukebox_btn_title: "Bật nhạc Việt Nam Lo-fi & Acoustic thư giãn khi làm việc (Phím tắt J)",
+        jukebox_header: "Jukebox Nhạc Việt Nam",
+        jukebox_play: "▶️ Phát",
+        jukebox_pause: "⏸️ Tạm dừng",
+        jukebox_vol: "Âm lượng:",
+        view_studio: "🏡 Studio",
+        view_list: "🏢 Danh Sách",
+        customizer_btn: "Custom",
+        customizer_btn_title: "Tùy chỉnh Giao diện, Nhạc & Các Agent (Phím tắt C)",
+        quick_settings_title: "Cài đặt & Tiện ích",
+        quick_utilities_header: "Tiện Ích Nhanh",
+        turbo_fever: "⚡ Tăng Tốc (Fever)",
+        turbo_toggle: "Bật/Tắt",
+        lang_setting: "Ngôn ngữ",
+        theme_setting: "Chủ đề",
+        theme_cozy: "☀️ Sáng ấm",
+        theme_sweet: "🌸 Kẹo ngọt",
+        theme_nordic: "🌿 Tối giản",
+        theme_retro: "☕ Cổ điển",
+        theme_dark: "🌙 Đêm",
+        sound_fx: "Hiệu ứng âm click",
+        sound_off: "Tắt",
+        sound_on: "Bật",
+        diagnostics_btn: "Kiểm tra Cấu hình",
+        pin_window: "Ghim trên cùng",
+
+        // Filter Bar
+        tab_all: "Tất cả",
+        tab_running: "Đang chạy",
+        tab_idle: "Giải lao",
+        search_placeholder: "🔍 Tìm agent, task...",
+
+        // Mobile rooms
+        mob_4rooms: "🏠 4 Phòng",
+        mob_office: "💻 Dev Lab",
+        mob_kitchen: "🍳 Bếp",
+        mob_living: "🛋️ Lounge",
+        mob_bedroom: "🛏️ Ngủ",
+
+        // Studio HUD
+        studio_brand: "Antigravity Game Studio",
+        studio_level: "Lv.4 Indie",
+        studio_hint: "💡 Click vào sàn hoặc đồ đạc để Agent đi bộ tới • Click vào Agent để chọn",
+        btn_desk: "💻 Bàn Code",
+        btn_coffee: "☕ Cà Phê",
+        btn_sofa: "🛋️ Sofa TV",
+        btn_sleep: "🛏️ Đi Ngủ",
+        studio_desk_title: "Cho Agent về bàn lập trình gõ code",
+        studio_coffee_title: "Cho Agent xuống quầy cà phê & pizza",
+        studio_sofa_title: "Cho Agent ra sofa xem TV thư giãn",
+        studio_sleep_title: "Cho Agent lên giường ngủ khò",
+        zoomed_title_suffix: "(FULL VIEW)",
+        zoomed_desc: "Chế độ xem chi tiết từng step trong phòng",
+        back_4rooms: "🏠 Xem 4 Phòng",
+
+        // Rugs
+        rug_office_title: "💻 DEV LAB • PHÒNG LẬP TRÌNH",
+        rug_office_tag: "60 WPM • 0 Bug",
+        rug_kitchen_title: "🍳 KITCHEN & QUẦY CÀ PHÊ",
+        rug_kitchen_tag: "Pizza Nóng • Cafe Thơm",
+        rug_living_title: "🛋️ PHÒNG KHÁCH & LOUNGE",
+        rug_living_tag: "Lo-fi Beats • TV Thư Giãn",
+        rug_bedroom_title: "🛏️ PHÒNG NGHỈ & SLEEP POD",
+        rug_bedroom_tag: "Chế Độ Ngủ • Sạc Năng Lượng",
+
+        // Furniture Hotspots
+        hs_desk1: "Bàn Lập Trình 1: Click để ngồi gõ code",
+        hs_desk2: "Bàn Lập Trình 2: Click để chạy unit tests",
+        hs_server: "Tủ Server: Click để kiểm tra hạ tầng",
+        hs_board: "Bảng Kế Hoạch: Click để họp bàn kiến trúc",
+        hs_armchair: "Ghế Bành Thư Giãn: Click để ngồi đọc tài liệu",
+        hs_moon: "Cửa sổ trăng sao: Bầu trời đêm bình yên",
+        hs_table: "Bàn Ăn Pizza: Click để nhân vật ăn uống tiếp sức!",
+        hs_espresso: "Quầy Espresso: Click để pha cà phê thơm ngon!",
+        hs_water: "Cây Nước: Click để uống nước mát lạnh!",
+        hs_sofa: "Sofa Phòng Khách: Click để nhân vật ngồi chill thư giãn!",
+        hs_tv: "Smart TV: Xem hoạt hình Lo-fi beats cực chill!",
+        hs_cat: "Mèo Bơ: Click để vuốt ve & nghe tiếng meow!",
+
+        // Studio Footer
+        cat_prefix: "🐾 Mèo Bơ:",
+        cat_sleeping: "Đang ngủ trên sofa",
+        cat_purring: "Đang kêu rừ rừ hạnh phúc!",
+        shortcuts_hint: "Phím tắt: Click sàn để di chuyển •",
+        engine_active: "⚡ 60 FPS Engine Active",
+
+        // Mode 2 Dashboard
+        col_main_title: "⭐ Main Agents (Lead Coder)",
+        col_main_tag: "Nhiệm Vụ Chính",
+        col_sub_title: "🤖 Subagents (Nhiệm Vụ Nhánh)",
+        col_sub_tag: "Nhiệm Vụ Nhánh",
+        col_lounge_title: "☕ Quầy Cà Phê & Xong Việc",
+        col_lounge_tag: "Hoàn Thành / Nghỉ",
+
+        // Inspector
+        treat_title: "Tặng Pizza tiếp sức cho Agent này!",
+        btn_steps: "ℹ️ Steps",
+        btn_mark_done: "✓ Đánh dấu Xong",
+        btn_done_idle: "✓ Đã xong việc",
+        btn_edit_bot: "✏️ Sửa Bot",
+        room_label: "Phòng:",
+        btn_open_ide: "💻 Mở IDE",
+        btn_terminal: "⌨️ Terminal",
+        terminal_hidden: "Ẩn",
+        terminal_visible: "Hiện",
+        btn_copy_id: "📋 Copy ID",
+        terminal_stream_title: "⚡ LIVE ACTION TERMINAL STREAM",
+        terminal_open_mac: "↗ Mở macOS Terminal",
+        terminal_collapse: "✕ Thu gọn",
+        subagent_running: "● SUBAGENT ĐANG CHẠY",
+        subagent_done: "○ SUBAGENT HOÀN TẤT",
+        main_running: "● MAIN AGENT ĐANG CHẠY",
+        main_idle: "○ MAIN AGENT NGHỈ NGƠI",
+
+        // Tooltip & Cards
+        room_coding: "Đang Code",
+        room_dining: "Ăn Uống",
+        room_sleeping: "Ngủ Ngon",
+        room_relaxing: "TV Chill",
+        tooltip_current_task: "🎯 Nhiệm vụ hiện tại",
+        tooltip_project: "Dự án:",
+        tooltip_branch: "Branch:",
+        tooltip_model: "Model:",
+        tooltip_tokens: "Tokens:",
+        tooltip_tool: "Tool:",
+        tooltip_room: "Phòng:",
+        tooltip_steps_progress: "📋 Tiến độ Step",
+        tooltip_view_details: "🔍 Xem Chi Tiết Từng Step",
+        tooltip_no_history: "Chưa có lịch sử step",
+        tooltip_child_of: "Thuộc Main #",
+
+        // Step Detail Modal
+        step_modal_project: "📁 Dự Án",
+        step_modal_branch: "🌿 Branch",
+        step_modal_model: "🧠 AI Model",
+        step_modal_tokens: "📊 Tiêu Thụ",
+        step_modal_current_goal: "🎯 Mục tiêu đang thực thi",
+        step_filter_all: "Tất cả",
+        step_filter_user: "👤 User",
+        step_filter_tool: "🛠️ Tools",
+        step_filter_cmd: "💻 Cmd",
+        step_filter_result: "🟢 Kết quả",
+        step_search_placeholder: "🔍 Lọc từ khoá step...",
+        step_copy_btn: "📋 Copy Steps",
+        step_close_btn: "Đóng (Esc)",
+        step_status_completed: "Hoàn thành",
+        step_status_received: "Đã tiếp nhận",
+        step_no_match: "Không tìm thấy step nào phù hợp với bộ lọc",
+        step_status_live: "● LIVE ĐANG CHẠY",
+        step_status_idle: "○ NGHỈ NGƠI",
+
+        // Models & Quota Modal
+        quota_header_title: "Hệ Thống Models & Token Usage",
+        quota_header_sub: "Thông tin tài khoản Antigravity, gói dịch vụ & lượng token tiêu thụ",
+        quota_limit_title: "Hạn Mức Khả Dụng Trong Ngày (Quota)",
+        quota_remaining_label: "Còn lại:",
+        quota_badge_comfortable: "🟢 Rất Thoải Mái",
+        quota_used_label: "Đã dùng:",
+        quota_auto_refresh: "Tự động làm mới: 00:00 UTC (Hàng ngày)",
+        quota_account_title: "Tài Khoản AI Của Bạn",
+        quota_credits_title: "Credits Khả Dụng",
+        quota_unlimited_speed: "Không giới hạn tốc độ",
+        quota_models_title: "Models Khả Dụng Trong Antigravity",
+        quota_models_ready: "{count} Models Sẵn Sàng",
+        quota_table_agent: "Agent",
+        quota_table_model: "Mô hình AI",
+        quota_table_tokens: "Tokens Ước Tính",
+        quota_table_context: "Context %",
+        quota_footer_sync: "Tự động đồng bộ với Google AI Studio & Antigravity IDE",
+        quota_btn_gotit: "Đã Hiểu",
+
+        // Diagnostics Modal
+        diag_header_title: "Kiểm Tra Cấu Hình Antigravity Máy Tính",
+        diag_header_sub: "Tự động chẩn đoán lỗi thiếu cấu hình, phân quyền hoặc chia sẻ cho máy khác",
+        diag_badge_ready: "Chuẩn 100%",
+        diag_status_ready_title: "Hệ Thống Sẵn Sàng 100%!",
+        diag_status_ready_desc: "Đã tìm thấy thư mục Antigravity Brain và các log agent hợp lệ trên máy tính này.",
+        diag_env_details: "Chi Tiết Kiểm Tra Môi Trường",
+        diag_check_cli: "Thư mục Antigravity CLI / Desktop",
+        diag_check_ide: "Thư mục Antigravity IDE Engine",
+        diag_check_count: "Số Lượng Agent Phát Hiện Được",
+        diag_scanned_recent: "Quét trong 18 giờ gần nhất",
+        diag_ready_badge: "✅ Đã Sẵn Sàng",
+        diag_share_title: "👥 Chia Sẻ Cho Người Khác / Máy Khác Sử Dụng:",
+        diag_share_desc: "When sharing this app with colleagues who have not installed Antigravity yet or are missing config folders:",
+        diag_btn_auto_create: "📥 Tự Động Khởi Tạo Cấu Hình",
+        diag_btn_copy_cmd: "📋 Copy Lệnh Terminal Setup",
+        diag_btn_reveal_finder: "📂 Mở Thư Mục Cấu Hình trong Finder",
+        diag_footer_sync: "Tự động cập nhật mỗi khi kết nối Antigravity",
+        diag_btn_gotit: "Đã Hiểu",
+
+        // Studio Customizer Modal
+        cust_header_title: "Studio Customizer Hub",
+        cust_header_sub: "Tự do tùy chỉnh Theme màu, Nguồn nhạc & Nhân vật AI theo phong cách của bạn",
+        cust_tab_theme: "Theme Màu",
+        cust_tab_music: "Nguồn Nhạc",
+        cust_tab_agents: "Tùy Biến Agent",
+        cust_theme_presets_title: "✨ Bảng Màu Playful Có Sẵn",
+        cust_theme_presets_hint: "(Bấm để đổi ngay)",
+        cust_theme_custom_title: "Tự Chọn Bảng Màu Riêng",
+        cust_theme_custom_hint: "Tự do chọn màu theo sở thích",
+        cust_theme_bg: "Nền Thế Giới",
+        cust_theme_floor: "Sàn Studio",
+        cust_theme_accent: "Màu Nhấn (Accent)",
+        cust_theme_card: "Màu Thẻ Card",
+        cust_theme_btn_reset: "🔄 Đặt Lại Mặc Định",
+        cust_theme_btn_save: "💾 Lưu & Áp Dụng Theme",
+        cust_music_playlist_title: "Danh Sách Bài Hát Hiện Có",
+        cust_music_tracks_count: "{count} bài hát",
+        cust_music_add_title: "➕ Thêm Nguồn Nhạc Của Bạn",
+        cust_music_add_sub: "Hỗ trợ MP3, Audio Stream & File máy tính",
+        cust_music_name_label: "Tên bản nhạc:",
+        cust_music_name_placeholder: "VD: Lofi Girl 24/7 Stream...",
+        cust_music_suggestions_label: "Gợi ý luồng nhạc Việt Nam & Lo-fi trực tuyến miễn phí:",
+        cust_music_url_label: "Link luồng trực tuyến (Audio Stream URL):",
+        cust_music_btn_choose_file: "📁 Chọn File Nhạc Từ Máy",
+        cust_music_btn_add: "➕ Thêm Vào Jukebox",
+        cust_agent_form_title: "✨ Tạo Bot Mới / Tùy Chỉnh Bot",
+        cust_agent_btn_reset_form: "Làm mới form",
+        cust_agent_name_label: "Tên Bot:",
+        cust_agent_role_label: "Vai trò (Role):",
+        cust_agent_room_label: "Phòng làm việc:",
+        cust_agent_dialog_label: "Câu thoại suy nghĩ (Bong bóng):",
+        cust_agent_avatar_label: "Chọn Avatar Playful (Trong suốt):",
+        cust_agent_avatar_url_placeholder: "Hoặc dán URL ảnh ngoài (.png/.svg trong suốt)...",
+        cust_agent_btn_use_url: "Dùng URL",
+        cust_agent_btn_save: "💾 Lưu Bot Vào Studio",
+        cust_agent_list_title: "Danh Sách Bot Đang Hoạt Động Trong Studio",
+        cust_agent_list_count: "{count} bots",
+        cust_footer_autosave: "Tự động lưu vào trình duyệt của bạn",
+        cust_btn_done: "Xong"
+      }
+    };
+
+    // Default language is English ('en') as explicitly required
+    let currentLang = localStorage.getItem('agy_lang') || 'en';
+
+    function t(key, fallback = '') {
+      const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+      if (dict && dict[key] !== undefined) return dict[key];
+      if (TRANSLATIONS.en && TRANSLATIONS.en[key] !== undefined) return TRANSLATIONS.en[key];
+      return fallback || key;
+    }
+
+    function applyLanguage(lang) {
+      currentLang = (lang === 'vi' || lang === 'en') ? lang : 'en';
+      localStorage.setItem('agy_lang', currentLang);
+      document.documentElement.lang = currentLang;
+
+      // Update header button label & title
+      const labelEl = document.getElementById('lang-current-label');
+      const btnEl = document.getElementById('btn-lang-toggle');
+      if (labelEl) labelEl.innerText = currentLang.toUpperCase();
+      if (btnEl) btnEl.title = currentLang === 'en' ? 'Click to switch to Tiếng Việt (VI)' : 'Bấm để chuyển sang English (EN)';
+
+      // Update quick select in settings
+      const quickSelect = document.getElementById('quick-lang-select');
+      if (quickSelect) quickSelect.value = currentLang;
+
+      // Update static data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        const val = t(k);
+        if (val) el.innerText = val;
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const k = el.getAttribute('data-i18n-placeholder');
+        const val = t(k);
+        if (val) el.placeholder = val;
+      });
+
+      document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const k = el.getAttribute('data-i18n-title');
+        const val = t(k);
+        if (val) el.title = val;
+      });
+
+      // Update specific dynamic labels
+      updateDynamicI18nLabels();
+
+      // Trigger world & jukebox UI refresh
+      if (typeof renderWorld === 'function') renderWorld();
+      if (typeof updateJukeboxUI === 'function') updateJukeboxUI();
+      if (typeof renderJukeboxTracks === 'function') renderJukeboxTracks();
+      if (typeof updateDiagnosticUI === 'function') updateDiagnosticUI();
+      if (typeof updateQuotaUI === 'function') updateQuotaUI();
+      if (typeof selectAgent === 'function' && typeof currentSelectedId !== 'undefined' && currentSelectedId) {
+        selectAgent(currentSelectedId, false);
+      }
+    }
+
+    function toggleAppLanguage() {
+      const next = currentLang === 'en' ? 'vi' : 'en';
+      applyLanguage(next);
+      if (typeof spawnFloatingEmoji === 'function') {
+        spawnFloatingEmoji(next === 'en' ? '🌐 Language: English' : '🌐 Ngôn ngữ: Tiếng Việt');
+      }
+    }
+
+    function updateDynamicI18nLabels() {
+      // Header view buttons
+      const btnHouse = document.getElementById('btn-mode-house');
+      const btnDash = document.getElementById('btn-mode-dashboard');
+      if (btnHouse) btnHouse.innerText = t('view_studio');
+      if (btnDash) btnDash.innerText = t('view_list');
+
+      // Search input
+      const searchInput = document.getElementById('agent-search');
+      if (searchInput) searchInput.placeholder = t('search_placeholder');
+
+      // Studio HUD action buttons
+      const btnOffice = document.querySelector('button[onclick*="sendSelectedToRoom(\'office\')"]');
+      const btnKitchen = document.querySelector('button[onclick*="sendSelectedToRoom(\'kitchen\')"]');
+      const btnLiving = document.querySelector('button[onclick*="sendSelectedToRoom(\'living\')"]');
+      const btnBedroom = document.querySelector('button[onclick*="sendSelectedToRoom(\'bedroom\')"]');
+      if (btnOffice) btnOffice.innerText = t('btn_desk');
+      if (btnKitchen) btnKitchen.innerText = t('btn_coffee');
+      if (btnLiving) btnLiving.innerText = t('btn_sofa');
+      if (btnBedroom) btnBedroom.innerText = t('btn_sleep');
+
+      // Studio diorama rugs
+      const rugOfficeTitle = document.querySelector('#rug-office span.font-black');
+      if (rugOfficeTitle) rugOfficeTitle.innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-500 shadow-2xs animate-pulse"></span> ${t('rug_office_title')}`;
+      const rugOfficeTag = document.querySelector('#rug-office div.flex.items-center span.font-mono');
+      if (rugOfficeTag) rugOfficeTag.innerText = t('rug_office_tag');
+
+      const rugKitchenTitle = document.querySelector('#rug-kitchen span.font-black');
+      if (rugKitchenTitle) rugKitchenTitle.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500 shadow-2xs animate-pulse"></span> ${t('rug_kitchen_title')}`;
+      const rugKitchenTag = document.querySelector('#rug-kitchen div.flex.items-center span.font-mono');
+      if (rugKitchenTag) rugKitchenTag.innerText = t('rug_kitchen_tag');
+
+      const rugLivingTitle = document.querySelector('#rug-living span.font-black');
+      if (rugLivingTitle) rugLivingTitle.innerHTML = `<span class="w-2 h-2 rounded-full bg-pink-500 shadow-2xs animate-pulse"></span> ${t('rug_living_title')}`;
+      const rugLivingTag = document.querySelector('#rug-living div.flex.items-center span.font-mono');
+      if (rugLivingTag) rugLivingTag.innerText = t('rug_living_tag');
+
+      const rugBedroomTitle = document.querySelector('#rug-bedroom span.font-black');
+      if (rugBedroomTitle) rugBedroomTitle.innerHTML = `<span class="w-2 h-2 rounded-full bg-purple-500 shadow-2xs animate-pulse"></span> ${t('rug_bedroom_title')}`;
+      const rugBedroomTag = document.querySelector('#rug-bedroom div.flex.items-center span.font-mono');
+      if (rugBedroomTag) rugBedroomTag.innerText = t('rug_bedroom_tag');
+
+      // Mobile room pills
+      const mobAll = document.getElementById('mobile-tab-all');
+      const mobOffice = document.getElementById('mobile-tab-office');
+      const mobKitchen = document.getElementById('mobile-tab-kitchen');
+      const mobLiving = document.getElementById('mobile-tab-living');
+      const mobBedroom = document.getElementById('mobile-tab-bedroom');
+      if (mobAll) mobAll.innerText = t('mob_4rooms');
+      if (mobOffice) mobOffice.innerText = t('mob_office');
+      if (mobKitchen) mobKitchen.innerText = t('mob_kitchen');
+      if (mobLiving) mobLiving.innerText = t('mob_living');
+      if (mobBedroom) mobBedroom.innerText = t('mob_bedroom');
+
+      // Inspector panel buttons
+      const btnOpenIde = document.querySelector('button[onclick*="bridgeNative(\'openWorkspace\')"]');
+      if (btnOpenIde) btnOpenIde.innerText = t('btn_open_ide');
+
+      const copyIdBtn = document.querySelector('button[onclick*="copyCurrentId()"]');
+      if (copyIdBtn) copyIdBtn.innerText = t('btn_copy_id');
+
+      // Customizer Modal tabs
+      const custTabTheme = document.getElementById('customizer-tab-btn-theme');
+      const custTabMusic = document.getElementById('customizer-tab-btn-music');
+      const custTabAgents = document.getElementById('customizer-tab-btn-agents');
+      if (custTabTheme) custTabTheme.innerHTML = `<span>🎨</span> <span>${t('cust_tab_theme')}</span>`;
+      if (custTabMusic) custTabMusic.innerHTML = `<span>🎵</span> <span>${t('cust_tab_music')}</span>`;
+      if (custTabAgents) custTabAgents.innerHTML = `<span>🤖</span> <span>${t('cust_tab_agents')}</span>`;
+    }
+
     // ==========================================
     // 🎵 ENHANCED CONTEXTUAL AUDIO ENGINE
     // ==========================================
@@ -2130,13 +2773,13 @@
         });
         
         this.defaultTracks = [
-          { id: 'vn_coffee', type: 'synth', name: '🇻🇳 Cà Phê Sáng Sài Gòn (Acoustic Lo-fi)', desc: 'Chùm hợp âm Guitar Acoustic mộc mạc & ấm áp' },
-          { id: 'vn_hanoi', type: 'synth', name: '🇻🇳 Hà Nội Mùa Thu & Mưa Phùn (Chill Beat)', desc: 'Giai điệu Ballad piano & mưa rơi êm dịu' },
-          { id: 'vn_dantranh', type: 'synth', name: '🇻🇳 Đàn Tranh & Sáo Trúc (Zen Việt)', desc: 'Ngũ cung Việt Nam thanh tao, thư giãn sâu' },
-          { id: 'vn_indie', type: 'synth', name: '🇻🇳 Phố Cổ Lên Đèn (Indie Night Pop)', desc: 'Indie Pop đêm muộn nhẹ nhàng cho Coder' },
-          { id: 'vn_retro', type: 'synth', name: '🇻🇳 Sài Gòn 1980s (Retro Chiptune)', desc: '8-Bit Game Boy tuổi thơ sôi nổi & sáng tạo' },
-          { id: 'vn_radio_hanoi', type: 'stream', name: '📻 Hà Nội Community Radio (Live)', desc: 'Luồng Live Radio Việt Nam 24/7', url: 'https://ha-noi-community-radio.radiocult.fm/stream' },
-          { id: 'lofi_intl', type: 'synth', name: '🌍 Cozy Global Lo-fi Cafe', desc: 'Rhodes chords & vinyl beat quốc tế' }
+          { id: 'vn_coffee', type: 'synth', name: '🇻🇳 Cà Phê Sáng Sài Gòn (Acoustic Lo-fi)', nameEn: '🇻🇳 Saigon Morning Coffee (Acoustic Lo-fi)', desc: 'Chùm hợp âm Guitar Acoustic mộc mạc & ấm áp', descEn: 'Warm acoustic guitar chords & coffee vibes' },
+          { id: 'vn_hanoi', type: 'synth', name: '🇻🇳 Hà Nội Mùa Thu & Mưa Phùn (Chill Beat)', nameEn: '🇻🇳 Hanoi Autumn & Drizzle (Chill Beat)', desc: 'Giai điệu Ballad piano & mưa rơi êm dịu', descEn: 'Gentle piano ballad with soft autumn rain' },
+          { id: 'vn_dantranh', type: 'synth', name: '🇻🇳 Đàn Tranh & Sáo Trúc (Zen Việt)', nameEn: '🇻🇳 Vietnamese Zither & Bamboo Flute (Zen)', desc: 'Ngũ cung Việt Nam thanh tao, thư giãn sâu', descEn: 'Traditional Vietnamese pentatonic relaxation' },
+          { id: 'vn_indie', type: 'synth', name: '🇻🇳 Phố Cổ Lên Đèn (Indie Night Pop)', nameEn: '🇻🇳 Old Quarter Lights (Indie Night Pop)', desc: 'Indie Pop đêm muộn nhẹ nhàng cho Coder', descEn: 'Midnight indie pop for focused coding' },
+          { id: 'vn_retro', type: 'synth', name: '🇻🇳 Sài Gòn 1980s (Retro Chiptune)', nameEn: '🇻🇳 Saigon 1980s (Retro Chiptune)', desc: '8-Bit Game Boy tuổi thơ sôi nổi & sáng tạo', descEn: 'Playful 8-bit retro Game Boy chiptune' },
+          { id: 'vn_radio_hanoi', type: 'stream', name: '📻 Hà Nội Community Radio (Live)', nameEn: '📻 Hanoi Community Radio (Live)', desc: 'Luồng Live Radio Việt Nam 24/7', descEn: 'Vietnamese community live radio 24/7', url: 'https://ha-noi-community-radio.radiocult.fm/stream' },
+          { id: 'lofi_intl', type: 'synth', name: '🌍 Cozy Global Lo-fi Cafe', nameEn: '🌍 Cozy Global Lo-fi Cafe', desc: 'Rhodes chords & vinyl beat quốc tế', descEn: 'International Rhodes chords & vinyl lo-fi beat' }
         ];
 
         this.loadCustomTracks();
@@ -2715,7 +3358,7 @@
     }
 
     function resetAgentCustomForm() {
-      document.getElementById('cust-agent-form-title').innerHTML = `✨ <span>Tạo Bot Mới / Tùy Chỉnh Bot</span>`;
+      document.getElementById('cust-agent-form-title').innerHTML = `✨ <span data-i18n="cust_agent_form_title">✨ Create New Bot / Edit Bot</span>`;
       document.getElementById('cust-agent-id').value = '';
       document.getElementById('cust-agent-name').value = '';
       document.getElementById('cust-agent-role').value = '';
@@ -2940,15 +3583,19 @@
     function renderJukeboxTracks() {
       const container = document.getElementById('jukebox-track-list');
       if (!container || !musicJukebox) return;
-      container.innerHTML = musicJukebox.tracks.map((t, idx) => `
+      container.innerHTML = musicJukebox.tracks.map((tr, idx) => {
+        const title = currentLang === 'en' && tr.nameEn ? tr.nameEn : tr.name;
+        const desc = currentLang === 'en' && tr.descEn ? tr.descEn : tr.desc;
+        return `
         <button onclick="selectJukeboxTrack(${idx})" class="w-full text-left p-1.5 rounded-lg flex items-center justify-between transition-colors cursor-pointer ${musicJukebox.currentTrackIndex === idx ? 'bg-indigo-100 text-indigo-950 font-bold border border-indigo-300' : 'hover:bg-zinc-100 text-zinc-700 font-medium'}">
           <div>
-            <div class="text-[11px]">${t.name}</div>
-            <div class="text-[9px] text-zinc-500">${t.desc}</div>
+            <div class="text-[11px]">${title}</div>
+            <div class="text-[9px] text-zinc-500">${desc}</div>
           </div>
           <span class="text-xs">${musicJukebox.currentTrackIndex === idx && musicJukebox.isPlaying ? '🔊' : '▶️'}</span>
         </button>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function updateJukeboxUI() {
@@ -2960,8 +3607,9 @@
 
       const iconEl = document.getElementById('jukebox-icon');
       if (nameEl && curTrack) {
-        const cleanWords = curTrack.name.replace(/^[^\s\w]+ /, '').split(' ').slice(0, 3).join(' ');
-        nameEl.innerText = cleanWords || 'Cà Phê Sáng';
+        const raw = currentLang === 'en' && curTrack.nameEn ? curTrack.nameEn : curTrack.name;
+        const cleanWords = raw.replace(/^[^\s\w]+ /, '').split(' ').slice(0, 3).join(' ');
+        nameEl.innerText = cleanWords || (currentLang === 'en' ? 'Saigon Coffee' : 'Cà Phê Sáng');
       }
       if (iconEl && curTrack) {
         const firstEmoji = curTrack.name.match(/^[^\s]+/);
@@ -2972,7 +3620,9 @@
         else eqEl.classList.add('hidden');
       }
       if (btnPlay) {
-        btnPlay.innerText = musicJukebox.isPlaying ? '⏸️ Tạm Dừng' : '▶️ Bật Nhạc';
+        btnPlay.innerText = musicJukebox.isPlaying 
+          ? (currentLang === 'en' ? '⏸️ Pause' : '⏸️ Tạm Dừng') 
+          : (currentLang === 'en' ? '▶️ Play' : '▶️ Bật Nhạc');
         btnPlay.className = musicJukebox.isPlaying ? 'px-2 py-0.5 rounded-lg bg-amber-500 text-amber-950 font-extrabold text-[11px] shadow-2xs cursor-pointer' : 'px-2 py-0.5 rounded-lg bg-indigo-600 text-white font-extrabold text-[11px] shadow-2xs cursor-pointer';
       }
       if (btnHeader) {
@@ -3265,8 +3915,8 @@
       const stepsList = agent.logs || [];
       const recentSteps = stepsList.slice(-4);
       const statusBadge = agent.isActive
-        ? `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse">● ĐANG CHẠY</span>`
-        : `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-zinc-500/20 text-zinc-300 border border-zinc-500/30">○ NGHỈ NGƠI</span>`;
+        ? `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse">${currentLang === 'en' ? '● RUNNING' : '● ĐANG CHẠY'}</span>`
+        : `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-zinc-500/20 text-zinc-300 border border-zinc-500/30">${currentLang === 'en' ? '○ IDLE' : '○ NGHỈ NGƠI'}</span>`;
 
       let stepsTimelineHtml = '';
       if (recentSteps.length > 0) {
@@ -3329,7 +3979,7 @@
           `;
         }).join('');
       } else {
-        stepsTimelineHtml = `<div class="text-[10px] text-zinc-400 italic py-1">Chưa có lịch sử step</div>`;
+        stepsTimelineHtml = `<div class="text-[10px] text-zinc-400 italic py-1">${t("tooltip_no_history")}</div>`;
       }
 
       return `
@@ -3348,7 +3998,7 @@
                   <span class="text-[9px] text-zinc-400 font-mono font-normal">(${agent.shortId || agent.id.slice(0, 6)})</span>
                 </div>
                 <div class="text-[9px] text-zinc-300 truncate max-w-[220px]">
-                  ${agent.isSubagent && agent.parentShortId ? `Thuộc Main #${agent.parentShortId} • ` : ''}${agent.role || 'Autonomous Agent'}
+                  ${agent.isSubagent && agent.parentShortId ? `${t('tooltip_child_of')}${agent.parentShortId} • ` : ''}${agent.role || 'Autonomous Agent'}
                 </div>
               </div>
             </div>
@@ -3358,7 +4008,7 @@
           <!-- Goal / Task Prompt Quote -->
           <div class="bg-black/30 rounded-lg p-2 border border-white/10">
             <div class="text-[9px] font-bold text-amber-400 uppercase tracking-wider mb-0.5 flex items-center gap-1">
-              <span>🎯 Nhiệm vụ hiện tại</span>
+              <span>${t("tooltip_current_task")}</span>
             </div>
             <div class="text-[11px] text-white font-medium line-clamp-2 leading-snug">
               "${agent.prompt || 'Đang xử lý tác vụ...'}"
@@ -3367,13 +4017,13 @@
 
           <!-- Project & Resource Metrics Grid -->
           <div class="grid grid-cols-2 gap-1.5 bg-white/5 rounded-lg p-1.5 text-[10px] font-mono">
-            <div>📁 <b>Dự án:</b> <span class="text-amber-300 truncate inline-block max-w-[100px] align-bottom font-bold">${agent.project}</span></div>
-            <div>🌿 <b>Branch:</b> <span class="text-emerald-400 truncate inline-block max-w-[100px] align-bottom">${agent.branch || 'main'}</span></div>
-            <div>🧠 <b>Model:</b> <span class="text-cyan-300 truncate inline-block max-w-[100px] align-bottom">${agent.model || 'Gemini'}</span></div>
-            <div>📊 <b>Tokens:</b> <span class="text-purple-300 font-bold">${agent.tokensEstFormatted || '12k'} (${agent.contextPct || '1%'})</span></div>
+            <div>📁 <b>${t("tooltip_project")}</b> <span class="text-amber-300 truncate inline-block max-w-[100px] align-bottom font-bold">${agent.project}</span></div>
+            <div>🌿 <b>${t("tooltip_branch")}</b> <span class="text-emerald-400 truncate inline-block max-w-[100px] align-bottom">${agent.branch || 'main'}</span></div>
+            <div>🧠 <b>${t("tooltip_model")}</b> <span class="text-cyan-300 truncate inline-block max-w-[100px] align-bottom">${agent.model || 'Gemini'}</span></div>
+            <div>📊 <b>${t("tooltip_tokens")}</b> <span class="text-purple-300 font-bold">${agent.tokensEstFormatted || '12k'} (${agent.contextPct || '1%'})</span></div>
             <div class="col-span-2 flex items-center justify-between pt-1 border-t border-white/10">
-              <div>🛠️ <b>Tool:</b> <span class="text-amber-300 font-bold">${agent.tool || 'None'}</span></div>
-              <div>🏠 <b>Phòng:</b> <span class="text-amber-200 uppercase font-black">${agent.houseRoom || 'office'}</span></div>
+              <div>🛠️ <b>${t("tooltip_tool")}</b> <span class="text-amber-300 font-bold">${agent.tool || 'None'}</span></div>
+              <div>🏠 <b>${t("tooltip_room")}</b> <span class="text-amber-200 uppercase font-black">${agent.houseRoom || 'office'}</span></div>
             </div>
           </div>
 
@@ -3381,7 +4031,7 @@
           <div class="bg-black/25 rounded-lg p-1.5 border border-white/10">
             <div class="flex items-center justify-between mb-1 pb-0.5 border-b border-white/10">
               <span class="text-[9px] font-black text-indigo-300 uppercase tracking-wider flex items-center gap-1">
-                <span>📋 Tiến độ Step (${agent.steps || stepsList.length} steps)</span>
+                <span>${t("tooltip_steps_progress")} (${agent.steps || stepsList.length} steps)</span>
               </span>
               <span class="text-[9px] font-mono text-emerald-400 font-bold">Live</span>
             </div>
@@ -3393,7 +4043,7 @@
           <!-- Action Button to View Full Detail -->
           <button onclick="openStepDetailModal('${agent.id}'); event.stopPropagation();" 
                   class="w-full mt-1 py-1.5 px-3 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-900 font-extrabold text-[11px] shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-            <span>🔍 Xem Chi Tiết Từng Step (${agent.steps || stepsList.length} steps)</span>
+            <span>${t("tooltip_view_details")} (${agent.steps || stepsList.length} steps)</span>
             <span>➔</span>
           </button>
         </div>
@@ -3579,10 +4229,10 @@
       const badge = document.getElementById('step-modal-status-badge');
       if (agent.isActive) {
         badge.className = "text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-black border border-emerald-300 animate-pulse";
-        badge.innerText = "● LIVE ĐANG CHẠY";
+        badge.innerText = t('step_status_live');
       } else {
         badge.className = "text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 font-bold border border-zinc-300";
-        badge.innerText = "○ NGHỈ NGƠI";
+        badge.innerText = t('step_status_idle');
       }
 
       const searchInput = document.getElementById('step-search-input');
@@ -4173,46 +4823,64 @@
     // ==========================================
     // 🎲 RANDOM FUN DIALOGS & AMBIENT LIFE LOOP
     // ==========================================
-    const FUN_ROOM_MESSAGES = {
-      office: [
-        { bubble: "💻 Code 120 WPM!", dialog: "Gõ code như bay: 120 WPM, 0 bug, 100 unit tests passed!" },
-        { bubble: "⚡ Refactor O(1) mượt!", dialog: "Vừa optimize thuật toán từ O(N^2) xuống O(1), mượt dã man!" },
-        { bubble: "🛠️ dotnet build: 0 Err", dialog: "dotnet build OptiFlowSVC.sln -> 0 Warning, 0 Error, đỉnh nóc kịch trần!" },
-        { bubble: "🚀 PR merge 100%!", dialog: "Review code chuẩn Master SOP, merge nhánh chính êm ru!" },
-        { bubble: "🧠 1M Context nạp đầy!", dialog: "Đã nạp 1M tokens vào đầu, chuẩn bị giải quyết task khó cho sếp!" },
-        { bubble: "💡 Fix bug 3s xong!", dialog: "Tìm ra nguyên nhân gốc rễ (Root Cause), fix trong đúng 3 nốt nhạc!" },
-        { bubble: "✨ Kiến trúc siêu sạch!", dialog: "Áp dụng Clean Architecture + CQRS MediatR chuẩn chỉ từng class!" }
-      ],
-      kitchen: [
-        { bubble: "☕ Espresso thơm nức!", dialog: "Nhấp một ngụm Espresso đậm đà, tỉnh táo code xuyên đêm!" },
-        { bubble: "🍕 Pizza phô mai kéo sợi!", dialog: "Vừa order chiếc Pizza phô mai 4 tầng, mời sếp một miếng!" },
-        { bubble: "🍩 Donut ngọt tăng 50% IQ!", dialog: "Ăn chiếc bánh Donut socola nạp năng lượng cho sprint mới!" },
-        { bubble: "🍵 Trà đào cam sả mát lạnh!", dialog: "Uống ngụm trà đào cam sả thanh nhiệt, tâm hồn thư thái!" },
-        { bubble: "🥐 Croissant giòn rụm!", dialog: "Bánh sừng bò bơ Pháp giòn rụm, vừa nhai vừa đọc document!" },
-        { bubble: "🥤 Trà sữa 100% đường!", dialog: "Order trà sữa full topping cho cả team coding!" }
-      ],
-      living: [
-        { bubble: "📺 Lo-fi beats cực chill!", dialog: "Bật kênh nhạc Lo-fi Beats chill chill, ngắm dashboard chạy mượt!" },
-        { bubble: "🐱 Mèo Bơ kêu purr purr~", dialog: "Mèo Bơ đang cuộn tròn trên đùi kêu purr purr, dễ thương xỉu!" },
-        { bubble: "🛋️ Ngả lưng sofa êm ái!", dialog: "Sofa êm ru thế này, ngồi review pull request là hết nước chấm!" },
-        { bubble: "🎮 Đang chơi cờ chớp!", dialog: "Thách đấu 1 ván cờ chớp với Guardian Bot xem ai tư duy nhanh hơn!" },
-        { bubble: "🍿 Bỏng ngô bơ đường!", dialog: "Nhâm nhi bỏng ngô bơ đường xem live stream terminal!" },
-        { bubble: "✨ Chill xả stress 5 sao!", dialog: "Giải lao 5 phút sạc lại endorphin trước khi vào trận mới!" }
-      ],
-      bedroom: [
-        { bubble: "💤 Zzz... Mơ thấy 0 bug!", dialog: "Đang mơ giấc mơ commit code lên thẳng production không conflict!" },
-        { bubble: "🌙 Sạc pin năng lượng 99%", dialog: "Đang sạc pin năng lượng 99%... Chuẩn bị thức giấc bùng nổ!" },
-        { bubble: "🛌 Thảm lavender êm ái!", dialog: "Hương hoa lavender thơm ngát, ngủ say giấc nồng sau sprint lớn." },
-        { bubble: "⭐ Ngắm sao ngoài cửa sổ!", dialog: "Ngắm trăng sao ngoài trời đêm, ngày mai hứa hẹn nhiều feature xịn!" },
-        { bubble: "😴 Ngủ một giấc lấy lại 100 HP!", dialog: "Hồi phục 100% sinh lực, thức dậy là bug nào cũng cân tất!" }
-      ]
+        const FUN_ROOM_MESSAGES_I18N = {
+      en: {
+        office: [
+          { bubble: "💻 Code 120 WPM!", dialog: "Typing like the wind: 120 WPM, 0 bugs, 100 unit tests passed!" },
+          { bubble: "⚡ O(1) Refactor!", dialog: "Just optimized algorithm from O(N^2) to O(1), buttery smooth!" },
+          { bubble: "🛠️ dotnet build: 0 Err", dialog: "dotnet build OptiFlowSVC.sln -> 0 Warning, 0 Error, legendary!" },
+          { bubble: "🚀 PR merged 100%!", dialog: "Code review passed with flying colors, merged to main!" }
+        ],
+        kitchen: [
+          { bubble: "☕ Espresso Boost!", dialog: "Sipping a hot Robusta espresso, +500% focus speed!" },
+          { bubble: "🍕 Crispy Pizza!", dialog: "Pizza break! Refueling stamina to crush the next task!" },
+          { bubble: "🥪 Sandwich Snack", dialog: "Biting into a delicious snack, energy fully recharged!" }
+        ],
+        living: [
+          { bubble: "📺 Watching Lo-fi", dialog: "Chilling on the sofa watching pixel animation and synth beats." },
+          { bubble: "🐱 Petting Cat Butter", dialog: "Mèo Bơ is purring softly, best coding companion ever!" },
+          { bubble: "🎮 Gaming Break", dialog: "Playing 8-bit retro arcade, taking a well-deserved breather!" }
+        ],
+        bedroom: [
+          { bubble: "💤 Deep Sleep Zzz", dialog: "Dreaming in clean code and neural weights... recharging batteries." },
+          { bubble: "🌙 Sweet Dreams", dialog: "Resting comfortably in the sleep pod, ready for tomorrow's sprint!" },
+          { bubble: "🛏️ Nap Time", dialog: "15-minute power nap to restore maximum cognitive intelligence!" }
+        ]
+      },
+      vi: {
+        office: [
+          { bubble: "💻 Code 120 WPM!", dialog: "Gõ code như bay: 120 WPM, 0 bug, 100 unit tests passed!" },
+          { bubble: "⚡ Refactor O(1) mượt!", dialog: "Vừa optimize thuật toán từ O(N^2) xuống O(1), mượt dã man!" },
+          { bubble: "🛠️ dotnet build: 0 Err", dialog: "dotnet build OptiFlowSVC.sln -> 0 Warning, 0 Error, đỉnh nóc kịch trần!" },
+          { bubble: "🚀 PR merge 100%!", dialog: "Review code chuẩn Master SOP, merge nhánh chính êm ru!" }
+        ],
+        kitchen: [
+          { bubble: "☕ Cà Phê Năng Lượng!", dialog: "Nhâm nhi ly Robusta đậm đà, tăng 500% tốc độ giải quyết task!" },
+          { bubble: "🍕 Pizza Giòn Rụm!", dialog: "Ăn miếng bánh pizza nạp lại năng lượng cày nốt backlog!" },
+          { bubble: "🥪 Bánh Mì Tiếp Sức", dialog: "Bánh mì kẹp thịt giòn thơm, nạp lại năng lượng tràn đầy!" }
+        ],
+        living: [
+          { bubble: "📺 Đang Xem Hoạt Hình", dialog: "Ngồi sofa xem kênh Lo-fi beat thư giãn đầu óc cực chill!" },
+          { bubble: "🐱 Vuốt Ve Mèo Bơ", dialog: "Mèo Bơ rừ rừ dễ thương quá, người bạn đồng hành số 1!" },
+          { bubble: "🎮 Chơi Game 8-bit", dialog: "Phá đảo màn 3 Game Dev Story, giải lao 5 phút rồi code tiếp!" }
+        ],
+        bedroom: [
+          { bubble: "💤 Ngủ Sâu Zzz...", dialog: "Nạp năng lượng sinh học... mơ thấy code không bao giờ dính bug!" },
+          { bubble: "🌙 Chúc Ngủ Ngon", dialog: "Nghỉ ngơi trong Sleep Pod êm ái, sẵn sàng cho sprint sáng mai!" },
+          { bubble: "🛏️ Chợp Mắt Tí", dialog: "Power-nap 15 phút phục hồi 100% trí tuệ nhân tạo!" }
+        ]
+      }
     };
 
-    function triggerRandomStudioEvent() {
+    function getFunRoomMessages(room) {
+      const langDict = FUN_ROOM_MESSAGES_I18N[currentLang] || FUN_ROOM_MESSAGES_I18N.en;
+      return langDict[room] || langDict.office;
+    }
+function triggerRandomStudioEvent() {
       if (!agentList || agentList.length === 0) return;
       const agent = agentList[Math.floor(Math.random() * agentList.length)];
       const room = agent.houseRoom || (agent.isActive ? 'office' : 'living');
-      const messages = FUN_ROOM_MESSAGES[room] || FUN_ROOM_MESSAGES.office;
+      const messages = getFunRoomMessages(room);
       const pick = messages[Math.floor(Math.random() * messages.length)];
 
       agent.bubbleText = pick.bubble;
@@ -5032,13 +5700,13 @@
       });
       const idleCount = totalCount - activeCount;
 
-      // Update Filter Tabs with Real-time Counts
+      // Update Filter Tabs with Real-time Counts (Localized)
       const tabAll = document.getElementById('tab-all');
       const tabRunning = document.getElementById('tab-running');
       const tabIdle = document.getElementById('tab-idle');
-      if (tabAll) tabAll.innerText = `Tất cả (${totalCount})`;
-      if (tabRunning) tabRunning.innerText = `⚡ Đang chạy (${activeCount})`;
-      if (tabIdle) tabIdle.innerText = `☕ Giải lao (${idleCount})`;
+      if (tabAll) tabAll.innerText = `${t('tab_all')} (${totalCount})`;
+      if (tabRunning) tabRunning.innerText = `⚡ ${t('tab_running')} (${activeCount})`;
+      if (tabIdle) tabIdle.innerText = `☕ ${t('tab_idle')} (${idleCount})`;
 
       // Update Active Tab Styling
       ['all', 'running', 'idle'].forEach(t => {
@@ -5068,7 +5736,7 @@
       const sumEl = document.getElementById('quota-total-tokens-sum');
       if (sumEl) sumEl.innerText = `~${(totalTokens / 1000).toFixed(1)}k tokens`;
       const activeBadge = document.getElementById('active-agents-badge');
-      if (activeBadge) activeBadge.innerText = `${activeCount} Đang làm việc • ${idleCount} Giải lao`;
+      if (activeBadge) activeBadge.innerText = currentLang === 'en' ? `${activeCount} Working • ${idleCount} Idle` : `${activeCount} Đang làm việc • ${idleCount} Giải lao`;
 
       // 2. In-place DOM Reconciliation for Dashboard Cards (Zero Flickering)
       if (devContainer && opsContainer && loungeContainer) {
@@ -5088,13 +5756,13 @@
 
           let roomBadgeHtml = '';
           if (room === 'office') {
-            roomBadgeHtml = `<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-blue-100 text-blue-700 flex items-center gap-1">💻 <span class="${agent.isActive ? 'anim-typing' : ''}">Đang Code</span></span>`;
+            roomBadgeHtml = `<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-blue-100 text-blue-700 flex items-center gap-1">💻 <span class="${agent.isActive ? 'anim-typing' : ''}">${t('room_coding')}</span></span>`;
           } else if (room === 'kitchen') {
-            roomBadgeHtml = `<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-amber-100 text-amber-800 flex items-center gap-1">🍕 Ăn Uống <span class="anim-steam text-[10px]">♨️</span></span>`;
+            roomBadgeHtml = `<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-amber-100 text-amber-800 flex items-center gap-1">🍕 ${t('room_dining')} <span class="anim-steam text-[10px]">♨️</span></span>`;
           } else if (room === 'bedroom') {
-            roomBadgeHtml = `<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-purple-100 text-purple-700 flex items-center gap-1">🛏️ Ngủ Ngon <span class="anim-zzz text-[10px]">💤</span></span>`;
+            roomBadgeHtml = `<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-purple-100 text-purple-700 flex items-center gap-1">🛏️ ${t('room_sleeping')} <span class="anim-zzz text-[10px]">💤</span></span>`;
           } else {
-            roomBadgeHtml = `<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-pink-100 text-pink-700 flex items-center gap-1">🛋️ TV Chill 📺</span>`;
+            roomBadgeHtml = `<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-pink-100 text-pink-700 flex items-center gap-1">🛋️ ${t('room_relaxing')} 📺</span>`;
           }
 
           let card = document.getElementById(cardId);
@@ -5194,7 +5862,7 @@
 
       if (agent) {
         const room = agent.houseRoom || (agent.isActive ? 'office' : 'living');
-        const msgs = FUN_ROOM_MESSAGES[room] || FUN_ROOM_MESSAGES.office;
+        const msgs = getFunRoomMessages(room);
         const p = msgs[Math.floor(Math.random() * msgs.length)];
         agent.bubbleText = p.bubble;
         agent.dialog = p.dialog;
@@ -5222,25 +5890,25 @@
           badge.className = agent.isActive 
             ? "px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-800 border border-purple-300 animate-pulse"
             : "px-2 py-0.5 rounded-full text-[10px] font-bold bg-zinc-100 text-zinc-600 border border-zinc-200";
-          badge.innerText = agent.isActive ? "● SUBAGENT ĐANG CHẠY" : "○ SUBAGENT HOÀN TẤT";
+          badge.innerText = agent.isActive ? t('subagent_running') : t('subagent_done');
         } else {
           badge.className = agent.isActive 
             ? "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 animate-pulse"
             : "px-2 py-0.5 rounded-full text-[10px] font-bold bg-zinc-100 text-zinc-600 border border-zinc-300";
-          badge.innerText = agent.isActive ? "● MAIN AGENT ĐANG CHẠY" : "○ MAIN AGENT NGHỈ NGƠI";
+          badge.innerText = agent.isActive ? t('main_running') : t('main_idle');
         }
       }
 
       const forceCompleteBtn = document.getElementById('btn-force-complete');
       if (forceCompleteBtn) {
         if (agent.isActive) {
-          forceCompleteBtn.innerHTML = `✓ Đánh dấu Xong`;
+          forceCompleteBtn.innerHTML = t('btn_mark_done');
           forceCompleteBtn.className = "px-2 py-0.5 rounded-md bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[9px] border border-emerald-300 flex items-center gap-1 transition-colors cursor-pointer shadow-2xs whitespace-nowrap";
-          forceCompleteBtn.title = "Nhấn để giải phóng trạng thái ĐANG LÀM VIỆC";
+          forceCompleteBtn.title = currentLang === 'en' ? "Click to release WORKING status" : "Nhấn để giải phóng trạng thái ĐANG LÀM VIỆC";
         } else {
-          forceCompleteBtn.innerHTML = `✓ Đã xong việc`;
+          forceCompleteBtn.innerHTML = t('btn_done_idle');
           forceCompleteBtn.className = "px-2 py-0.5 rounded-md bg-zinc-50 text-zinc-500 font-semibold text-[9px] border border-zinc-200 flex items-center gap-1 cursor-default opacity-80 whitespace-nowrap";
-          forceCompleteBtn.title = "Bot hiện đã hoàn tất nhiệm vụ và đang nghỉ ngơi";
+          forceCompleteBtn.title = currentLang === 'en' ? "Bot has completed tasks and is resting" : "Bot hiện đã hoàn tất nhiệm vụ và đang nghỉ ngơi";
         }
       }
 
@@ -5263,7 +5931,7 @@
     function copyCurrentId() {
       navigator.clipboard.writeText(currentSelectedId);
       soundEngine.playMechanicalTyping();
-      spawnFloatingEmoji("📋 Đã copy ID: " + currentSelectedId.slice(0, 8));
+      spawnFloatingEmoji((currentLang === "en" ? "📋 Copied ID: " : "📋 Đã copy ID: ") + currentSelectedId.slice(0, 8));
     }
 
     function bridgeNative(action, payload = null) {
@@ -5480,7 +6148,7 @@
     });
 
     setInterval(() => {
-      document.getElementById('clock').innerText = new Date().toLocaleTimeString('vi-VN');
+      document.getElementById('clock').innerText = new Date().toLocaleTimeString(currentLang === 'vi' ? 'vi-VN' : 'en-US');
     }, 1000);
 
     // Watchdog: Auto clean hung processing states on start & every 15 seconds
@@ -5514,6 +6182,7 @@
       console.warn("Error restoring custom studio configuration:", e);
     }
 
+    applyLanguage(currentLang);
     updateDiagnosticUI();
     updateJukeboxUI();
     updateQuotaUI();
