@@ -4679,6 +4679,7 @@
     let isSprintFocusMode = false;
     let sprintTasks = [];
     let sprintTimerLoopId = null;
+    let sprintClockIntervalId = null;
 
     // Helper: format target time as HH:mm
     function formatTimeHHMM(date) {
@@ -4771,6 +4772,16 @@
 
     function openSprintModal() {
       isSprintModalOpen = true;
+      startSprintTimerLoop();
+      if (!sprintClockIntervalId) {
+        sprintClockIntervalId = window.setInterval(() => {
+          try {
+            updateSprintClockOnly(Date.now());
+          } catch (error) {
+            console.warn('Sprint clock tick recovered', error);
+          }
+        }, 250);
+      }
       const modal = document.getElementById('modal-sprint-countdown');
       if (modal) {
         modal.classList.remove('hidden');
