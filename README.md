@@ -34,6 +34,7 @@
 
 ## ✨ Điểm Nổi Bật (Key Features)
 
+* 🎯 **Vibe Coding Sprint Tracker (Phím `T`)**: Hẹn giờ đếm ngược tối đa 4 task lớn (VD: Đặt hàng CRM + Web + API đến 16:30), kèm thanh tiến độ sinh động, gia hạn nhanh +15m/+30m, chuông chúc mừng khi hoàn thành và chuông nhắc khi hết giờ để bạn kịp chốt task làm việc khác.
 * 🎭 **14 Nhân Vật Chibi 3D Độc Bản (Playful UI Style)**: Mỗi agent được gán một nhân vật 3D mềm mại, biểu cảm dễ thương, tự do di chuyển và tương tác sinh động.
 * ⚡ **100% Live Sync & DOM Diffing Không Chớp**: Cập nhật in-place từng bot theo ID mượt mà 60 FPS, không bao giờ nhấp nháy hay reload màn hình.
 * 🛡️ **Anti-Hang Watchdog Tự Động**: Nhận diện thông minh và giải phóng ngay các job đã hoàn thành hoặc chạy quá lâu, không lo bị kẹt trạng thái processing.
@@ -116,6 +117,22 @@ surge . --domain my-ai-studio.surge.sh
 | **`F`** | Bật / tắt **⚡ Fever Mode** (Gõ phím 100 WPM cho toàn bộ bot) |
 | **`M`** | Bật / tắt âm thanh hiệu ứng (SFX) |
 | **`Esc`** | Đóng popup hoặc thoát zoom phòng |
+
+---
+
+## ⌨️ Phím Tắt Tiện Lợi (Keyboard Shortcuts)
+
+| Phím | Chức Năng |
+|---|---|
+| `T` | 🎯 Mở / Đóng **Vibe Coding Sprint Tracker** (Đếm ngược mục tiêu tối đa 4 task lớn) |
+| `R` | 🔄 Ép buộc làm mới dữ liệu & trạng thái Agent tức thì |
+| `H` | 🏡 / 🏢 Chuyển đổi giữa chế độ **Studio 4 phòng** và **Dashboard danh sách** |
+| `U` | 🧠 Mở bảng xem Models AI & % Quota còn lại |
+| `J` | 📻 Bật / tắt Jukebox menu nhạc Lo-fi & Acoustic Việt Nam |
+| `C` | 🎨 Mở Studio Customizer Hub (Đổi theme màu, nhạc, bot) |
+| `S` | 🔍 Xem chi tiết các bước (Steps) của bot đang chọn |
+| `D` | 🩺 Chạy chẩn đoán hệ thống (Diagnostics) |
+| `Esc` | ✕ Đóng nhanh modal đang mở |
 
 ---
 
