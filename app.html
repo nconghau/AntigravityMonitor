@@ -4450,50 +4450,30 @@
       agentList.forEach(agent => {
         if (!agent.isActive) return;
 
-        // Check A: Logs contain explicit completion signatures
-        const logs = agent.logs || [];
-        const logsTail = logs.slice(-4).join(' ').toLowerCase();
-        const hasCompletionSignature = 
-          logsTail.includes('[result]') ||
-          logsTail.includes('200 ok') ||
-          logsTail.includes('(done)') ||
-          logsTail.includes('hoàn thành') ||
-          logsTail.includes('sẵn sàng') ||
-          logsTail.includes('[done]') ||
-          logsTail.includes('[idle]') ||
-          logsTail.includes('hoàn tất') ||
-          logsTail.includes('thành công') ||
-          logsTail.includes('[policy]');
-
-        // Check B: Time staleness (> 4 mins with completion or > 8 mins overall)
-        let isStale = false;
+        // Only release agents if they have been completely inactive with no updates for > 25 minutes
         if (agent.time) {
           const parts = agent.time.split(':');
           if (parts.length >= 2) {
             const agentTime = new Date();
             agentTime.setHours(parseInt(parts[0], 10), parseInt(parts[1], 10), parseInt(parts[2] || '0', 10));
             const diffMin = Math.abs(now.getTime() - agentTime.getTime()) / 60000;
-            if (diffMin > 8 || (diffMin > 3 && hasCompletionSignature)) {
-              isStale = true;
+            if (diffMin > 25) {
+              agent.isActive = false;
+              hasChanges = true;
+              if (!roomOverrides[agent.id] || agent.houseRoom === 'office') {
+                agent.houseRoom = 'kitchen';
+              }
+              const wpKey = getBestWaypointForRoom(agent.houseRoom, agent.id);
+              const wp = STUDIO_WAYPOINTS[wpKey] || STUDIO_WAYPOINTS.kitchen_bar;
+              agent.currentWaypoint = wpKey;
+              agent.targetX = wp.x;
+              agent.targetY = wp.y;
+              agent.actionState = 'coffee';
+              agent.bubbleText = '☕ Break time';
+              agent.bubbleTimer = 240;
+              agent.dialog = currentLang === 'vi' ? 'Tiến trình đã dừng quá 25 phút, chuyển sang nghỉ ngơi!' : 'Process inactive for >25 mins, resting!';
             }
           }
-        }
-
-        if (hasCompletionSignature || isStale) {
-          agent.isActive = false;
-          hasChanges = true;
-          if (!roomOverrides[agent.id] || agent.houseRoom === 'office') {
-            agent.houseRoom = 'kitchen';
-          }
-          const wpKey = getBestWaypointForRoom(agent.houseRoom, agent.id);
-          const wp = STUDIO_WAYPOINTS[wpKey] || STUDIO_WAYPOINTS.kitchen_bar;
-          agent.currentWaypoint = wpKey;
-          agent.targetX = wp.x;
-          agent.targetY = wp.y;
-          agent.actionState = 'coffee';
-          agent.bubbleText = '☕ Hoàn thành 100%';
-          agent.bubbleTimer = 240;
-          agent.dialog = 'Task đã xong xuôi, đang nạp cà phê xả hơi!';
         }
       });
 
@@ -4543,9 +4523,6 @@
       if (playFx && soundEngine && soundEngine.enabled) {
         soundEngine.playMechanicalTyping();
       }
-
-      // Trigger anti-hang watchdog scan to clean stale/finished agents
-      auditAndCleanStuckJobs();
 
       // Trigger native Swift rescan
       bridgeNative('refresh');
@@ -6165,7 +6142,6 @@ function triggerRandomStudioEvent() {
         });
 
         agentList = freshAgents;
-        auditAndCleanStuckJobs(); // Anti-hang watchdog to release finished agents
         renderWorld();
         selectAgent(currentSelectedId, false); // Keep UI synced without firing sound automatically
 
@@ -6251,9 +6227,8 @@ function triggerRandomStudioEvent() {
       document.getElementById('clock').innerText = new Date().toLocaleTimeString(currentLang === 'vi' ? 'vi-VN' : 'en-US');
     }, 1000);
 
-    // Watchdog: Auto clean hung processing states on start & every 15 seconds
-    auditAndCleanStuckJobs();
-    setInterval(auditAndCleanStuckJobs, 15000);
+    // Watchdog: Auto clean hung processing states (> 25 mins) every minute
+    setInterval(auditAndCleanStuckJobs, 60000);
 
     // Load Custom Theme & Custom Agents from localStorage on startup
     try {

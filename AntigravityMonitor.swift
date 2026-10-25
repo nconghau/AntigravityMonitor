@@ -515,15 +515,25 @@ class AgentScanner: ObservableObject {
                 timeFormatter.dateFormat = "HH:mm:ss"
 
                 // Robust Active Determination for Main Agent & Subagents
+                let activeToolTypes: Set<String> = [
+                    "USER_INPUT", "RUN_COMMAND", "GREP_SEARCH", "VIEW_FILE", "READ_URL_CONTENT",
+                    "SEARCH_WEB", "GENERATE_IMAGE", "EDIT_FILE", "WRITE_FILE", "GENERIC",
+                    "CODE_ACTION", "INVOKE_SUBAGENT", "BROWSER_SUBAGENT", "ASK_QUESTION"
+                ]
+
                 var isActive = false
-                if timeDelta < 300 { // Activity in last 5 minutes
-                    if isSubagent {
-                        // Subagent is actively running until send_message is completed
-                        isActive = !hasSentMessage
+                if isSubagent {
+                    // Subagent is actively running until send_message is completed (10 min activity window)
+                    isActive = (timeDelta < 600) && !hasSentMessage
+                } else {
+                    // Main agent: actively running if executing tools or responding
+                    if lastHasTools || activeToolTypes.contains(lastType) {
+                        isActive = (timeDelta < 600)
+                    } else if lastType == "PLANNER_RESPONSE" && !lastContent.isEmpty {
+                        // Conversational final reply is active while recently updated (< 90s)
+                        isActive = (timeDelta < 90)
                     } else {
-                        // Main agent is actively running unless the last step is conversational response without tools
-                        let isFinalReply = (lastType == "PLANNER_RESPONSE" && !lastHasTools && !lastContent.isEmpty)
-                        isActive = !isFinalReply
+                        isActive = (timeDelta < 300)
                     }
                 }
 
