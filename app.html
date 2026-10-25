@@ -1925,6 +1925,21 @@
             </div>
           </div>
 
+          <!-- Agent Skill Switches -->
+          <div class="p-2.5 rounded-xl bg-indigo-50/70 border border-indigo-200 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <div class="text-[11px] font-black text-indigo-950 flex items-center gap-1.5">
+                  <span class="ui-icon icon-focus" aria-hidden="true"></span>
+                  <span>Agent Skills</span>
+                </div>
+                <div class="text-[9px] text-indigo-700/70">Bật capability để bot ưu tiên khi làm việc</div>
+              </div>
+              <span id="cust-agent-skills-count" class="shrink-0 px-1.5 py-0.5 rounded-full bg-white text-indigo-700 border border-indigo-200 text-[9px] font-black">0 enabled</span>
+            </div>
+            <div id="cust-agent-skills" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5"></div>
+          </div>
+
           <!-- Character Avatar Picker: 14 Playful Chibi Cutout Characters -->
           <div>
             <div class="flex items-center justify-between mb-1">
@@ -3816,6 +3831,70 @@
       spawnFloatingEmoji(currentLang === "vi" ? "🖼️ Đã chọn Avatar từ URL!" : "🖼️ Avatar selected from URL!");
     }
 
+    // Reusable capability catalog for agent setup, cards, and rich tooltips.
+    const AGENT_SKILL_CATALOG = [
+      { id: 'html-semantic', icon: 'code', name: 'Semantic HTML', vi: 'HTML chuẩn', desc: 'Clean structure, labels, and reusable markup' },
+      { id: 'css-playful-ui', icon: 'target', name: 'Playful UI', vi: 'UI Playful', desc: 'Colorful, rounded, tactile interactions' },
+      { id: 'switch-toggle-ui', icon: 'focus', name: 'Switch & Toggle UI', vi: 'Switch / Toggle', desc: 'Clear states for compact controls' },
+      { id: 'responsive-ui', icon: 'home', name: 'Responsive Layout', vi: 'Responsive', desc: 'Mobile-first layouts that adapt gracefully' },
+      { id: 'accessibility', icon: 'check', name: 'Accessibility', vi: 'Accessibility', desc: 'Keyboard, contrast, focus, and readable labels' },
+      { id: 'frontend-debugging', icon: 'bell', name: 'Frontend Debugging', vi: 'Debug giao diện', desc: 'Trace visual and runtime issues quickly' },
+      { id: 'code-review', icon: 'code', name: 'Code Review', vi: 'Review code', desc: 'Quality, safety, and maintainability checks' },
+      { id: 'devops-deploy', icon: 'rocket', name: 'Build & Deploy', vi: 'Build / Deploy', desc: 'Release hygiene and deployment confidence' }
+    ];
+
+    function getSkillById(skillId) {
+      return AGENT_SKILL_CATALOG.find(skill => skill.id === skillId) || null;
+    }
+
+    function getDefaultAgentSkills(agent = {}) {
+      const context = `${agent.role || ''} ${agent.prompt || ''} ${agent.project || ''}`.toLowerCase();
+      if (/ui|ux|css|html|frontend|animation|responsive|giao diện/.test(context)) {
+        return ['html-semantic', 'css-playful-ui', 'switch-toggle-ui', 'responsive-ui', 'accessibility'];
+      }
+      if (/deploy|cloud|infra|devops|tunnel|build/.test(context)) {
+        return ['devops-deploy', 'frontend-debugging', 'code-review'];
+      }
+      if (/review|git|security|policy|audit/.test(context)) {
+        return ['code-review', 'accessibility', 'frontend-debugging'];
+      }
+      return ['html-semantic', 'responsive-ui', 'frontend-debugging'];
+    }
+
+    function getAgentSkills(agent = {}) {
+      const validIds = new Set(AGENT_SKILL_CATALOG.map(skill => skill.id));
+      const rawSkills = Array.isArray(agent.skills) && agent.skills.length ? agent.skills : getDefaultAgentSkills(agent);
+      return [...new Set(rawSkills)].filter(skillId => validIds.has(skillId));
+    }
+
+    function updateAgentSkillsCount() {
+      const selected = document.querySelectorAll('#cust-agent-skills input[type="checkbox"]:checked').length;
+      const countEl = document.getElementById('cust-agent-skills-count');
+      if (countEl) countEl.innerText = `${selected} enabled`;
+    }
+
+    function renderAgentSkillPicker(selectedSkills = []) {
+      const container = document.getElementById('cust-agent-skills');
+      if (!container) return;
+      const selected = new Set(selectedSkills);
+      container.innerHTML = AGENT_SKILL_CATALOG.map(skill => `
+        <label class="group flex items-center gap-2 p-2 rounded-xl bg-white border border-indigo-100 hover:border-indigo-300 hover:shadow-xs cursor-pointer transition-all">
+          <span class="ui-icon icon-${skill.icon} shrink-0" aria-hidden="true"></span>
+          <span class="min-w-0 flex-1">
+            <span class="block text-[10px] font-black text-zinc-800 truncate">${currentLang === 'vi' ? skill.vi : skill.name}</span>
+            <span class="block text-[8px] leading-tight text-zinc-500 line-clamp-2">${skill.desc}</span>
+          </span>
+          <input type="checkbox" value="${skill.id}" class="sr-only peer" ${selected.has(skill.id) ? 'checked' : ''} onchange="updateAgentSkillsCount()"/>
+          <span class="relative w-8 h-4 rounded-full bg-zinc-200 peer-checked:bg-emerald-500 transition-colors shrink-0 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-3 after:h-3 after:rounded-full after:bg-white after:shadow-sm after:transition-transform peer-checked:after:translate-x-4"></span>
+        </label>
+      `).join('');
+      updateAgentSkillsCount();
+    }
+
+    function getSelectedAgentSkills() {
+      return [...document.querySelectorAll('#cust-agent-skills input[type="checkbox"]:checked')].map(input => input.value);
+    }
+
     function renderCustomizerAgentList() {
       const container = document.getElementById('custom-agents-list');
       const countEl = document.getElementById('custom-agents-count');
@@ -3836,6 +3915,13 @@
               </div>
               <div class="text-[9px] text-zinc-500 truncate">
                 ${currentLang === "vi" ? "Phòng" : "Room"}: ${a.houseRoom || 'office'} • "${a.dialog || a.bubbleText || ''}"
+              </div>
+              <div class="flex items-center gap-1 mt-0.5 overflow-hidden">
+                ${getAgentSkills(a).slice(0, 3).map(skillId => {
+                  const skill = getSkillById(skillId);
+                  return skill ? `<span class="px-1 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-100 text-[8px] font-bold truncate">${skill.vi}</span>` : '';
+                }).join('')}
+                ${getAgentSkills(a).length > 3 ? `<span class="text-[8px] text-indigo-500 font-bold">+${getAgentSkills(a).length - 3}</span>` : ''}
               </div>
             </div>
           </div>
@@ -3863,6 +3949,7 @@
       document.getElementById('cust-agent-role').value = agent.role || 'Autonomous Coding Agent';
       document.getElementById('cust-agent-room').value = agent.houseRoom || 'office';
       document.getElementById('cust-agent-dialog').value = agent.dialog || agent.bubbleText || '';
+      renderAgentSkillPicker(getAgentSkills(agent));
       selectCustomizerAvatar(agent.avatarImg, agent.name);
       switchCustomizerTab('agents');
     }
@@ -3874,6 +3961,7 @@
       document.getElementById('cust-agent-role').value = '';
       document.getElementById('cust-agent-room').value = 'office';
       document.getElementById('cust-agent-dialog').value = '';
+      renderAgentSkillPicker(['html-semantic', 'css-playful-ui', 'responsive-ui']);
       selectCustomizerAvatar('./assets/dev_bot.png', 'Dev Bot');
     }
 
@@ -3884,6 +3972,7 @@
       const room = document.getElementById('cust-agent-room').value;
       const dialog = document.getElementById('cust-agent-dialog').value.trim() || (currentLang === "vi" ? "Sẵn sàng code!" : "Ready to code!");
       const avatar = document.getElementById('cust-agent-avatar').value;
+      const skills = getSelectedAgentSkills();
 
       if (!name) {
         alert(currentLang === "vi" ? "Vui lòng nhập tên cho Bot!" : "Please enter a bot name!");
@@ -3893,7 +3982,7 @@
       if (agentId) {
         // Edit existing agent
         const overrides = JSON.parse(localStorage.getItem('antigravity_agent_overrides') || '{}');
-        overrides[agentId] = { name, role, houseRoom: room, dialog, avatarImg: avatar };
+        overrides[agentId] = { name, role, houseRoom: room, dialog, avatarImg: avatar, skills };
         localStorage.setItem('antigravity_agent_overrides', JSON.stringify(overrides));
 
         // Check if user created
@@ -3905,6 +3994,7 @@
           customAgents[idx].houseRoom = room;
           customAgents[idx].dialog = dialog;
           customAgents[idx].avatarImg = avatar;
+          customAgents[idx].skills = skills;
           localStorage.setItem('antigravity_custom_agents', JSON.stringify(customAgents));
         }
 
@@ -3917,6 +4007,7 @@
           target.dialog = dialog;
           target.bubbleText = dialog;
           target.avatarImg = avatar;
+          target.skills = skills;
           moveAgentRoom(agentId, room);
         }
         spawnFloatingEmoji((currentLang === "vi" ? "✨ Đã cập nhật bot " : "✨ Updated bot ") + name + "!");
@@ -3959,6 +4050,7 @@
           prompt: 'Tùy chỉnh riêng bởi người dùng',
           isActive: true,
           dialog: dialog,
+          skills,
           isUserCreated: true,
           logs: [
             '[SYSTEM] Khởi tạo custom bot ' + name,
@@ -4878,9 +4970,10 @@
         const lastLog = Array.isArray(agent.logs) && agent.logs.length ? agent.logs[agent.logs.length - 1] : (agent.dialog || 'Standing by');
         const state = isWorking ? 'WORKING NOW' : (/DONE|RESULT|complete|hoàn tất/i.test(lastLog) ? 'COMPLETED' : 'IDLE');
         const stateClass = isWorking ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : state === 'COMPLETED' ? 'bg-indigo-100 text-indigo-800 border-indigo-200' : 'bg-zinc-100 text-zinc-600 border-zinc-200';
+        const primarySkill = getSkillById(getAgentSkills(agent)[0]);
         return `<div class="sprint-agent-row has-tooltip flex items-center gap-2 p-2 rounded-xl bg-white/80 border border-indigo-100 cursor-pointer" data-agent-id="${agent.id}" role="button" tabindex="0" title="${agent.name} — click to open details" onclick="event.stopPropagation(); openStepDetailModal('${agent.id}')" onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openStepDetailModal('${agent.id}'); }">
           <img src="${agent.avatarImg || './assets/dev_bot.png'}" class="w-9 h-9 rounded-xl object-contain bg-white border border-zinc-100 shrink-0" onerror="this.src='./assets/dev_bot.png'"/>
-          <div class="min-w-0 flex-1"><div class="flex items-center gap-1.5"><span class="font-black text-[11px] truncate">${agent.name}</span><span class="px-1.5 py-0.5 rounded-full border text-[8px] font-black ${stateClass}">${isWorking ? '●' : '○'} ${state}</span></div><div class="text-[10px] text-zinc-500 truncate">${isWorking ? (agent.prompt || agent.tool || 'Working on current task') : lastLog}</div></div>
+          <div class="min-w-0 flex-1"><div class="flex items-center gap-1.5"><span class="font-black text-[11px] truncate">${agent.name}</span><span class="px-1.5 py-0.5 rounded-full border text-[8px] font-black ${stateClass}">${isWorking ? '●' : '○'} ${state}</span></div><div class="text-[10px] text-zinc-500 truncate">${isWorking ? (agent.prompt || agent.tool || 'Working on current task') : lastLog}</div><div class="text-[9px] text-indigo-600 font-bold truncate">${primarySkill ? (currentLang === 'vi' ? primarySkill.vi : primarySkill.name) : 'No skill selected'}</div></div>
           <span class="text-[9px] font-mono text-zinc-400">#${agent.shortId || ''}</span>
         </div>`;
       }).join('');
@@ -5109,6 +5202,11 @@
       const statusBadge = agent.isActive
         ? `<span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse">${currentLang === 'en' ? '● RUNNING' : '● ĐANG CHẠY'}</span>`
         : `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-zinc-500/20 text-zinc-300 border border-zinc-500/30">${currentLang === 'en' ? '○ IDLE' : '○ NGHỈ NGƠI'}</span>`;
+      const agentSkills = getAgentSkills(agent);
+      const skillsHtml = agentSkills.length ? agentSkills.map(skillId => {
+        const skill = getSkillById(skillId);
+        return skill ? `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-400/30 text-[9px] font-bold"><span class="ui-icon icon-${skill.icon}" aria-hidden="true"></span>${currentLang === 'vi' ? skill.vi : skill.name}</span>` : '';
+      }).join('') : `<span class="text-[9px] text-zinc-500 italic">No active skills</span>`;
 
       let stepsTimelineHtml = '';
       if (recentSteps.length > 0) {
@@ -5205,6 +5303,15 @@
             <div class="text-[11px] text-white font-medium line-clamp-2 leading-snug">
               "${agent.prompt || 'Đang xử lý tác vụ...'}"
             </div>
+          </div>
+
+          <!-- Agent Skills -->
+          <div class="rounded-lg p-2 border border-indigo-400/20 bg-indigo-500/10">
+            <div class="text-[9px] font-bold text-indigo-300 uppercase tracking-wider mb-1 flex items-center gap-1">
+              <span class="ui-icon icon-focus" aria-hidden="true"></span>
+              <span>${currentLang === 'vi' ? 'Skills đang bật' : 'Active skills'}</span>
+            </div>
+            <div class="flex flex-wrap gap-1">${skillsHtml}</div>
           </div>
 
           <!-- Project & Resource Metrics Grid -->
@@ -7182,6 +7289,7 @@ function triggerRandomStudioEvent() {
               if (ov.avatarImg) f.avatarImg = ov.avatarImg;
               if (ov.dialog) f.dialog = ov.dialog;
               if (ov.houseRoom) f.houseRoom = ov.houseRoom;
+              if (Array.isArray(ov.skills)) f.skills = ov.skills;
             }
           });
         } catch (e) {
@@ -7360,6 +7468,7 @@ function triggerRandomStudioEvent() {
           if (ov.avatarImg) a.avatarImg = ov.avatarImg;
           if (ov.dialog) a.dialog = ov.dialog;
           if (ov.houseRoom) a.houseRoom = ov.houseRoom;
+          if (Array.isArray(ov.skills)) a.skills = ov.skills;
         }
       });
     } catch (e) {
