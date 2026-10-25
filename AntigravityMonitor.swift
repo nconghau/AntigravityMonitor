@@ -427,16 +427,16 @@ class AgentScanner: ObservableObject {
                     ("./assets/dev_bot.png", "Dev Bot", "Fullstack AI Coder"),
                     ("./assets/deployer_bot.png", "Deployer Bot", "Cloud & CI/CD Ops"),
                     ("./assets/guardian_bot.png", "Guardian Bot", "Security & QA Auditor"),
-                    ("./assets/bot_ninja_hacker.svg", "Shadow Ninja", "Stealth Refactoring"),
-                    ("./assets/bot_chibi_astro.svg", "Astro Bot", "Cloud Architecture"),
-                    ("./assets/bot_wizard_ai.svg", "Wizard AI", "Deep Reasoning & Algo"),
-                    ("./assets/bot_mecha_titan.svg", "Titan Mech", "High-Throughput Worker"),
-                    ("./assets/bot_dino_dev.svg", "Dino Junior", "Fast Prototyping"),
-                    ("./assets/bot_detective_ai.svg", "Sherlock AI", "Root-Cause Bug Hunter"),
-                    ("./assets/bot_barista_cafe.svg", "Barista Bot", "Performance Optimizer"),
-                    ("./assets/bot_pixel_fox.svg", "Kitsune Dev", "UI/UX & Mobile"),
-                    ("./assets/bot_cyber_punk.svg", "Neon Cyberpunk", "Reverse Engineering"),
-                    ("./assets/bot_alien_coder.svg", "Alien Coder", "Autonomous Specialist"),
+                    ("./assets/bot_ninja_hacker.png", "Shadow Ninja", "Stealth Refactoring"),
+                    ("./assets/bot_chibi_astro.png", "Astro Bot", "Cloud Architecture"),
+                    ("./assets/bot_wizard_ai.png", "Wizard AI", "Deep Reasoning & Algo"),
+                    ("./assets/bot_mecha_titan.png", "Titan Mech", "High-Throughput Worker"),
+                    ("./assets/bot_dino_dev.png", "Dino Junior", "Fast Prototyping"),
+                    ("./assets/bot_detective_ai.png", "Sherlock AI", "Root-Cause Bug Hunter"),
+                    ("./assets/bot_barista_cafe.png", "Barista Bot", "Performance Optimizer"),
+                    ("./assets/bot_pixel_fox.png", "Kitsune Dev", "UI/UX & Mobile"),
+                    ("./assets/bot_cyber_punk.png", "Neon Cyberpunk", "Reverse Engineering"),
+                    ("./assets/bot_alien_coder.png", "Alien Coder", "Autonomous Specialist"),
                     ("./assets/meo_bo.png", "Mèo Bơ Mascot", "Studio Chief Mascot")
                 ]
 
@@ -467,19 +467,19 @@ class AgentScanner: ObservableObject {
                 } else if lowerPrompt.contains("bug") || lowerPrompt.contains("fix") || lowerPrompt.contains("error") {
                     name = "Sherlock AI"
                     charType = "security"
-                    avatarImg = "./assets/bot_detective_ai.svg"
+                    avatarImg = "./assets/bot_detective_ai.png"
                     role = "Root-Cause Bug Hunter"
                     dialog = isActive ? "Đang truy tìm nguyên nhân gốc..." : "Đã diệt sạch mọi bug tiềm ẩn!"
                 } else if lowerPrompt.contains("ui") || lowerPrompt.contains("giao diện") || lowerPrompt.contains("mobile") || lowerPrompt.contains("css") {
                     name = "Kitsune Dev"
                     charType = "dev"
-                    avatarImg = "./assets/bot_pixel_fox.svg"
+                    avatarImg = "./assets/bot_pixel_fox.png"
                     role = "UI/UX & Mobile Craftsman"
                     dialog = isActive ? "Đang trau chuốt giao diện mượt mà..." : "UI/UX đã chuẩn responsive!"
                 } else if lowerPrompt.contains("refactor") || lowerPrompt.contains("clean") {
                     name = "Shadow Ninja"
                     charType = "dev"
-                    avatarImg = "./assets/bot_ninja_hacker.svg"
+                    avatarImg = "./assets/bot_ninja_hacker.png"
                     role = "Stealth Refactoring"
                     dialog = isActive ? "Đang thanh lọc clean code..." : "Codebase gọn gàng, 0 nợ kỹ thuật!"
                 }

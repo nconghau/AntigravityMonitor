@@ -1,222 +1,141 @@
 <p align="center">
-  <img src="./assets/logo.jpg" width="96" height="96" style="border-radius: 24px; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);" alt="Antigravity Monitor Logo"/>
+  <img src="./assets/logo.jpg" width="96" height="96" style="border-radius: 24px; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.35);" alt="Antigravity Monitor Logo"/>
 </p>
 
 <h1 align="center">🎮 Antigravity Monitor</h1>
 
 <p align="center">
-  <b>Pixel-Art Game Dev Studio Visualizer & Real-time Mission Control for Autonomous Coding Agents</b>
+  <b>Pixel-Art Game Dev Studio Visualizer & Mission Control for Autonomous AI Coding Agents</b>
 </p>
 
 <p align="center">
-  <a href="https://agy-monitor.surge.sh/download"><img src="https://img.shields.io/badge/Release-v2.5_Universal-amber?style=for-the-badge&logo=apple" alt="Release v2.5 Universal"/></a>
-  <a href="https://agy-monitor.surge.sh"><img src="https://img.shields.io/badge/Live_Web-agy--monitor.surge.sh-6366f1?style=for-the-badge&logo=safari" alt="Live Web"/></a>
+  <a href="https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg"><img src="https://img.shields.io/badge/Download-macOS_Universal_DMG-amber?style=for-the-badge&logo=apple" alt="Download macOS Universal DMG"/></a>
+  <a href="https://agy-monitor.surge.sh"><img src="https://img.shields.io/badge/Website-agy--monitor.surge.sh-6366f1?style=for-the-badge&logo=safari" alt="Website"/></a>
   <a href="https://github.com/nconghau/AntigravityMonitor/stargazers"><img src="https://img.shields.io/github/stars/nconghau/AntigravityMonitor?style=for-the-badge&color=f59e0b" alt="GitHub Stars"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge" alt="License MIT"/></a>
 </p>
 
 ---
 
-## 🌟 What is Antigravity Monitor?
+## 🌟 Giới Thiệu (Overview)
 
-**Antigravity Monitor** turns the terminal-based autonomous coding agents of **Google DeepMind Antigravity** into a charming, living **Game Dev Story isometric studio**.
+**Antigravity Monitor** biến các tác vụ coding ngầm của **Google DeepMind Antigravity** thành một **Studio Game Dev 4 phòng isometric** sống động ngay trên máy tính của bạn:
 
-Instead of staring at terminal text logs or wondering which agent is running, your agents wander, code, drink espresso, lounge on the sofa, and sleep in cozy pods based on their actual real-time execution state.
+* 💻 **Dev Lab (Office)**: Bot đang gõ code 120 WPM với âm thanh phím cơ mechanical cực đã tai.
+* 🍳 **Kitchen & Cafe Bar**: Bot nhâm nhi espresso hoặc nạp pizza khi vừa xong task.
+* 🛋️ **Studio Lounge**: Bot ngả lưng sofa nghe Lo-fi cùng **Mèo Bơ Mascot** 🐱.
+* 🛏️ **Sleep Pod (Phòng Ngủ)**: Bot ngủ ấm nạp lại pin với hiệu ứng `💤 Zzz` lơ lửng.
 
 <p align="center">
-  <img src="https://agy-monitor.surge.sh/assets/logo.jpg" width="700" style="border-radius: 16px; border: 2px solid #e2e8f0;" alt="Antigravity Studio Preview"/>
+  <img src="https://agy-monitor.surge.sh/assets/logo.jpg" width="680" style="border-radius: 16px; border: 2px solid #e2e8f0; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" alt="Antigravity Studio Preview"/>
 </p>
 
 ---
 
-## ✨ Key Features
+## ✨ Điểm Nổi Bật (Key Features)
 
-### 1. 🏡 4-Room Isometric Studio Map
-* **💻 Dev Lab (Office)**: Active agents type on laptops with mechanical sounds and fever-mode animations.
-* **🍳 Kitchen & Cafe Bar**: Agents drink espresso or eat pizza when relaxing between tasks.
-* **🛋️ Studio Lounge**: Watch Lo-fi TV with **Mèo Bơ Mascot** 🐱.
-* **🛏️ Sleep Pod (Bedroom)**: Agents rest in pods with floating `💤 Zzz` bubbles when idle.
-
-### 2. 🎭 14 Diverse Transparent Cutout Characters
-Say goodbye to rigid square avatars! Every agent receives a unique, freestanding cutout character with soft shadows and an amber selection glow:
-* **Dev Bot** • **Deployer Bot** • **Guardian Bot** • **Shadow Ninja** • **Astro Bot** • **Wizard AI** • **Titan Mech** • **Kitsune Dev** • **Sherlock AI** • **Barista Bot** • **Dino Junior** • **Neon Cyberpunk** • **Alien Coder** • **Mèo Bơ Mascot**
-
-### 3. ⚡ 100% Live Data & Zero-Flicker DOM Diffing
-* High-performance in-place DOM reconciliation (Zero screen flickering / blinking).
-* Accurate real-time counters: **Tất cả (Total)**, **⚡ Chạy (Active)**, **☕ Nghỉ (Idle)**.
-* **Built-in Watchdog**: Automatically resolves long-running or hung background tasks.
-
-### 4. 🎨 Playful Studio Customizer Hub (Hotkeys: `C`)
-* **Custom Theme Colors**: Choose from 6 playful presets (*Mật Ong Ấm, Dâu Tây Sữa, Trà Xanh Mint, Kẹo Nho, Biển Xanh Cyan, Đêm Neon*) or design your own studio palette using real-time color pickers (Background, Wooden Floor, Glass Cards, Accent Aura, and Text).
-* **Custom Music Sources**: Listen to offline synthesized Lo-fi/Chiptune audio, add direct internet radio/MP3 streams (e.g. *Lofi Girl live*), or upload your favorite local audio tracks (`.mp3`, `.wav`, `.m4a`) directly from your machine into the Jukebox playlist.
-* **Custom AI Agents**: Create custom agents or customize existing ones with custom names, roles, default rooms, speech bubble dialogs, and select from the 14 transparent chibi characters or specify your own image avatar URL.
-
-### 5. 📻 Offline Web Audio Jukebox & Interactive SFX
-* 5 synthesized ambient soundtracks (100% Offline, 0 external audio dependencies):
-  1. ☕ **Lo-fi Study Cafe**
-  2. 🕹️ **8-Bit Chiptune Arcade**
-  3. 🌆 **Cyberpunk Synthwave**
-  4. 🌧️ **Coffee & Gentle Rain**
-  5. 🔔 **Zen Focus & Tibetan Bowls**
-* Interactive particle bursts (**Confetti & Sparkles**) on click and mechanical keyboard typewriter sound effects.
-
-### 5. 🩺 Auto-Diagnostics & 1-Click Environment Setup
-* Automatically scans `~/.gemini/antigravity/brain` and `~/.gemini/antigravity-ide/brain`.
-* Instant visual alert badge: `🩺 Cấu Hình OK` or `⚠️ Cần Kiểm Tra`.
-* **1-Click Sample Folder Generator**: Enables first-time users without Antigravity installed to test and experience the app immediately!
-
-### 6. 🧠 Quota Meter & Multi-Model Breakdown
-* Prominent `% Quota Còn Lại` indicator with mini progress bar.
-* Live tracking for **Gemini 3.8 Flash**, **Claude Sonnet 4.6 (Thinking)**, **Claude Opus 4.6**, and **GPT-OSS 120B**.
+* 🎭 **14 Nhân Vật Chibi 3D Độc Bản (Playful UI Style)**: Mỗi agent được gán một nhân vật 3D mềm mại, biểu cảm dễ thương, tự do di chuyển và tương tác sinh động.
+* ⚡ **100% Live Sync & DOM Diffing Không Chớp**: Cập nhật in-place từng bot theo ID mượt mà 60 FPS, không bao giờ nhấp nháy hay reload màn hình.
+* 🛡️ **Anti-Hang Watchdog Tự Động**: Nhận diện thông minh và giải phóng ngay các job đã hoàn thành hoặc chạy quá lâu, không lo bị kẹt trạng thái processing.
+* 📻 **Lo-fi Jukebox Offline & Âm Thanh Tương Tác**: 5 bản nhạc Lofi & Chiptune tự sinh bằng Web Audio (100% offline), hiệu ứng pháo hoa Confetti và tiếng gõ phím sống động.
+* 🎨 **Studio Customizer Hub (Phím `C`)**: Tự do đổi 6 theme màu Playful, thêm nhạc MP3 stream/upload từ máy tính, và tự tạo Bot AI riêng.
+* 🩺 **Bác Sĩ Cấu Hình (Auto-Diagnostics)**: Quét tự động `~/.gemini/antigravity/brain`, cảnh báo trạng thái và hỗ trợ tạo thư mục mẫu chỉ với 1 click.
 
 ---
 
-## 🚀 Quick Download & Install (Cross-Platform)
+## 🚀 Tải & Chạy Ứng Dụng (Download & Quickstart)
 
-👉 **Visit the Download Landing Page**: **[https://agy-monitor.surge.sh/download](https://agy-monitor.surge.sh/download)**
+👉 **Trang chủ giới thiệu**: **[https://agy-monitor.surge.sh](https://agy-monitor.surge.sh)**
 
-### 🍏 macOS (Universal: Apple Silicon M1-M4 & Intel)
-1. **Direct Download**: **[AntigravityMonitor-macOS-Universal.dmg](https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg)** *(12 MB)* or **[.ZIP](https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.zip)**.
-2. Drag `AntigravityMonitor.app` into `/Applications`.
-3. **Bypass macOS Gatekeeper on first launch**:
+### 🍏 macOS (Universal: M1/M2/M3/M4 & Intel)
+1. **Tải bộ cài trực tiếp (Tốc độ cao)**:
+   * 💾 **[AntigravityMonitor-macOS-Universal.dmg](https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg)** *(12 MB)*
+   * 📦 **[AntigravityMonitor-macOS-Universal.zip](https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.zip)** *(12 MB)*
+2. Kéo `AntigravityMonitor.app` vào thư mục `/Applications`.
+3. **Mở lần đầu (Sửa lỗi Gatekeeper macOS)**:
    ```bash
    xattr -cr /Applications/AntigravityMonitor.app
    ```
 
-### 📱 Web & Mobile (iOS / Android / PWA)
-Open directly in your mobile or desktop browser:
-👉 **[https://agy-monitor.surge.sh](https://agy-monitor.surge.sh)**
-*(Tip: Tap "Add to Home Screen" in Safari or Chrome to use it full-screen like a native mobile app).*
+---
+
+### 🪟 Windows (Chạy dạng Desktop App Độc Lập)
+* **Khởi chạy tức thì với MS Edge / Chrome App Mode (Không thanh viền URL)**:
+  Mở PowerShell trong thư mục dự án và chạy:
+  ```powershell
+  Start-Process msedge.exe -ArgumentList "--app=file://$PWD/app.html", "--window-size=1200,800"
+  ```
+* **Cài đặt dạng PWA**: Mở file `app.html` trong Edge/Chrome > Bấm biểu tượng **Install Antigravity Monitor** ở thanh địa chỉ để ghim icon ra Desktop và Windows Taskbar.
 
 ---
 
-## 🪟 Windows & Linux Desktop Guide
-
-You can easily run Antigravity Monitor as a standalone desktop app on **Windows** and **Linux** without compiling Xcode / Swift:
-
-### 1. 🪟 Windows (Standalone App Mode)
-* **Method A (Instant Edge / Chrome App Window)**:
-  Open PowerShell in the project directory and run:
-  ```powershell
-  Start-Process msedge.exe -ArgumentList "--app=https://agy-monitor.surge.sh", "--window-size=1200,800"
-  ```
-  *(Or point directly to your local file: `--app="file://$PWD/app.html"`)*
-
-* **Method B (Install as Windows PWA)**:
-  1. Open [https://agy-monitor.surge.sh](https://agy-monitor.surge.sh) in Microsoft Edge or Google Chrome.
-  2. Click the **Install Antigravity Monitor** icon in the right side of the URL bar (or Menu `...` -> *Apps* -> *Install this site as an app*).
-  3. The app will launch in its own frameless window with a desktop shortcut and pin to your Windows Taskbar!
-
-### 2. 🐧 Linux (Ubuntu, Debian, Fedora, Arch)
-* **Method A (Chromium / Chrome App Mode)**:
+### 🐧 Linux (Ubuntu, Debian, Fedora, Arch)
+* **Chromium App Mode**:
   ```bash
-  chromium-browser --app="https://agy-monitor.surge.sh" --window-size=1200,800
-  # Or with local HTML:
-  google-chrome --app="file://$(pwd)/app.html" --window-size=1200,800
+  chromium --app="file://$(pwd)/app.html" --window-size=1200,800
   ```
-
-* **Method B (Ultra-lightweight Python Webview Desktop)**:
+* **Python Webview Native Window (Siêu nhẹ)**:
   ```bash
   pip install pywebview
   python3 -c "import webview; webview.create_window('Antigravity Monitor', 'app.html', width=1200, height=800); webview.start()"
   ```
 
-* **Method C (Create a Linux Desktop Shortcut)**:
-  Create `~/.local/share/applications/antigravity-monitor.desktop`:
-  ```ini
-  [Desktop Entry]
-  Name=Antigravity Monitor
-  Comment=Pixel-Art Game Dev Studio Visualizer for AI Coding Agents
-  Exec=chromium --app=https://agy-monitor.surge.sh
-  Icon=/path/to/assets/logo.jpg
-  Terminal=false
-  Type=Application
-  Categories=Development;Utility;
-  ```
-
 ---
 
-## 🌐 Deploy Your Own Free Web App to Surge.sh
+## 🌐 Tự Deploy Miễn Phí Lên Surge.sh
 
-Want to host your own personal or team Antigravity Studio on your own custom subdomain (e.g., `my-studio.surge.sh`)? Surge provides 100% free static web hosting with unlimited traffic:
+Bạn có thể tự host Studio riêng của mình trên domain cá nhân hoàn toàn miễn phí:
 
 ```bash
-# 1. Install Surge CLI globally
+# 1. Cài đặt Surge CLI
 npm install --global surge
 
-# 2. Clone repository & enter directory
+# 2. Clone repository & vào thư mục
 git clone https://github.com/nconghau/AntigravityMonitor.git
 cd AntigravityMonitor
 
-# 3. Deploy to your custom domain
+# 3. Deploy lên domain riêng của bạn
 surge . --domain my-ai-studio.surge.sh
-
-# 4. Access your live studio immediately at:
-# https://my-ai-studio.surge.sh
 ```
-> **Tip**: Whenever you update `app.html` or customize bots/themes, simply run `surge . --domain my-ai-studio.surge.sh` again to update in under 5 seconds!
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+## ⌨️ Phím Tắt Tiện Lợi (Hotkeys)
 
-| Key | Action |
+| Phím | Chức năng |
 | :---: | :--- |
-| **`C`** | Open **🎨 Studio Customizer** (Theme, Custom Music & Custom Agents) |
-| **`H`** | Toggle between **🏡 2D Studio Map** and **🏢 List Dashboard** |
-| **`J`** | Toggle **📻 Jukebox & Music Player** |
-| **`D`** | Open **🩺 Antigravity System Diagnostics** |
-| **`U`** | View **🧠 Remaining Quota & Model Hub** |
-| **`S`** | Inspect current agent execution steps & logs |
-| **`R`** | Force refresh Live Data immediately |
-| **`T`** | Cycle themes: Cozy Day, Pastel Dream, Nordic Clean, Retro Cafe, Cyber Dark |
-| **`F`** | Toggle **⚡ Fever Mode** (100 WPM typing speed for all agents) |
-| **`M`** | Toggle sound effects (SFX) |
-| **`Esc`** | Close modal or reset room zoom |
+| **`C`** | Mở **🎨 Studio Customizer** (Đổi Theme màu, Nguồn nhạc & Tạo Bot) |
+| **`H`** | Chuyển đổi giữa **🏡 2D Studio 4 Phòng** và **🏢 List Dashboard** |
+| **`J`** | Bật / tắt menu **📻 Lo-fi Jukebox** |
+| **`D`** | Mở bảng **🩺 Bác Sĩ Cấu Hình (Auto-Diagnostics)** |
+| **`U`** | Xem **🧠 Quota Còn Lại & Model Hub** (Gemini, Claude, GPT-OSS) |
+| **`S`** | Xem chi tiết từng step thực thi của Agent đang chọn |
+| **`R`** | Refresh đồng bộ Live Data ngay lập tức |
+| **`T`** | Đổi nhanh preset Theme màu |
+| **`F`** | Bật / tắt **⚡ Fever Mode** (Gõ phím 100 WPM cho toàn bộ bot) |
+| **`M`** | Bật / tắt âm thanh hiệu ứng (SFX) |
+| **`Esc`** | Đóng popup hoặc thoát zoom phòng |
 
 ---
 
-## 🛠️ Architecture & Local Build
+## 🛠️ Biên Dịch Mã Nguồn macOS (Build from Source)
 
-Antigravity Monitor is built with native **SwiftUI / AppKit** for macOS MenuBar integration and a zero-dependency **HTML5 / TailwindCSS / Web Audio API** visualizer rendered inside a lightweight `WKWebView`.
+Ứng dụng kết hợp giữa **SwiftUI / AppKit** (native MenuBar) và **HTML5 / Web Audio** trong `WKWebView`:
 
 ```bash
-# 1. Clone repository
-git clone git@github.com-nconghau:nconghau/AntigravityMonitor.git
-cd AntigravityMonitor
-
-# 2. Compile Universal Binary (Apple Silicon + Intel)
+# Compile Universal Binary (Apple Silicon + Intel)
 swiftc -parse-as-library -target arm64-apple-macos12.0 -O -o build/AntigravityMonitor_arm64 AntigravityMonitor.swift
 swiftc -parse-as-library -target x86_64-apple-macos12.0 -O -o build/AntigravityMonitor_x86_64 AntigravityMonitor.swift
 lipo -create -output dist/AntigravityMonitor.app/Contents/MacOS/AntigravityMonitor build/AntigravityMonitor_arm64 build/AntigravityMonitor_x86_64
-
-# 3. Codesign App
 codesign --force --deep -s - dist/AntigravityMonitor.app
 ```
 
 ---
 
-## 🌐 Community & GitHub SEO Optimization
-
-To maximize visibility and discovery on GitHub:
-
-### Recommended Topics / Tags
-```
-antigravity, google-antigravity, ai-agents, autonomous-agents, agent-monitor, 
-developer-tools, game-dev-story, pixel-art, lofi-music, macos-menubar, swiftui, webkit
-```
-
-### Social Preview / SEO Description
-> *🎮 Pixel-Art Game Dev Studio Visualizer & MenuBar Monitor for Google DeepMind Antigravity coding agents. Real-time live data, lo-fi jukebox, multi-agent tracking, and macOS universal app.*
-
----
-
 ## 📄 License
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
-
----
+Phát hành dưới giấy phép **MIT License**. Tự do sử dụng, chỉnh sửa và đóng góp cho cộng đồng.
 
 <p align="center">
-  Crafted with ❤️ for the AI Developer Community by <a href="https://github.com/nconghau"><b>@nconghau</b></a>
+  Phát triển với ❤️ cho cộng đồng AI Developers bởi <a href="https://github.com/nconghau"><b>@nconghau</b></a>
 </p>

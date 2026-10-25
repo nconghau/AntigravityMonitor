@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tải Antigravity Monitor — Pixel-Art Mission Control cho AI Agents</title>
+  <title>Antigravity Monitor 🎮 • Pixel Game Dev Studio & Mission Control cho AI Coding Agents</title>
   
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Tải ứng dụng Antigravity Monitor cho macOS, Web, Mobile. Theo dõi autonomous coding agents của Google DeepMind Antigravity qua bản đồ Game Dev Story sống động, tích hợp Lo-fi Jukebox và chẩn đoán cấu hình tự động."/>
+  <meta name="description" content="Antigravity Monitor — Ứng dụng Desktop & MenuBar visualizer theo dõi autonomous coding agents của Google DeepMind Antigravity qua bản đồ Game Dev Studio sống động, Lo-fi Jukebox và chẩn đoán cấu hình tự động."/>
   <meta name="keywords" content="antigravity, google antigravity, agent monitor, coding agent, deepmind, game dev story, lofi jukebox, macos menubar, ai developer tools, autonomous coding"/>
   <meta name="author" content="Nguyen Cong Hau (nconghau)"/>
   
   <!-- OpenGraph Social Sharing -->
   <meta property="og:title" content="Antigravity Monitor — Game Dev Studio Visualizer cho AI Agents"/>
-  <meta property="og:description" content="Biến các AI coding agents khô khan thành những nhân vật pixel-art ngộ nghĩnh đi lại, gõ phím, uống cafe và ngủ trong căn phòng Game Studio isometric 2D!"/>
+  <meta property="og:description" content="Biến các AI coding agents khô khan thành những nhân vật chibi 3D ngộ nghĩnh đi lại, gõ phím, uống cafe và ngủ trong căn phòng Game Studio isometric!"/>
   <meta property="og:image" content="https://agy-monitor.surge.sh/assets/logo.jpg"/>
-  <meta property="og:url" content="https://github.com/nconghau/AntigravityMonitor"/>
+  <meta property="og:url" content="https://agy-monitor.surge.sh"/>
   <meta property="og:type" content="website"/>
   
   <script src="https://cdn.tailwindcss.com"></script>
@@ -28,40 +28,46 @@
     }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
     .hero-glow {
-      background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.15) 0%, rgba(254, 243, 199, 0.05) 50%, transparent 100%);
+      background: radial-gradient(circle at 50% 15%, rgba(245, 158, 11, 0.18) 0%, rgba(254, 243, 199, 0.08) 50%, transparent 100%);
     }
     .glass-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(226, 232, 240, 0.8);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+    }
+    .char-hover {
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .char-hover:hover {
-      transform: translateY(-6px) scale(1.08);
-      filter: drop-shadow(0 10px 15px rgba(245, 158, 11, 0.4));
+      transform: translateY(-8px) scale(1.14);
+      filter: drop-shadow(0 12px 18px rgba(245, 158, 11, 0.45));
+    }
+    .room-card:hover img {
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col hero-glow selection:bg-amber-200">
 
-  <!-- TOP NAVIGATION -->
+  <!-- TOP NAVIGATION (CLEAN & NO ONLINE WEB APP) -->
   <header class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-4 flex items-center justify-between">
     <a href="./" class="flex items-center gap-2.5">
-      <img src="./assets/logo.jpg" class="w-9 h-9 rounded-xl shadow-xs border border-amber-300 object-cover" alt="Antigravity Logo"/>
+      <img src="./assets/logo.jpg" class="w-10 h-10 rounded-2xl shadow-xs border border-amber-300 object-cover" alt="Antigravity Logo"/>
       <div>
         <div class="font-black text-base sm:text-lg tracking-tight text-slate-900 flex items-center gap-1.5">
           <span>Antigravity</span>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold border border-amber-300">Studio</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold border border-amber-300">Monitor</span>
         </div>
         <div class="text-[10px] text-slate-500 font-semibold hidden sm:block">Pixel Mission Control for AI Coding Agents</div>
       </div>
     </a>
 
     <div class="flex items-center gap-2 sm:gap-3">
-      <a href="https://agy-monitor.surge.sh" target="_blank" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-xs border border-amber-200 shadow-2xs transition-all flex items-center gap-1.5">
-        <span>🌐 Bản Web Trực Tuyến</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <a href="#download" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 active:scale-95 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+        <span>🍏 Tải App macOS</span>
+        <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-900/30">v2.5</span>
       </a>
-      <a href="https://github.com/nconghau/AntigravityMonitor" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5">
+      <a href="https://github.com/nconghau/AntigravityMonitor" target="_blank" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5">
         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         <span>GitHub</span>
       </a>
@@ -72,226 +78,314 @@
   <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-14 flex-1">
     
     <div class="text-center max-w-3xl mx-auto mb-10">
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100/80 border border-amber-300 text-amber-950 font-bold text-xs mb-4 shadow-2xs">
-        <span>✨ Phiên bản mới nhất v2.5 Universal</span>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100/90 border border-amber-300 text-amber-950 font-bold text-xs mb-4 shadow-2xs">
+        <span>✨ Bản Cập Nhật v2.5 Universal</span>
         <span>•</span>
-        <span class="text-emerald-700">Apple Silicon & Intel Ready</span>
+        <span class="text-emerald-700 font-extrabold">Apple Silicon & Intel Ready</span>
       </div>
 
       <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-4">
         Biến AI Coding Agents Khô Khan Thành <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-500 to-rose-600">Game Dev Studio</span> Sống Động!
       </h1>
 
-      <p class="text-sm sm:text-base text-slate-600 font-medium leading-relaxed max-w-2xl mx-auto">
-        Theo dõi tiến trình lập trình thời gian thực của các Agent (Google DeepMind Antigravity) qua bản đồ 4 phòng làm việc isometric, thưởng thức Lo-fi Jukebox thư giãn và kiểm soát Quota 100% trực quan.
+      <p class="text-sm sm:text-base text-slate-600 font-medium leading-relaxed max-w-2xl mx-auto mb-8">
+        Không còn phải nhìn chằm chằm vào các dòng log terminal đen trắng. Antigravity Monitor tái hiện các autonomous coding agents của Google Antigravity thành nhân vật Chibi 3D sống động trong không gian 4 phòng isometric: gõ code 120 WPM, uống cà phê giải lao, chill sofa nghe Lo-fi và ngủ ấm trong Sleep Pod.
       </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg" class="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-amber-950 font-black text-sm shadow-md transition-all flex items-center gap-2">
+          <span>🍏 Tải Bản macOS (.DMG - 12 MB)</span>
+          <span>➔</span>
+        </a>
+        <a href="#windows-linux" class="px-5 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm border border-slate-300 shadow-2xs transition-all flex items-center gap-2">
+          <span>💻 Hướng Dẫn Windows & Linux</span>
+        </a>
+      </div>
     </div>
 
-    <!-- DIVERSE CHARACTERS SHOWCASE (Item 1 & Animation Highlight) -->
-    <div class="glass-card rounded-3xl p-4 sm:p-6 mb-12 shadow-sm border border-amber-200/80">
-      <div class="text-center mb-4">
-        <h2 class="text-xs font-black uppercase tracking-wider text-amber-800">Bộ Sưu Tập 14 Nhân Vật AI Trong Suốt Độc Đáo</h2>
-        <p class="text-[11px] text-slate-500 font-medium">Tự do đi lại, gõ phím, uống cafe và ngủ nghỉ theo đúng trạng thái task</p>
+    <!-- 14 PLAYFUL 3D CHIBI CHARACTERS SHOWCASE -->
+    <div class="glass-card rounded-3xl p-5 sm:p-7 mb-12 shadow-sm border border-amber-200/90">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-mono text-[10px] font-bold mb-1">
+          STYLE: PLAYFUL UI 3D CLAY
+        </div>
+        <h2 class="text-sm sm:text-base font-black text-slate-900">Bộ Sưu Tập 14 Nhân Vật AI Chibi 3D Độc Bản</h2>
+        <p class="text-xs text-slate-500 font-medium">Hình ảnh tách nền trong suốt, mềm mại, tự do đi lại và biểu đạt cảm xúc theo tiến độ code</p>
       </div>
 
       <div class="grid grid-cols-4 sm:grid-cols-7 gap-3 sm:gap-4 text-center">
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/dev_bot.png" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Dev Bot"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Dev Bot</div>
-          <div class="text-[8px] text-slate-400">AI Coder</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/dev_bot.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Dev Bot"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Dev Bot</div>
+          <div class="text-[9px] text-slate-400 font-medium">Fullstack Coder</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/deployer_bot.png" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Deployer Bot"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Deployer</div>
-          <div class="text-[8px] text-slate-400">CI/CD Ops</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/deployer_bot.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Deployer Bot"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Deployer</div>
+          <div class="text-[9px] text-slate-400 font-medium">CI/CD & Cloud</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/guardian_bot.png" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Guardian Bot"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Guardian</div>
-          <div class="text-[8px] text-slate-400">Security QA</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/guardian_bot.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Guardian Bot"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Guardian</div>
+          <div class="text-[9px] text-slate-400 font-medium">Security QA</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_ninja_hacker.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Ninja Bot"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Ninja</div>
-          <div class="text-[8px] text-slate-400">Refactoring</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_pixel_fox.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Kitsune Dev"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Kitsune Fox</div>
+          <div class="text-[9px] text-slate-400 font-medium">UI / UX Craftsman</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_chibi_astro.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Astro Bot"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Astro</div>
-          <div class="text-[8px] text-slate-400">Cloud Arch</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_ninja_hacker.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Shadow Ninja"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Shadow Ninja</div>
+          <div class="text-[9px] text-slate-400 font-medium">Refactoring</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_wizard_ai.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Wizard AI"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Wizard AI</div>
-          <div class="text-[8px] text-slate-400">Deep Logic</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_wizard_ai.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Wizard AI"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Wizard AI</div>
+          <div class="text-[9px] text-slate-400 font-medium">Deep Logic</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_mecha_titan.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Titan Mech"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Titan Mech</div>
-          <div class="text-[8px] text-slate-400">High Speed</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_detective_ai.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Sherlock AI"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Sherlock AI</div>
+          <div class="text-[9px] text-slate-400 font-medium">Bug Hunter</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_pixel_fox.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Kitsune Dev"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Kitsune</div>
-          <div class="text-[8px] text-slate-400">UI / UX</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_barista_cafe.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Barista Bot"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Barista Bot</div>
+          <div class="text-[9px] text-slate-400 font-medium">Coffee Break</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_detective_ai.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Sherlock AI"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Sherlock</div>
-          <div class="text-[8px] text-slate-400">Bug Hunter</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_chibi_astro.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Astro Bot"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Astro Bot</div>
+          <div class="text-[9px] text-slate-400 font-medium">Cloud Infra</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_barista_cafe.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Barista Bot"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Barista</div>
-          <div class="text-[8px] text-slate-400">Coffee Chill</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_dino_dev.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Dino Junior"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Dino Junior</div>
+          <div class="text-[9px] text-slate-400 font-medium">Fast Prototype</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_dino_dev.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Dino Junior"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Dino Jr</div>
-          <div class="text-[8px] text-slate-400">Prototypes</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_mecha_titan.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Titan Mech"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Titan Mech</div>
+          <div class="text-[9px] text-slate-400 font-medium">High Speed</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_cyber_punk.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Cyberpunk"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Cyberpunk</div>
-          <div class="text-[8px] text-slate-400">Reverse Eng</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_cyber_punk.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Neon Cyberpunk"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Cyberpunk</div>
+          <div class="text-[9px] text-slate-400 font-medium">Reverse Eng</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/bot_alien_coder.svg" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Alien Coder"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Alien</div>
-          <div class="text-[8px] text-slate-400">Multi-agent</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/bot_alien_coder.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Alien Coder"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Alien Coder</div>
+          <div class="text-[9px] text-slate-400 font-medium">Multi-Agent</div>
         </div>
-        <div class="char-hover transition-all cursor-pointer">
-          <img src="./assets/meo_bo.png" class="w-12 h-12 mx-auto object-contain drop-shadow" alt="Mèo Bơ Mascot"/>
-          <div class="text-[10px] font-bold text-slate-800 mt-1">Mèo Bơ</div>
-          <div class="text-[8px] text-slate-400">Mascot</div>
+        <div class="char-hover p-2 rounded-2xl bg-white/60 border border-slate-200/60 shadow-2xs cursor-pointer">
+          <img src="./assets/meo_bo.png" class="w-14 h-14 mx-auto object-contain drop-shadow" alt="Mèo Bơ Mascot"/>
+          <div class="text-[11px] font-extrabold text-slate-800 mt-1">Mèo Bơ 🐱</div>
+          <div class="text-[9px] text-slate-400 font-medium">Studio Mascot</div>
         </div>
       </div>
     </div>
 
-    <!-- CROSS-PLATFORM DOWNLOAD MATRIX (Item 3: Đa Hệ Điều Hành) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      
-      <!-- CARD 1: macOS NATIVE APP (Primary) -->
-      <div class="glass-card rounded-3xl p-6 border-2 border-amber-400 shadow-md flex flex-col justify-between relative overflow-hidden">
-        <div class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 font-black text-[10px]">
-          RECOMMENDED
+    <!-- 4-ROOM ISOMETRIC STUDIO SHOWCASE -->
+    <div class="mb-14">
+      <div class="text-center mb-6">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Khám Phá Không Gian Studio 4 Phòng Isometric</h2>
+        <p class="text-xs sm:text-sm text-slate-500 font-medium">Agent tự động di chuyển đến phòng tương ứng theo trạng thái làm việc thực tế</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Room 1 -->
+        <div class="room-card glass-card rounded-2xl p-3 border border-slate-200 shadow-2xs overflow-hidden transition-all">
+          <div class="rounded-xl overflow-hidden mb-2.5 h-36 bg-slate-100 border border-slate-200">
+            <img src="./assets/room_office.jpg" class="w-full h-full object-cover transition-transform duration-500" alt="Dev Lab"/>
+          </div>
+          <div class="flex items-center gap-1.5 font-black text-xs text-slate-900 mb-1">
+            <span>💻</span> <span>Dev Lab (Office)</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-snug">Nơi các bot tập trung code gõ phím cơ, phân tích AST và chạy unit tests.</p>
         </div>
 
-        <div>
-          <div class="text-3xl mb-3">🍏</div>
-          <h2 class="text-lg font-black text-slate-900 mb-1">macOS Native App</h2>
-          <p class="text-xs text-slate-500 mb-4">Dành cho Apple Silicon (M1/M2/M3/M4) & Intel Mac (macOS 12.0 trở lên).</p>
-
-          <ul class="text-xs text-slate-600 space-y-2 mb-6">
-            <li class="flex items-center gap-1.5">✅ Tự động quét <code>~/.gemini/antigravity/brain</code></li>
-            <li class="flex items-center gap-1.5">✅ MenuBar icon ghim trực tiếp góc màn hình</li>
-            <li class="flex items-center gap-1.5">✅ Chẩn đoán cấu hình & 1-click tạo folder mẫu</li>
-            <li class="flex items-center gap-1.5">✅ Ghim Always On Top tiện vừa code vừa ngắm</li>
-          </ul>
+        <!-- Room 2 -->
+        <div class="room-card glass-card rounded-2xl p-3 border border-slate-200 shadow-2xs overflow-hidden transition-all">
+          <div class="rounded-xl overflow-hidden mb-2.5 h-36 bg-slate-100 border border-slate-200">
+            <img src="./assets/room_kitchen.jpg" class="w-full h-full object-cover transition-transform duration-500" alt="Kitchen & Cafe"/>
+          </div>
+          <div class="flex items-center gap-1.5 font-black text-xs text-slate-900 mb-1">
+            <span>🍳</span> <span>Kitchen & Cafe</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-snug">Bot vừa xong task sẽ xuống quầy bar làm ly Espresso thơm phức hoặc ăn pizza xả hơi.</p>
         </div>
 
-        <div class="space-y-2">
-          <a href="https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg" class="w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-amber-950 font-black text-xs text-center shadow-xs transition-all flex items-center justify-center gap-2">
-            <span>💾 Tải Bản .DMG Siêu Tốc (12 MB)</span>
-          </a>
-          <a href="https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.zip" class="w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs text-center transition-all flex items-center justify-center gap-1.5">
-            <span>📦 Tải Bản .ZIP (12 MB)</span>
-          </a>
+        <!-- Room 3 -->
+        <div class="room-card glass-card rounded-2xl p-3 border border-slate-200 shadow-2xs overflow-hidden transition-all">
+          <div class="rounded-xl overflow-hidden mb-2.5 h-36 bg-slate-100 border border-slate-200">
+            <img src="./assets/room_living.jpg" class="w-full h-full object-cover transition-transform duration-500" alt="Studio Lounge"/>
+          </div>
+          <div class="flex items-center gap-1.5 font-black text-xs text-slate-900 mb-1">
+            <span>🛋️</span> <span>Studio Lounge</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-snug">Sofa êm ái, TV phát nhạc Lo-fi Beats và vuốt ve chú Mèo Bơ Mascot tròn xoe.</p>
+        </div>
 
-          <!-- Gatekeeper Helper Box -->
-          <div class="p-2.5 rounded-xl bg-slate-100/90 border border-slate-200 text-[10px] text-slate-600 font-mono mt-3">
-            <div class="font-bold text-slate-800 text-[9px] mb-1">Mở lần đầu (Gatekeeper Fix):</div>
-            <div class="flex items-center justify-between gap-1 bg-white p-1 rounded border border-slate-200">
-              <span class="truncate">xattr -cr /Applications/AntigravityMonitor.app</span>
-              <button onclick="navigator.clipboard.writeText('xattr -cr /Applications/AntigravityMonitor.app'); alert('Đã copy lệnh!');" class="px-1.5 py-0.5 rounded bg-slate-200 hover:bg-slate-300 font-bold text-[9px] shrink-0">Copy</button>
+        <!-- Room 4 -->
+        <div class="room-card glass-card rounded-2xl p-3 border border-slate-200 shadow-2xs overflow-hidden transition-all">
+          <div class="rounded-xl overflow-hidden mb-2.5 h-36 bg-slate-100 border border-slate-200">
+            <img src="./assets/room_bedroom.jpg" class="w-full h-full object-cover transition-transform duration-500" alt="Sleep Pod"/>
+          </div>
+          <div class="flex items-center gap-1.5 font-black text-xs text-slate-900 mb-1">
+            <span>🛏️</span> <span>Sleep Pod</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-snug">Khoang ngủ nạp lại 100% HP với bong bóng <code>💤 Zzz</code> cho những agent đã xong ca trực.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOWNLOAD SECTION (2 DEDICATED CARDS: macOS & WINDOWS/LINUX) -->
+    <div id="download" class="scroll-mt-8 mb-14">
+      <div class="text-center mb-6">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Tải Về & Cài Đặt Desktop App</h2>
+        <p class="text-xs sm:text-sm text-slate-500 font-medium">Hỗ trợ đầy đủ macOS (Native MenuBar) và Windows / Linux standalone app</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- CARD 1: macOS NATIVE APP -->
+        <div class="glass-card rounded-3xl p-6 border-2 border-amber-400 shadow-md flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-amber-400 text-amber-950 font-black text-[10px]">
+            RECOMMENDED
+          </div>
+
+          <div>
+            <div class="text-3xl mb-2">🍏</div>
+            <h3 class="text-lg font-black text-slate-900 mb-1">macOS Native MenuBar App</h3>
+            <p class="text-xs text-slate-500 mb-4">Dành cho Apple Silicon (M1/M2/M3/M4) & Intel Mac (macOS 12.0 trở lên).</p>
+
+            <ul class="text-xs text-slate-600 space-y-2 mb-6">
+              <li class="flex items-center gap-1.5">✅ Tự động quét <code>~/.gemini/antigravity/brain</code> nền hệ thống</li>
+              <li class="flex items-center gap-1.5">✅ MenuBar icon ghim góc phải màn hình, mở nhanh 1 click</li>
+              <li class="flex items-center gap-1.5">✅ Ghim Always On Top tiện vừa code vừa ngắm bot làm việc</li>
+              <li class="flex items-center gap-1.5">✅ Tự động Watchdog giải phóng các job agent bị treo</li>
+            </ul>
+          </div>
+
+          <div class="space-y-2.5">
+            <a href="https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg" class="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-amber-950 font-black text-xs text-center shadow-xs transition-all flex items-center justify-center gap-2">
+              <span>💾 Tải Bản .DMG Tốc Độ Cao (12 MB)</span>
+            </a>
+            <a href="https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.zip" class="w-full py-2 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs text-center transition-all flex items-center justify-center gap-1.5">
+              <span>📦 Tải Bản .ZIP (12 MB)</span>
+            </a>
+
+            <!-- Gatekeeper Helper Box -->
+            <div class="p-2.5 rounded-xl bg-slate-100/90 border border-slate-200 text-[10px] text-slate-600 font-mono mt-3">
+              <div class="font-bold text-slate-800 text-[9px] mb-1">Mở lần đầu (Gatekeeper Fix):</div>
+              <div class="flex items-center justify-between gap-1 bg-white p-1 rounded border border-slate-200">
+                <span class="truncate">xattr -cr /Applications/AntigravityMonitor.app</span>
+                <button onclick="navigator.clipboard.writeText('xattr -cr /Applications/AntigravityMonitor.app'); alert('Đã copy lệnh xattr!');" class="px-2 py-0.5 rounded bg-slate-200 hover:bg-slate-300 font-bold text-[9px] shrink-0 cursor-pointer">Copy</button>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- CARD 2: WINDOWS & LINUX APP LAUNCHER -->
+        <div id="windows-linux" class="glass-card rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="text-3xl mb-2">🪟 🐧</div>
+            <h3 class="text-lg font-black text-slate-900 mb-1">Windows & Linux Desktop</h3>
+            <p class="text-xs text-slate-500 mb-4">Khởi chạy độc lập dưới dạng cửa sổ Desktop App không viền URL.</p>
+
+            <div class="space-y-3 mb-4 text-xs font-mono">
+              <!-- Windows Box -->
+              <div class="p-2.5 rounded-xl bg-slate-900 text-slate-200">
+                <div class="text-[10px] text-amber-400 font-bold mb-1 flex items-center gap-1">
+                  <span>🪟 Windows (Edge App Mode 1-Liner):</span>
+                </div>
+                <div class="text-[10px] overflow-x-auto select-all text-emerald-400">
+                  Start-Process msedge.exe -ArgumentList "--app=file://$PWD/app.html", "--window-size=1200,800"
+                </div>
+              </div>
+
+              <!-- Linux Box -->
+              <div class="p-2.5 rounded-xl bg-slate-900 text-slate-200">
+                <div class="text-[10px] text-cyan-400 font-bold mb-1 flex items-center gap-1">
+                  <span>🐧 Linux (Chromium App Mode):</span>
+                </div>
+                <div class="text-[10px] overflow-x-auto select-all text-emerald-400">
+                  chromium --app="file://$(pwd)/app.html" --window-size=1200,800
+                </div>
+              </div>
+
+              <!-- Python Webview Box -->
+              <div class="p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-700">
+                <div class="text-[10px] text-slate-900 font-bold mb-0.5">🐍 Hoặc chạy qua Python Webview (Cực nhẹ):</div>
+                <div class="text-[10px] text-slate-600 truncate">
+                  pip install pywebview && python3 -c "import webview; webview.create_window('Antigravity Monitor', 'app.html', width=1200, height=800); webview.start()"
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <a href="https://github.com/nconghau/AntigravityMonitor" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center shadow-xs transition-all flex items-center justify-center gap-2">
+              <span>🐙 Xem Mã Nguồn & Clone Trên GitHub</span>
+            </a>
+          </div>
+        </div>
+
       </div>
-
-      <!-- CARD 2: WEB & MOBILE (iPhone / Android / Tablet) -->
-      <div class="glass-card rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-        <div>
-          <div class="text-3xl mb-3">📱</div>
-          <h2 class="text-lg font-black text-slate-900 mb-1">Web & Mobile (PWA)</h2>
-          <p class="text-xs text-slate-500 mb-4">Truy cập tức thì từ iPhone, Android, iPad hoặc mọi trình duyệt web.</p>
-
-          <ul class="text-xs text-slate-600 space-y-2 mb-6">
-            <li class="flex items-center gap-1.5">✅ Thanh Quick Switcher 4 phòng vuốt 1 chạm</li>
-            <li class="flex items-center gap-1.5">✅ Tooltip tự căn chỉnh thông minh không bị tràn</li>
-            <li class="flex items-center gap-1.5">✅ Jukebox Lo-fi phát mượt mà trong background</li>
-            <li class="flex items-center gap-1.5">✅ Không cần cài đặt, thêm vào màn hình chính PWA</li>
-          </ul>
-        </div>
-
-        <div>
-          <a href="https://agy-monitor.surge.sh" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-black text-xs text-center shadow-xs transition-all flex items-center justify-center gap-2">
-            <span>🚀 Mở Web Trực Tuyến</span>
-          </a>
-          <p class="text-[10px] text-center text-slate-400 mt-2">https://agy-monitor.surge.sh</p>
-        </div>
-      </div>
-
-      <!-- CARD 3: WINDOWS & LINUX / DOCKER -->
-      <div class="glass-card rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-        <div>
-          <div class="text-3xl mb-3">🐧 🪟</div>
-          <h2 class="text-lg font-black text-slate-900 mb-1">Windows & Linux</h2>
-          <p class="text-xs text-slate-500 mb-4">Chạy độc lập như Desktop App hoặc deploy riêng miễn phí.</p>
-
-          <ul class="text-xs text-slate-600 space-y-2 mb-6">
-            <li class="flex items-center gap-1.5">✅ <b>Windows</b>: Mở dạng App với MS Edge / Chrome</li>
-            <li class="flex items-center gap-1.5">✅ <b>Linux</b>: Chạy qua Python Webview / Chromium App</li>
-            <li class="flex items-center gap-1.5">✅ <b>Free Surge Deploy</b>: 1 lệnh đưa lên domain riêng</li>
-            <li class="flex items-center gap-1.5">✅ Mã nguồn mở 100% trên GitHub</li>
-          </ul>
-        </div>
-
-        <div>
-          <a href="https://github.com/nconghau/AntigravityMonitor#windows--linux-desktop-guide" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-2">
-            <span>💻 Xem Hướng Dẫn Windows / Linux</span>
-          </a>
-          <p class="text-[10px] text-center text-slate-400 mt-2">Hỗ trợ Edge / Chrome App Mode & Surge Free</p>
-        </div>
-      </div>
-
     </div>
 
-    <!-- FEATURE HIGHLIGHTS -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10 text-xs">
+    <!-- FEATURE HIGHLIGHTS (4 CARDS) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14 text-xs">
       <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
-        <div class="text-xl mb-1">⚡</div>
-        <div class="font-extrabold text-slate-900 mb-1">DOM Diffing Không Chớp</div>
-        <div class="text-slate-500">Cập nhật in-place từng bot theo ID, mượt mà 60 FPS không bao giờ bị giật chớp màn hình.</div>
+        <div class="text-2xl mb-1.5">⚡</div>
+        <div class="font-black text-slate-900 mb-1">DOM Diffing Không Chớp</div>
+        <div class="text-slate-500 leading-relaxed">Cập nhật in-place từng bot theo ID, mượt mà 60 FPS không bao giờ bị giật chớp màn hình.</div>
       </div>
       <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
-        <div class="text-xl mb-1">📻</div>
-        <div class="font-extrabold text-slate-900 mb-1">Lo-fi Web Audio Jukebox</div>
-        <div class="text-slate-500">5 bài nhạc tổng hợp âm thanh thực tế, 100% offline không tốn băng thông internet.</div>
+        <div class="text-2xl mb-1.5">📻</div>
+        <div class="font-black text-slate-900 mb-1">Lo-fi Web Audio Jukebox</div>
+        <div class="text-slate-500 leading-relaxed">5 bài nhạc tổng hợp âm thanh thực tế, 100% offline không tốn 1 byte băng thông internet.</div>
       </div>
       <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
-        <div class="text-xl mb-1">🩺</div>
-        <div class="font-extrabold text-slate-900 mb-1">Bác Sĩ Cấu Hình Tự Động</div>
-        <div class="text-slate-500">Báo ngay nếu thiếu folder Antigravity và hỗ trợ 1 nút bấm tạo thư mục mẫu tức thì.</div>
+        <div class="text-2xl mb-1.5">🩺</div>
+        <div class="font-black text-slate-900 mb-1">Bác Sĩ Cấu Hình Tự Động</div>
+        <div class="text-slate-500 leading-relaxed">Tự quét và cảnh báo nếu thiếu folder Antigravity, hỗ trợ 1 nút bấm tạo thư mục mẫu tức thì.</div>
       </div>
       <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
-        <div class="text-xl mb-1">🧠</div>
-        <div class="font-extrabold text-slate-900 mb-1">Theo Dõi Quota & Models</div>
-        <div class="text-slate-500">Hiển thị % Quota còn lại, bảng đo lường Gemini 3.8 Flash, Claude 4.6, GPT-OSS 120B.</div>
+        <div class="text-2xl mb-1.5">🎨</div>
+        <div class="font-black text-slate-900 mb-1">Studio Customizer (Phím C)</div>
+        <div class="text-slate-500 leading-relaxed">Tự do đổi 6 theme màu Playful, thêm luồng nhạc stream/upload, và tạo bot mới dễ dàng.</div>
+      </div>
+    </div>
+
+    <!-- SELF-HOST SURGE GUIDE -->
+    <div class="glass-card rounded-3xl p-6 border border-slate-200 shadow-xs mb-10 text-xs">
+      <div class="flex items-center gap-2 mb-2 font-black text-sm text-slate-900">
+        <span>🌐</span> <span>Tự Deploy Miễn Phí Lên Surge.sh Cho Bản Thân Hoặc Team</span>
+      </div>
+      <p class="text-slate-500 mb-3">Bạn có thể deploy Studio riêng của mình lên domain miễn phí với 3 bước đơn giản:</p>
+      <div class="bg-slate-900 text-emerald-400 p-3 rounded-xl font-mono text-[11px] space-y-1 overflow-x-auto select-all">
+        <div>npm install --global surge</div>
+        <div>git clone https://github.com/nconghau/AntigravityMonitor.git && cd AntigravityMonitor</div>
+        <div>surge . --domain my-ai-studio.surge.sh</div>
       </div>
     </div>
 
   </main>
 
-  <!-- FOOTER -->
+  <!-- FOOTER (CLEAN & NO ONLINE WEB LINK) -->
   <footer class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
     <div>
-      Phát triển bởi <a href="https://github.com/nconghau" target="_blank" class="font-bold text-amber-700 hover:underline">@nconghau</a> • Dành cho cộng đồng AI Developers
+      Phát triển với ❤️ bởi <a href="https://github.com/nconghau" target="_blank" class="font-bold text-amber-700 hover:underline">@nconghau</a> • Dành cho cộng đồng AI Developers
     </div>
     <div class="flex items-center gap-4">
       <a href="https://github.com/nconghau/AntigravityMonitor" target="_blank" class="hover:text-slate-800">GitHub Repo</a>
       <span>•</span>
-      <a href="https://agy-monitor.surge.sh" target="_blank" class="hover:text-slate-800">Live Web App</a>
+      <a href="https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg" class="hover:text-slate-800">Tải macOS .DMG</a>
+      <span>•</span>
+      <a href="https://github.com/nconghau/AntigravityMonitor/blob/main/LICENSE" target="_blank" class="hover:text-slate-800">MIT License</a>
     </div>
   </footer>
 
