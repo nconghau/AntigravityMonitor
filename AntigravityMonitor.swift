@@ -60,6 +60,20 @@ class WebKitBridge: NSObject, WKScriptMessageHandler {
             try? FileManager.default.createDirectory(atPath: targetPath, withIntermediateDirectories: true, attributes: nil)
             let brainUrl = URL(fileURLWithPath: targetPath)
             NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: brainUrl.path)
+        } else if action == "openAntigravitySettings" {
+            DispatchQueue.main.async {
+                let script = """
+                tell application "Antigravity" to activate
+                delay 0.15
+                tell application "System Events"
+                    keystroke "," using {command down}
+                end tell
+                """
+                if let appleScript = NSAppleScript(source: script) {
+                    var error: NSDictionary?
+                    appleScript.executeAndReturnError(&error)
+                }
+            }
         }
     }
 }
@@ -124,15 +138,54 @@ class AgentScanner: ObservableObject {
         }
     }
 
-    private func getActiveGoogleAccount() -> String {
+    private func getRealAccountProfile() -> (name: String, email: String, avatar: String, plan: String, upgradeUrl: String) {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        let accountsUrl = URL(fileURLWithPath: "\(home)/.gemini/google_accounts.json")
-        if let data = try? Data(contentsOf: accountsUrl),
-           let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-           let active = json["active"] as? String, !active.isEmpty {
-            return active
+        let dbPath = "\(home)/Library/Application Support/Antigravity/User/globalStorage/state.vscdb"
+        var name = "hau ncong"
+        var email = "nconghauu@gmail.com"
+        var avatar = "https://lh3.googleusercontent.com/a/ACg8ocJ5q5ikI7wl-oN9sNk9kx-D-WIpWFKacGMyWlMrnybUWq7nx1Wt=s96-c"
+        let plan = "Google AI Pro"
+        let upgradeUrl = "https://antigravity.google/g1-upgrade"
+
+        // Check if sqlite database exists
+        guard FileManager.default.fileExists(atPath: dbPath) else {
+            return (name, email, avatar, plan, upgradeUrl)
         }
-        return ProcessInfo.processInfo.environment["ANTIGRAVITY_ACCOUNT"] ?? "\(NSUserName())@gmail.com"
+
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/sqlite3")
+        process.arguments = [
+            dbPath,
+            "SELECT key, value FROM ItemTable WHERE key IN ('antigravityAuthStatus', 'antigravity.profileUrl');"
+        ]
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        try? process.run()
+        process.waitUntilExit()
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        if let output = String(data: data, encoding: .utf8) {
+            let lines = output.components(separatedBy: "\n")
+            for line in lines {
+                let parts = line.components(separatedBy: "|")
+                if parts.count >= 2 {
+                    let key = parts[0]
+                    let val = parts.dropFirst().joined(separator: "|")
+                    if key == "antigravity.profileUrl", !val.isEmpty {
+                        avatar = val.trimmingCharacters(in: .whitespacesAndNewlines)
+                    } else if key == "antigravityAuthStatus", let jsonData = val.data(using: .utf8),
+                              let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] {
+                        if let n = json["name"] as? String, !n.isEmpty { name = n }
+                        if let e = json["email"] as? String, !e.isEmpty { email = e }
+                    }
+                }
+            }
+        }
+        return (name, email, avatar, plan, upgradeUrl)
+    }
+
+    private func getActiveGoogleAccount() -> String {
+        return getRealAccountProfile().email
     }
 
     func getWorkspaceForAgent(agentId: String) -> String {
@@ -172,48 +225,48 @@ class AgentScanner: ObservableObject {
             "statusMessage": (ideBrainExists || desktopBrainExists) ? "Valid Antigravity engine active and ready." : "No Antigravity brain configuration found on this machine."
         ]
 
-        var totalTokensUsed = 0
-        for a in agentsJson {
-            totalTokensUsed += (a["tokensEst"] as? Int) ?? 1200
-        }
-        let maxTokens = 1000000
-        let usedPct = min(100, max(0, Int((Double(totalTokensUsed) / Double(maxTokens)) * 100)))
-        let remainingPct = max(5, 100 - usedPct)
-        let remainingCredits = max(50, 1000 - Int(Double(totalTokensUsed) / 1000.0))
-
-        let userAccount = getActiveGoogleAccount()
+        let profile = getRealAccountProfile()
         var accountChanged = false
-        if let last = lastObservedAccount, last != userAccount {
+        if let last = lastObservedAccount, last != profile.email {
             accountChanged = true
         }
-        lastObservedAccount = userAccount
+        lastObservedAccount = profile.email
 
         let quota: [String: Any] = [
-            "account": userAccount,
+            "name": profile.name,
+            "account": profile.email,
+            "avatar": profile.avatar,
+            "plan": profile.plan,
+            "tier": profile.plan,
+            "upgradeUrl": profile.upgradeUrl,
             "accountChanged": accountChanged,
-            "tier": "Google AI Pro",
-            "credits": remainingCredits,
-            "remainingPct": remainingPct,
-            "usedPct": usedPct,
-            "totalTokensUsed": totalTokensUsed,
-            "maxTokens": maxTokens,
-            "resetTime": "00:00 UTC (Daily)",
-            "rateLimit": "High Priority • Unlimited speed",
-            "activeModel": "Gemini 3.8 Flash (High)",
+            "rateLimitNotice": "Rate limits are managed server-side by Google AI (Weekly & 5-Hour Limits)",
             "models": [
                 [
-                    "name": "Gemini 3.8 Flash (High)",
+                    "name": "Gemini 3.1 Pro (High)",
                     "provider": "Google DeepMind",
                     "context": "1,000,000 tokens (1M)",
-                    "remainingPct": remainingPct,
                     "status": "Active (Default)",
-                    "speed": "⚡ Ultra Fast (~120 tps)"
+                    "speed": "⚡ Ultra Fast Reasoning"
+                ],
+                [
+                    "name": "Gemini 3.1 Pro (Low)",
+                    "provider": "Google DeepMind",
+                    "context": "1,000,000 tokens (1M)",
+                    "status": "Available",
+                    "speed": "⚡ Fast Standard"
+                ],
+                [
+                    "name": "Gemini 3 Flash",
+                    "provider": "Google DeepMind",
+                    "context": "1,000,000 tokens (1M)",
+                    "status": "Available",
+                    "speed": "⚡ Ultra Low Latency"
                 ],
                 [
                     "name": "Claude Sonnet 4.6 (Thinking)",
                     "provider": "Anthropic",
                     "context": "200,000 tokens",
-                    "remainingPct": 85,
                     "status": "Available",
                     "speed": "🧠 Deep Reasoning (Thinking)"
                 ],
@@ -221,7 +274,6 @@ class AgentScanner: ObservableObject {
                     "name": "Claude Opus 4.6 (Thinking)",
                     "provider": "Anthropic",
                     "context": "200,000 tokens",
-                    "remainingPct": 80,
                     "status": "Available",
                     "speed": "🏛️ System Architecture"
                 ],
@@ -229,9 +281,8 @@ class AgentScanner: ObservableObject {
                     "name": "GPT-OSS 120B (Medium)",
                     "provider": "Open Weights",
                     "context": "128,000 tokens",
-                    "remainingPct": 92,
                     "status": "Available",
-                    "speed": "⚙️ Standard"
+                    "speed": "⚙️ Open Weights"
                 ]
             ]
         ]

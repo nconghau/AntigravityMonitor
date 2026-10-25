@@ -212,6 +212,28 @@
     .pop-in { animation: pop-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     .float-item { animation: float-up-fade 1.5s forwards ease-out; }
 
+    /* Vibe Coding Sprint Tracker polish */
+    #modal-sprint-countdown.sprint-focus-mode {
+      background: rgba(18, 12, 8, 0.78);
+      padding: 0;
+    }
+    #modal-sprint-countdown.sprint-focus-mode > div {
+      width: min(1180px, 100vw);
+      max-width: none;
+      max-height: 100vh;
+      height: 100vh;
+      border-radius: 0;
+      padding: clamp(18px, 4vw, 42px);
+    }
+    .sprint-hero {
+      background: radial-gradient(circle at 82% 20%, rgba(255,255,255,.28), transparent 30%), linear-gradient(135deg, #f59e0b 0%, #f97316 45%, #e11d48 100%);
+      box-shadow: 0 18px 42px -22px rgba(225, 29, 72, .65);
+    }
+    .sprint-hero-digits { font-variant-numeric: tabular-nums; letter-spacing: .04em; text-shadow: 0 3px 18px rgba(124, 45, 18, .22); }
+    .sprint-focus-mode .sprint-hero-digits { font-size: clamp(3.5rem, 11vw, 8rem); line-height: .95; }
+    .sprint-agent-row { transition: transform .2s ease, box-shadow .2s ease; }
+    .sprint-agent-row:hover { transform: translateY(-2px); box-shadow: 0 8px 18px -12px rgba(0,0,0,.35); }
+
     /* House Floor texture */
     .house-floor {
       background-color: var(--floor-color);
@@ -748,10 +770,10 @@
         <span id="lang-current-label" class="font-extrabold tracking-wide">EN</span>
       </button>
 
-      <!-- Models & Quota Hub Trigger (Shows % Quota Remaining) -->
-      <button onclick="toggleModelsQuotaModal()" id="btn-models-quota" class="px-2.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold border border-purple-200 shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap" title="View Available Models & Remaining Quota % (Shortcut U)" data-i18n-title="quota_btn_title">
-        <span>🧠</span>
-        <span id="header-quota-pill">85% Quota</span>
+      <!-- Models & Account Hub Trigger -->
+      <button onclick="toggleModelsQuotaModal()" id="btn-models-quota" class="px-2.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold border border-purple-200 shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap" title="Models & Account Profile (Shortcut U)" data-i18n-title="quota_btn_title">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span id="header-quota-pill">Google AI Pro</span>
       </button>
 
       <!-- Sprint Task Countdown Trigger (Shows Current Goal & Remaining Time) -->
@@ -1307,144 +1329,96 @@
           </div>
           <div>
             <h3 class="font-extrabold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2">
-              <span data-i18n="quota_header_title">Models System & Token Usage</span>
+              <span data-i18n="quota_header_title">Models & Usage</span>
               <span class="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-300">Live Sync</span>
             </h3>
-            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)]" data-i18n="quota_header_sub">Antigravity account info, service tier & token consumption</p>
+            <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)]" data-i18n="quota_header_sub">Manage your model quota, plan and account settings</p>
           </div>
         </div>
-        <button onclick="toggleModelsQuotaModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--floor-color)] hover:bg-zinc-200 text-zinc-600 font-bold flex items-center justify-center text-xs transition-colors shrink-0">
+        <button onclick="toggleModelsQuotaModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--floor-color)] hover:bg-zinc-200 text-zinc-600 font-bold flex items-center justify-center text-xs transition-colors shrink-0 cursor-pointer">
           ✕
         </button>
       </div>
 
       <!-- Scrollable Body -->
       <div class="overflow-y-auto space-y-3 pr-1">
-        <!-- Prominent % Quota Remaining Progress Card -->
-        <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50 to-indigo-50 border-2 border-emerald-300 shadow-xs space-y-2.5">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="text-xl">⚡</span>
+        <!-- Action Hero Banner: Direct Redirect to Antigravity Desktop Settings > Models -->
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white shadow-md space-y-2.5">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl shrink-0">
+                ⚙️
+              </div>
               <div>
-                <div class="text-[10px] font-mono uppercase tracking-wider text-emerald-800 font-extrabold" data-i18n="quota_limit_title">Daily Available Limit (Quota)</div>
-                <div class="text-base sm:text-lg font-black text-emerald-950 flex items-center gap-2">
-                  <span id="quota-modal-pct-text">Remaining: 85%</span>
-                  <span class="text-xs font-mono font-normal text-zinc-600" id="quota-modal-tokens-detail">(850k / 1.0M tokens)</span>
-                </div>
+                <h4 class="font-black text-xs sm:text-sm flex items-center gap-1.5">
+                  <span data-i18n="quota_redirect_title">Xem Trực Tiếp Trên Antigravity Desktop</span>
+                </h4>
+                <p class="text-[10px] sm:text-[11px] text-purple-100 font-medium leading-relaxed" data-i18n="quota_redirect_sub">
+                  Mở Settings > Models để xem 100% thời gian thực Weekly Limit & 5-Hour Limit.
+                </p>
               </div>
             </div>
-            <span class="px-2.5 py-1 rounded-full bg-emerald-200 text-emerald-900 font-black text-xs border border-emerald-300" id="quota-modal-badge">
-              🟢 Plentiful
-            </span>
+            <button type="button" onclick="openAntigravitySettingsDirect()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-purple-50 active:scale-95 text-purple-950 font-black text-xs shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer">
+              <span>🚀</span> <span data-i18n="quota_btn_open_settings">Mở Settings > Models</span>
+            </button>
           </div>
 
-          <!-- Visual Linear Progress Bar -->
-          <div class="w-full bg-emerald-200/60 rounded-full h-3 overflow-hidden p-0.5 border border-emerald-300/80">
-            <div id="quota-modal-progress-bar" class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-700 shadow-sm" style="width: 85%"></div>
-          </div>
-
-          <div class="flex items-center justify-between text-[10px] text-zinc-600 font-mono">
-            <span>Used: <b class="text-purple-700 font-bold" id="quota-modal-used-text">15% (~150k tokens)</b></span>
-            <span>Auto-reset: <b class="text-indigo-700 font-bold">00:00 UTC (Daily)</b></span>
+          <div class="text-[10px] text-purple-200/90 bg-black/15 rounded-xl px-2.5 py-1.5 flex items-center justify-between">
+            <span class="flex items-center gap-1">💡 <span data-i18n="quota_rate_limit_notice">Hạn mức được Google quản lý server-side theo chu kỳ 5 giờ & hàng tuần.</span></span>
+            <span class="font-mono text-emerald-300 font-bold" id="quota-plan-badge-pill">Google AI Pro</span>
           </div>
         </div>
 
-        <!-- Account & Tier Card -->
-        <div class="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-purple-500/10 via-amber-500/10 to-indigo-500/10 border border-purple-200/80 flex flex-wrap items-center justify-between gap-2.5 shadow-xs">
-          <div class="space-y-1">
-            <div class="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-purple-700 font-bold" data-i18n="quota_account_title">Your AI Account</div>
-            <div class="flex items-center gap-2">
-              <div class="text-xs font-bold" id="quota-account">developer@antigravity.ai</div>
-              <button onclick="manualResetAccountWorkspace()" class="px-2 py-0.5 rounded-lg bg-purple-200 hover:bg-purple-300 text-purple-900 font-bold text-[10px] transition-all cursor-pointer shadow-2xs flex items-center gap-1" title="Reset workspace & scan fresh processes for this account">
-                <span>🔄</span> <span data-i18n="btn_sync_account">Reset / Sync Account</span>
+        <!-- Real Account & Plan Card (Matching Antigravity Desktop Settings) -->
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-[var(--floor-color)]/70 border border-[var(--card-border)] space-y-3 shadow-2xs">
+          <!-- Row 1: Plan & Upgrade -->
+          <div class="flex items-center justify-between pb-2.5 border-b border-[var(--card-border)]">
+            <div>
+              <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold" data-i18n="quota_plan_header">Plan</div>
+              <div class="text-xs sm:text-sm font-black text-zinc-900 flex items-center gap-2">
+                <span>Your Plan:</span>
+                <span class="px-2 py-0.5 rounded-lg bg-purple-100 text-purple-900 font-extrabold text-xs border border-purple-200" id="quota-plan-name">Google AI Pro</span>
+              </div>
+              <p class="text-[10px] text-zinc-500 mt-0.5" data-i18n="quota_plan_sub">You can upgrade to a Google AI Ultra plan to receive higher rate limits.</p>
+            </div>
+            <a id="quota-upgrade-btn" href="https://antigravity.google/g1-upgrade" target="_blank" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-2xs transition-colors shrink-0">
+              Upgrade
+            </a>
+          </div>
+
+          <!-- Row 2: User Account Profile (Name, Email, Avatar) -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <img id="quota-modal-avatar" src="https://lh3.googleusercontent.com/a/ACg8ocJ5q5ikI7wl-oN9sNk9kx-D-WIpWFKacGMyWlMrnybUWq7nx1Wt=s96-c" class="w-10 h-10 rounded-full object-cover border-2 border-purple-300 shadow-2xs" onerror="this.src='./assets/dev_bot.jpg'"/>
+              <div>
+                <div class="text-xs font-black text-zinc-900" id="quota-modal-user-name">hau ncong</div>
+                <div class="text-[11px] font-mono text-zinc-500" id="quota-modal-user-email">nconghauu@gmail.com</div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black border border-emerald-300 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Active Account</span>
+              </span>
+              <button onclick="manualResetAccountWorkspace()" class="px-2 py-1 rounded-lg bg-zinc-200 hover:bg-zinc-300 text-zinc-700 font-bold text-[10px] transition-colors cursor-pointer" title="Switch or re-sync account">
+                🔄 Sync
               </button>
             </div>
-            <div class="flex items-center gap-2 text-[10px]">
-              <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 font-extrabold border border-purple-300" id="quota-tier">
-                Google AI Pro
-              </span>
-              <span class="text-emerald-600 font-bold flex items-center gap-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> High Priority Active
-              </span>
-            </div>
-          </div>
-          <div class="text-left sm:text-right">
-            <div class="text-[9px] sm:text-[10px] text-zinc-500 font-mono" data-i18n="quota_credits_title">Available Credits</div>
-            <div class="text-base sm:text-lg font-extrabold text-purple-700 font-mono" id="quota-credits">1,000</div>
-            <div class="text-[9px] sm:text-[10px] text-emerald-600 font-bold" data-i18n="quota_unlimited_speed">Unlimited Speed</div>
           </div>
         </div>
 
         <!-- Available Models Grid -->
-        <div>
-          <div class="text-xs font-extrabold mb-2 flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-              <span>🚀</span> <span data-i18n="quota_models_title">Models Available in Antigravity</span>
-            </div>
-            <span class="text-[10px] font-mono text-[var(--text-muted)]" data-i18n="quota_models_ready">4 Models Ready</span>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-xs font-extrabold text-zinc-900 flex items-center gap-1.5">
+              <span>🚀</span> <span data-i18n="quota_models_title">Models Available in Your Plan</span>
+            </span>
+            <span class="text-[10px] font-mono text-zinc-500" id="quota-models-count">6 Models Ready</span>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="quota-models-list">
-            <div class="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50/50 space-y-1">
-              <div class="flex items-center justify-between">
-                <span class="font-extrabold text-xs text-emerald-900">Gemini 3.8 Flash (High)</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-200 text-emerald-900 font-bold">Default</span>
-              </div>
-              <div class="text-[10px] text-zinc-600 flex items-center justify-between font-mono">
-                <span>⚡ Ultra Fast (~120 tps)</span>
-                <span class="font-bold text-indigo-700">1M Context</span>
-              </div>
-            </div>
-            <div class="p-2.5 rounded-xl border border-[var(--card-border)] bg-white space-y-1">
-              <div class="flex items-center justify-between">
-                <span class="font-extrabold text-xs text-[var(--text-main)]">Claude Sonnet 4.6</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">Thinking</span>
-              </div>
-              <div class="text-[10px] text-zinc-600 flex items-center justify-between font-mono">
-                <span>🧠 Deep Reasoning</span>
-                <span class="font-bold text-indigo-700">200k Context</span>
-              </div>
-            </div>
-            <div class="p-2.5 rounded-xl border border-[var(--card-border)] bg-white space-y-1">
-              <div class="flex items-center justify-between">
-                <span class="font-extrabold text-xs text-[var(--text-main)]">Claude Opus 4.6</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-800 font-bold">Architect</span>
-              </div>
-              <div class="text-[10px] text-zinc-600 flex items-center justify-between font-mono">
-                <span>🏛️ Large Architecture</span>
-                <span class="font-bold text-indigo-700">200k Context</span>
-              </div>
-            </div>
-            <div class="p-2.5 rounded-xl border border-[var(--card-border)] bg-white space-y-1">
-              <div class="flex items-center justify-between">
-                <span class="font-extrabold text-xs text-[var(--text-main)]">GPT-OSS 120B</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 font-bold">Medium</span>
-              </div>
-              <div class="text-[10px] text-zinc-600 flex items-center justify-between font-mono">
-                <span>⚙️ Open Weights</span>
-                <span class="font-bold text-indigo-700">128k Context</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Real-time Token Usage Breakdown -->
-        <div>
-          <div class="text-xs font-extrabold mb-2 flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-              <span>📊</span> <span data-i18n="quota_session_tokens">Full Session Token Usage (Real-time)</span>
-            </div>
-            <span class="text-[11px] font-mono font-bold text-purple-700" id="quota-total-tokens-sum">~180.9k tokens</span>
-          </div>
-          <div class="border border-[var(--card-border)] rounded-2xl overflow-hidden bg-[var(--floor-color)]/30">
-            <div class="grid grid-cols-12 text-[10px] font-bold text-[var(--text-muted)] bg-[var(--floor-color)] px-3 py-2 border-b border-[var(--card-border)]">
-              <span class="col-span-5" data-i18n="quota_table_agent">Agent & Project</span>
-              <span class="col-span-3" data-i18n="quota_table_model">AI Model</span>
-              <span class="col-span-2 text-right">Tokens</span>
-              <span class="col-span-2 text-right">Context</span>
-            </div>
-            <div class="divide-y divide-[var(--card-border)]" id="quota-usage-table">
-              <!-- Dynamically populated rows -->
-            </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="quota-models-list">
+            <!-- Dynamically populated without fake tokens -->
           </div>
         </div>
       </div>
@@ -1452,7 +1426,7 @@
       <!-- Footer -->
       <div class="pt-2.5 sm:pt-3 border-t border-[var(--card-border)] mt-3 flex items-center justify-between text-[11px] text-[var(--text-muted)]">
         <span class="hidden sm:inline">Shortcut: Press <kbd class="px-1.5 py-0.5 rounded bg-zinc-200 text-zinc-700 font-mono font-bold">U</kbd> to toggle</span>
-        <button onclick="toggleModelsQuotaModal()" class="w-full sm:w-auto px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors">
+        <button onclick="toggleModelsQuotaModal()" class="w-full sm:w-auto px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold shadow-xs transition-colors cursor-pointer">
           <span data-i18n="btn_close">Close</span>
         </button>
       </div>
@@ -1856,7 +1830,7 @@
 
   <!-- MODAL: VIBE CODING SPRINT & TASK COUNTDOWN (Tối đa 4 task lớn + Hẹn giờ hoàn thành) -->
   <div id="modal-sprint-countdown" class="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 hidden" onclick="if(event.target === this) closeSprintModal()">
-    <div class="bg-[var(--card-surface)] text-[var(--text-main)] rounded-3xl border-2 border-[var(--card-border)] shadow-2xl max-w-xl w-full p-3.5 sm:p-5 overflow-hidden pop-in flex flex-col max-h-[92vh] sm:max-h-[88vh]">
+    <div class="bg-[var(--card-surface)] text-[var(--text-main)] rounded-3xl border-2 border-[var(--card-border)] shadow-2xl max-w-5xl w-full p-3.5 sm:p-5 overflow-hidden pop-in flex flex-col max-h-[94vh] sm:max-h-[92vh]">
       <!-- Header -->
       <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-[var(--card-border)] mb-3">
         <div class="flex items-center gap-2.5">
@@ -1871,13 +1845,34 @@
             <p class="text-[10px] sm:text-[11px] text-[var(--text-muted)] font-medium" data-i18n="sprint_header_sub">Tối đa 4 task lớn • Hẹn giờ hoàn thành để kịp chuyển task khác!</p>
           </div>
         </div>
-        <button onclick="closeSprintModal()" class="w-8 h-8 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-800 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer" title="Close (Esc)">
-          ✕
-        </button>
+        <div class="flex items-center gap-1.5">
+          <button onclick="toggleSprintFocusMode()" id="btn-sprint-focus" class="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-200 text-[10px] sm:text-xs font-black transition-colors cursor-pointer" title="Focus countdown">
+            ⛶ <span class="hidden sm:inline">Focus</span>
+          </button>
+          <button onclick="closeSprintModal()" class="w-8 h-8 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-800 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer" title="Close (Esc)">
+            ✕
+          </button>
+        </div>
       </div>
 
       <!-- Main Body: Scrollable -->
       <div class="flex-1 overflow-y-auto space-y-3.5 pr-1 text-xs">
+        <!-- Focus Countdown Hero -->
+        <div id="sprint-hero" class="sprint-hero rounded-3xl p-4 sm:p-6 text-white relative overflow-hidden">
+          <div class="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div class="min-w-0">
+              <div class="text-[10px] uppercase tracking-[.22em] font-black text-white/75">CURRENT FOCUS</div>
+              <div id="sprint-hero-title" class="mt-1 text-base sm:text-xl font-black truncate">No active sprint</div>
+              <div id="sprint-hero-target" class="mt-1 text-[11px] text-white/80 font-medium">Create a milestone to start your flow.</div>
+            </div>
+            <div class="text-left sm:text-right shrink-0">
+              <div id="sprint-hero-countdown" class="sprint-hero-digits text-5xl sm:text-7xl font-black leading-none">--:--</div>
+              <div id="sprint-hero-status" class="mt-1 text-[10px] uppercase tracking-wider font-black text-white/80">READY</div>
+            </div>
+          </div>
+          <div class="absolute -right-5 -bottom-10 text-[130px] opacity-15 rotate-12">🎯</div>
+        </div>
+
         <!-- Section 1: Active Sprint Tasks List (0 - 4 cards) -->
         <div class="space-y-2">
           <div class="flex items-center justify-between px-1">
@@ -1893,8 +1888,20 @@
           </div>
         </div>
 
-        <!-- Section 2: Create New Sprint Task Form (Hidden when >= 4 tasks) -->
-        <div id="sprint-create-form-wrap" class="p-3 sm:p-3.5 rounded-2xl bg-[var(--floor-color)]/80 border-2 border-dashed border-[var(--card-border)] space-y-3">
+        <!-- Agent activity snapshot -->
+        <div class="p-3 sm:p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900 flex items-center gap-1.5">🤖 <span>Agent activity</span></span>
+            <span id="sprint-agent-summary" class="text-[10px] text-indigo-700 font-bold">0 working</span>
+          </div>
+          <div id="sprint-agent-activity" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
+        </div>
+
+        <!-- Section 2: Create New Sprint Task Form (opened on demand) -->
+        <div class="flex justify-end">
+          <button id="btn-sprint-add-new" type="button" onclick="toggleSprintCreateForm()" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 text-[11px] font-black transition-colors cursor-pointer">＋ Add New Sprint</button>
+        </div>
+        <div id="sprint-create-form-wrap" class="hidden p-3 sm:p-3.5 rounded-2xl bg-[var(--floor-color)]/80 border-2 border-dashed border-[var(--card-border)] space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-[11px] font-extrabold text-amber-950 flex items-center gap-1.5">
               <span>⚡</span> <span data-i18n="sprint_form_title">Thêm Task Mục Tiêu Mới</span>
@@ -2229,23 +2236,17 @@
         step_status_idle: "○ IDLE",
 
         // Models & Quota Modal
-        quota_header_title: "Models System & Token Usage",
-        quota_header_sub: "Antigravity account info, service tier & token consumption",
-        quota_limit_title: "Daily Available Limit (Quota)",
-        quota_remaining_label: "Remaining:",
-        quota_badge_comfortable: "🟢 Very Comfortable",
-        quota_used_label: "Used:",
-        quota_auto_refresh: "Auto refresh: 00:00 UTC (Daily)",
-        quota_account_title: "Your AI Account",
-        quota_credits_title: "Available Credits",
-        quota_unlimited_speed: "Unlimited Speed",
-        quota_models_title: "Models Available in Antigravity",
+        quota_btn_title: "Models & Account Profile (Shortcut U)",
+        quota_header_title: "Models & Usage",
+        quota_header_sub: "Manage your model quota, plan and account settings",
+        quota_redirect_title: "View Live in Antigravity Desktop",
+        quota_redirect_sub: "Open Settings > Models to check 100% real-time Weekly Limit & 5-Hour Limit.",
+        quota_btn_open_settings: "Open Settings > Models",
+        quota_rate_limit_notice: "Rate limits are managed server-side by Google AI on 5-hour & weekly cycles.",
+        quota_plan_header: "Plan",
+        quota_plan_sub: "You can upgrade to a Google AI Ultra plan to receive higher rate limits.",
+        quota_models_title: "Models Available in Your Plan",
         quota_models_ready: "{count} Models Ready",
-        quota_table_agent: "Agent",
-        quota_table_model: "AI Model",
-        quota_table_tokens: "Est Tokens",
-        quota_table_context: "Context %",
-        quota_footer_sync: "Auto-synced with Google AI Studio & Antigravity IDE",
         quota_btn_gotit: "Got It",
 
         // Diagnostics Modal
@@ -2498,23 +2499,17 @@
         step_status_idle: "○ NGHỈ NGƠI",
 
         // Models & Quota Modal
-        quota_header_title: "Hệ Thống Models & Token Usage",
-        quota_header_sub: "Thông tin tài khoản Antigravity, gói dịch vụ & lượng token tiêu thụ",
-        quota_limit_title: "Hạn Mức Khả Dụng Trong Ngày (Quota)",
-        quota_remaining_label: "Còn lại:",
-        quota_badge_comfortable: "🟢 Plentiful",
-        quota_used_label: "Đã dùng:",
-        quota_auto_refresh: "Tự động làm mới: 00:00 UTC (Hàng ngày)",
-        quota_account_title: "Tài Khoản AI Của Bạn",
-        quota_credits_title: "Credits Khả Dụng",
-        quota_unlimited_speed: "Không giới hạn tốc độ",
-        quota_models_title: "Models Khả Dụng Trong Antigravity",
+        quota_btn_title: "Xem Models & Tài Khoản (Phím tắt U)",
+        quota_header_title: "Models & Hạn Mức Sử Dụng",
+        quota_header_sub: "Quản lý mô hình AI, gói dịch vụ và cài đặt tài khoản",
+        quota_redirect_title: "Xem Trực Tiếp Trên Antigravity Desktop",
+        quota_redirect_sub: "Mở Settings > Models để xem 100% thời gian thực Weekly Limit & 5-Hour Limit.",
+        quota_btn_open_settings: "Mở Settings > Models",
+        quota_rate_limit_notice: "Hạn mức được Google quản lý server-side theo chu kỳ 5 giờ & hàng tuần.",
+        quota_plan_header: "Gói Dịch Vụ",
+        quota_plan_sub: "Bạn có thể nâng cấp lên Google AI Ultra để nhận hạn mức cao nhất.",
+        quota_models_title: "Models Khả Dụng Trong Gói Của Bạn",
         quota_models_ready: "{count} Models Sẵn Sàng",
-        quota_table_agent: "Agent",
-        quota_table_model: "Mô hình AI",
-        quota_table_tokens: "Tokens Ước Tính",
-        quota_table_context: "Context %",
-        quota_footer_sync: "Tự động đồng bộ với Google AI Studio & Antigravity IDE",
         quota_btn_gotit: "Đã Hiểu",
 
         // Diagnostics Modal
@@ -4082,6 +4077,8 @@
     // Maximum 4 major tasks + target completion time
     // ==========================================
     let isSprintModalOpen = false;
+    let isSprintCreateFormOpen = false;
+    let isSprintFocusMode = false;
     let sprintTasks = [];
 
     // Helper: format target time as HH:mm
@@ -4161,19 +4158,41 @@
       if (modal) {
         modal.classList.remove('hidden');
         renderSprintTasks();
+        renderSprintAgentActivity();
         if (soundEngine && soundEngine.enabled) soundEngine.playMechanicalTyping();
       }
     }
 
     function closeSprintModal() {
       isSprintModalOpen = false;
+      isSprintFocusMode = false;
       const modal = document.getElementById('modal-sprint-countdown');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('sprint-focus-mode');
+      }
     }
 
     function toggleSprintModal() {
       if (isSprintModalOpen) closeSprintModal();
       else openSprintModal();
+    }
+
+    function toggleSprintFocusMode() {
+      isSprintFocusMode = !isSprintFocusMode;
+      const modal = document.getElementById('modal-sprint-countdown');
+      const btn = document.getElementById('btn-sprint-focus');
+      if (modal) modal.classList.toggle('sprint-focus-mode', isSprintFocusMode);
+      if (btn) btn.innerHTML = isSprintFocusMode ? '↙ <span class="hidden sm:inline">Exit Focus</span>' : '⛶ <span class="hidden sm:inline">Focus</span>';
+    }
+
+    function toggleSprintCreateForm(forceState = null) {
+      isSprintCreateFormOpen = forceState === null ? !isSprintCreateFormOpen : forceState;
+      const form = document.getElementById('sprint-create-form-wrap');
+      const btn = document.getElementById('btn-sprint-add-new');
+      if (form) form.classList.toggle('hidden', !isSprintCreateFormOpen);
+      if (btn) btn.innerHTML = isSprintCreateFormOpen ? '− Close Add New' : '＋ Add New Sprint';
+      if (isSprintCreateFormOpen) document.getElementById('sprint-input-title')?.focus();
     }
 
     function setSprintTitleSuggestion(title) {
@@ -4236,6 +4255,7 @@
 
       if (titleInput) titleInput.value = '';
       initSprintFormDefaults();
+      toggleSprintCreateForm(false);
 
       if (soundEngine && soundEngine.enabled) soundEngine.playMechanicalTyping();
       spawnFloatingEmoji((currentLang === 'vi' ? '🚀 Đã kích hoạt đếm ngược: ' : '🚀 Sprint started: ') + rawTitle);
@@ -4312,7 +4332,7 @@
           formWrap.classList.add('hidden');
           limitBanner.classList.remove('hidden');
         } else {
-          formWrap.classList.remove('hidden');
+          formWrap.classList.toggle('hidden', !isSprintCreateFormOpen);
           limitBanner.classList.add('hidden');
         }
       }
@@ -4327,6 +4347,8 @@
             <p class="text-[11px] text-zinc-500 max-w-sm mx-auto leading-relaxed">${t('sprint_empty_desc', 'Hãy tạo mục tiêu bên dưới để giữ flow tập trung cao độ!')}</p>
           </div>
         `;
+        renderSprintHero();
+        renderSprintAgentActivity();
         return;
       }
 
@@ -4435,6 +4457,52 @@
       });
 
       listEl.innerHTML = html;
+      renderSprintHero();
+      renderSprintAgentActivity();
+    }
+
+    function renderSprintHero() {
+      const titleEl = document.getElementById('sprint-hero-title');
+      const targetEl = document.getElementById('sprint-hero-target');
+      const countdownEl = document.getElementById('sprint-hero-countdown');
+      const statusEl = document.getElementById('sprint-hero-status');
+      if (!titleEl || !targetEl || !countdownEl || !statusEl) return;
+      const task = sprintTasks.filter(t => !t.isCompleted).sort((a, b) => a.targetTimestamp - b.targetTimestamp)[0];
+      if (!task) {
+        titleEl.innerText = sprintTasks.length ? 'All sprint milestones complete' : 'No active sprint';
+        targetEl.innerText = sprintTasks.length ? 'Great work — your queue is clear.' : 'Add a milestone to start your flow.';
+        countdownEl.innerText = sprintTasks.length ? 'DONE' : '--:--';
+        statusEl.innerText = sprintTasks.length ? 'COMPLETE' : 'READY';
+        return;
+      }
+      const diff = task.targetTimestamp - Date.now();
+      const abs = Math.abs(Math.floor(diff / 1000));
+      const h = Math.floor(abs / 3600);
+      const m = Math.floor((abs % 3600) / 60);
+      const s = abs % 60;
+      countdownEl.innerText = `${h > 0 ? String(h).padStart(2, '0') + ':' : ''}${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      titleEl.innerText = task.title;
+      targetEl.innerText = `${currentLang === 'vi' ? 'Mục tiêu' : 'Target'} ${task.targetTimeStr} • ${currentLang === 'vi' ? 'ưu tiên task sớm nhất' : 'earliest milestone first'}`;
+      statusEl.innerText = diff > 0 ? 'IN PROGRESS' : 'TIME IS UP';
+    }
+
+    function renderSprintAgentActivity() {
+      const listEl = document.getElementById('sprint-agent-activity');
+      const summaryEl = document.getElementById('sprint-agent-summary');
+      if (!listEl || !Array.isArray(agentList)) return;
+      const working = agentList.filter(a => a.isActive);
+      if (summaryEl) summaryEl.innerText = `${working.length} working • ${agentList.length - working.length} idle / done`;
+      listEl.innerHTML = agentList.map(agent => {
+        const isWorking = !!agent.isActive;
+        const lastLog = Array.isArray(agent.logs) && agent.logs.length ? agent.logs[agent.logs.length - 1] : (agent.dialog || 'Standing by');
+        const state = isWorking ? 'WORKING NOW' : (/DONE|RESULT|complete|hoàn tất/i.test(lastLog) ? 'COMPLETED' : 'IDLE');
+        const stateClass = isWorking ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : state === 'COMPLETED' ? 'bg-indigo-100 text-indigo-800 border-indigo-200' : 'bg-zinc-100 text-zinc-600 border-zinc-200';
+        return `<div class="sprint-agent-row flex items-center gap-2 p-2 rounded-xl bg-white/80 border border-indigo-100">
+          <img src="${agent.avatarImg || './assets/dev_bot.png'}" class="w-9 h-9 rounded-xl object-contain bg-white border border-zinc-100 shrink-0" onerror="this.src='./assets/dev_bot.png'"/>
+          <div class="min-w-0 flex-1"><div class="flex items-center gap-1.5"><span class="font-black text-[11px] truncate">${agent.name}</span><span class="px-1.5 py-0.5 rounded-full border text-[8px] font-black ${stateClass}">${isWorking ? '●' : '○'} ${state}</span></div><div class="text-[10px] text-zinc-500 truncate">${isWorking ? (agent.prompt || agent.tool || 'Working on current task') : lastLog}</div></div>
+          <span class="text-[9px] font-mono text-zinc-400">#${agent.shortId || ''}</span>
+        </div>`;
+      }).join('');
     }
 
     function updateSprintTimer() {
@@ -4502,6 +4570,8 @@
 
       // 2. If modal is open, smoothly update timer numbers in-place
       if (isSprintModalOpen) {
+        renderSprintHero();
+        renderSprintAgentActivity();
         sprintTasks.forEach(task => {
           if (task.isCompleted) return;
           const timerTextEl = document.getElementById(`sprint-timer-text-${task.id}`);
@@ -4537,20 +4607,34 @@
     // Models & Quota Hub Modal (Phím tắt U)
     let isModelsQuotaOpen = false;
     let currentQuota = {
-      account: "developer@antigravity.ai",
+      name: "hau ncong",
+      account: "nconghauu@gmail.com",
+      avatar: "https://lh3.googleusercontent.com/a/ACg8ocJ5q5ikI7wl-oN9sNk9kx-D-WIpWFKacGMyWlMrnybUWq7nx1Wt=s96-c",
+      plan: "Google AI Pro",
       tier: "Google AI Pro",
-      credits: 1000,
-      remainingPct: 85,
-      totalTokensUsed: 150000,
-      maxTokens: 1000000,
-      rateLimit: "High Priority • Unlimited speed",
+      upgradeUrl: "https://antigravity.google/g1-upgrade",
       models: [
-        { name: "Gemini 3.8 Flash (High)", provider: "Google DeepMind", context: "1,000,000 tokens", remainingPct: 85, status: "Active (Default)", speed: "⚡ Ultra Fast (~120 tps)" },
-        { name: "Claude Sonnet 4.6 (Thinking)", provider: "Anthropic", context: "200,000 tokens", remainingPct: 85, status: "Available", speed: "🧠 Deep Reasoning (Thinking)" },
-        { name: "Claude Opus 4.6 (Thinking)", provider: "Anthropic", context: "200,000 tokens", remainingPct: 80, status: "Available", speed: "🏛️ Large Architecture" },
-        { name: "GPT-OSS 120B (Medium)", provider: "Open Weights", context: "128,000 tokens", remainingPct: 92, status: "Available", speed: "⚙️ Standard" }
+        { name: "Gemini 3.1 Pro (High)", provider: "Google DeepMind", context: "1,000,000 tokens (1M)", status: "Active (Default)", speed: "⚡ Ultra Fast Reasoning" },
+        { name: "Gemini 3.1 Pro (Low)", provider: "Google DeepMind", context: "1,000,000 tokens (1M)", status: "Available", speed: "⚡ Fast Standard" },
+        { name: "Gemini 3 Flash", provider: "Google DeepMind", context: "1,000,000 tokens (1M)", status: "Available", speed: "⚡ Ultra Low Latency" },
+        { name: "Claude Sonnet 4.6 (Thinking)", provider: "Anthropic", context: "200,000 tokens", status: "Available", speed: "🧠 Deep Reasoning (Thinking)" },
+        { name: "Claude Opus 4.6 (Thinking)", provider: "Anthropic", context: "200,000 tokens", status: "Available", speed: "🏛️ System Architecture" },
+        { name: "GPT-OSS 120B (Medium)", provider: "Open Weights", context: "128,000 tokens", status: "Available", speed: "⚙️ Open Weights" }
       ]
     };
+
+    function openAntigravitySettingsDirect() {
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.nativeApp) {
+        window.webkit.messageHandlers.nativeApp.postMessage({ action: 'openAntigravitySettings' });
+      } else {
+        window.location.href = "antigravity://";
+        setTimeout(() => {
+          alert(currentLang === 'vi' 
+            ? "Mẹo: Mở Antigravity Desktop và bấm 'Cmd + ,' (hoặc Ctrl + ,) rồi chọn 'Models' để xem chính xác 100% hạn mức còn lại!" 
+            : "Tip: Open Antigravity Desktop and press 'Cmd + ,' (or Ctrl + ,), then select 'Models' to check your real-time rate limits!");
+        }, 400);
+      }
+    }
 
     function toggleModelsQuotaModal() {
       isModelsQuotaOpen = !isModelsQuotaOpen;
@@ -4566,85 +4650,66 @@
 
     function updateQuotaUI() {
       if (!currentQuota) return;
-      
-      const remainingPct = typeof currentQuota.remainingPct === 'number' ? currentQuota.remainingPct : 85;
-      const usedPct = 100 - remainingPct;
-      const credits = currentQuota.credits || 1000;
-      const totalTokensUsed = currentQuota.totalTokensUsed || 150000;
-      const maxTokens = currentQuota.maxTokens || 1000000;
-      const remainingTokens = Math.max(0, maxTokens - totalTokensUsed);
 
-      // Header Pill & Mini-Bar
+      const userName = currentQuota.name || 'hau ncong';
+      const userEmail = currentQuota.account || 'nconghauu@gmail.com';
+      const userPlan = currentQuota.plan || currentQuota.tier || 'Google AI Pro';
+      const userAvatar = currentQuota.avatar || 'https://lh3.googleusercontent.com/a/ACg8ocJ5q5ikI7wl-oN9sNk9kx-D-WIpWFKacGMyWlMrnybUWq7nx1Wt=s96-c';
+      const upgradeUrl = currentQuota.upgradeUrl || 'https://antigravity.google/g1-upgrade';
+
+      // Header Pill
       const pill = document.getElementById('header-quota-pill');
-      const bar = document.getElementById('header-quota-bar');
       if (pill) {
-        pill.innerText = currentLang === 'vi' ? `${remainingPct}% Quota Còn Lại` : `${remainingPct}% Quota Left`;
-      }
-      if (bar) {
-        bar.style.width = `${remainingPct}%`;
-        if (remainingPct >= 50) bar.className = "h-full bg-emerald-500 rounded-full transition-all duration-500";
-        else if (remainingPct >= 20) bar.className = "h-full bg-amber-500 rounded-full transition-all duration-500";
-        else bar.className = "h-full bg-rose-500 rounded-full transition-all duration-500";
+        pill.innerText = userPlan;
       }
 
       // Modal Elements
-      const modalPctText = document.getElementById('quota-modal-pct-text');
-      const modalTokensDetail = document.getElementById('quota-modal-tokens-detail');
-      const modalProgressBar = document.getElementById('quota-modal-progress-bar');
-      const modalUsedText = document.getElementById('quota-modal-used-text');
-      const modalBadge = document.getElementById('quota-modal-badge');
+      const modalUserName = document.getElementById('quota-modal-user-name');
+      const modalUserEmail = document.getElementById('quota-modal-user-email');
+      const modalAvatar = document.getElementById('quota-modal-avatar');
+      const modalPlanName = document.getElementById('quota-plan-name');
+      const modalPlanPill = document.getElementById('quota-plan-badge-pill');
+      const modalUpgradeBtn = document.getElementById('quota-upgrade-btn');
 
-      if (modalPctText) modalPctText.innerText = currentLang === 'vi' ? `Còn lại: ${remainingPct}%` : `Remaining: ${remainingPct}%`;
-      if (modalTokensDetail) modalTokensDetail.innerText = `(${(remainingTokens / 1000).toFixed(0)}k / 1.0M tokens)`;
-      if (modalUsedText) modalUsedText.innerText = `${usedPct}% (~${(totalTokensUsed / 1000).toFixed(0)}k tokens)`;
-      if (modalProgressBar) {
-        modalProgressBar.style.width = `${remainingPct}%`;
-        if (remainingPct >= 50) modalProgressBar.className = "h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500 shadow-sm";
-        else if (remainingPct >= 20) modalProgressBar.className = "h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500 shadow-sm";
-        else modalProgressBar.className = "h-full rounded-full bg-gradient-to-r from-rose-500 to-red-600 transition-all duration-500 shadow-sm";
-      }
-      if (modalBadge) {
-        if (remainingPct >= 50) {
-          modalBadge.innerText = "🟢 Plentiful";
-          modalBadge.className = "px-2.5 py-1 rounded-full bg-emerald-200 text-emerald-900 font-black text-xs border border-emerald-300";
-        } else if (remainingPct >= 20) {
-          modalBadge.innerText = "🟡 Vừa Phải";
-          modalBadge.className = "px-2.5 py-1 rounded-full bg-amber-200 text-amber-900 font-black text-xs border border-amber-300";
-        } else {
-          modalBadge.innerText = "🔴 Sắp Hết";
-          modalBadge.className = "px-2.5 py-1 rounded-full bg-rose-200 text-rose-900 font-black text-xs border border-rose-300 animate-pulse";
-        }
-      }
+      if (modalUserName) modalUserName.innerText = userName;
+      if (modalUserEmail) modalUserEmail.innerText = userEmail;
+      if (modalAvatar) modalAvatar.src = userAvatar;
+      if (modalPlanName) modalPlanName.innerText = userPlan;
+      if (modalPlanPill) modalPlanPill.innerText = userPlan;
+      if (modalUpgradeBtn) modalUpgradeBtn.href = upgradeUrl;
 
-      const acc = document.getElementById('quota-account');
-      const tier = document.getElementById('quota-tier');
-      const cred = document.getElementById('quota-credits');
-      if (acc) acc.innerText = currentQuota.account || 'developer@antigravity.ai';
-      if (tier) tier.innerText = currentQuota.tier || 'Google AI Pro';
-      if (cred) cred.innerText = credits.toLocaleString();
+      // Models List
+      const models = Array.isArray(currentQuota.models) && currentQuota.models.length > 0
+        ? currentQuota.models
+        : [
+            { name: "Gemini 3.1 Pro (High)", provider: "Google DeepMind", context: "1,000,000 tokens", status: "Active (Default)", speed: "⚡ Ultra Fast Reasoning" },
+            { name: "Gemini 3.1 Pro (Low)", provider: "Google DeepMind", context: "1,000,000 tokens", status: "Available", speed: "⚡ Fast Standard" },
+            { name: "Gemini 3 Flash", provider: "Google DeepMind", context: "1,000,000 tokens", status: "Available", speed: "⚡ Ultra Low Latency" },
+            { name: "Claude Sonnet 4.6 (Thinking)", provider: "Anthropic", context: "200,000 tokens", status: "Available", speed: "🧠 Deep Reasoning (Thinking)" },
+            { name: "Claude Opus 4.6 (Thinking)", provider: "Anthropic", context: "200,000 tokens", status: "Available", speed: "🏛️ System Architecture" },
+            { name: "GPT-OSS 120B (Medium)", provider: "Open Weights", context: "128,000 tokens", status: "Available", speed: "⚙️ Open Weights" }
+          ];
 
-      if (Array.isArray(currentQuota.models) && currentQuota.models.length > 0) {
-        const modelsList = document.getElementById('quota-models-list');
-        if (modelsList) {
-          modelsList.innerHTML = currentQuota.models.map(m => {
-            const mPct = typeof m.remainingPct === 'number' ? m.remainingPct : remainingPct;
-            return `
-            <div class="p-2.5 rounded-xl border ${m.status && m.status.includes('Active') ? 'border-emerald-300 bg-emerald-50/50' : 'border-[var(--card-border)] bg-white'} space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="font-extrabold text-xs ${m.status && m.status.includes('Active') ? 'text-emerald-900' : 'text-[var(--text-main)]'}">${m.name}</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded-full ${m.status && m.status.includes('Active') ? 'bg-emerald-200 text-emerald-900 font-bold' : 'bg-zinc-100 text-zinc-700 font-semibold'}">${m.status ? m.status : (currentLang === 'vi' ? 'Khả dụng' : 'Available')}</span>
-              </div>
-              <div class="flex items-center justify-between text-[10px] text-zinc-600 font-mono">
-                <span>${m.speed ? m.speed : (currentLang === 'vi' ? '⚡ Siêu tốc' : '⚡ Ultra Fast')}</span>
-                <span class="font-bold text-emerald-700">${mPct}% ${currentLang === 'vi' ? 'Quota còn lại' : 'Quota remaining'}</span>
-              </div>
-              <div class="w-full bg-zinc-200 rounded-full h-1.5 overflow-hidden">
-                <div class="h-full bg-emerald-500 rounded-full" style="width: ${mPct}%"></div>
-              </div>
+      const countEl = document.getElementById('quota-models-count');
+      if (countEl) countEl.innerText = `${models.length} Models Ready`;
+
+      const modelsList = document.getElementById('quota-models-list');
+      if (modelsList) {
+        modelsList.innerHTML = models.map(m => {
+          const isActive = m.status && m.status.includes('Active');
+          return `
+          <div class="p-3 rounded-2xl border ${isActive ? 'border-purple-300 bg-purple-50/60 shadow-2xs' : 'border-[var(--card-border)] bg-white'} space-y-1.5 transition-all">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-xs ${isActive ? 'text-purple-950' : 'text-[var(--text-main)]'}">${m.name}</span>
+              <span class="text-[9px] px-2 py-0.5 rounded-full font-bold ${isActive ? 'bg-purple-200 text-purple-900 border border-purple-300' : 'bg-zinc-100 text-zinc-700'}">${m.status || (currentLang === 'vi' ? 'Khả dụng' : 'Available')}</span>
             </div>
-            `;
-          }).join('');
-        }
+            <div class="flex items-center justify-between text-[10px] text-zinc-500 font-mono">
+              <span>${m.speed || '⚡ Fast'}</span>
+              <span class="font-bold text-indigo-700">${m.context || '1M Context'}</span>
+            </div>
+          </div>
+          `;
+        }).join('');
       }
     }
 
