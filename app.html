@@ -4678,6 +4678,7 @@
     let isSprintCreateFormOpen = false;
     let isSprintFocusMode = false;
     let sprintTasks = [];
+    let sprintTimerLoopId = null;
 
     // Helper: format target time as HH:mm
     function formatTimeHHMM(date) {
@@ -4707,6 +4708,24 @@
         }
       } catch (e) {
         console.warn('Failed to parse sprint tasks', e);
+      }
+
+      // Migrate persisted tasks defensively. Older releases may contain string
+      // timestamps or omit createdAt, which can make a live countdown drift or
+      // stop rendering after the modal is opened.
+      if (Array.isArray(sprintTasks)) {
+        sprintTasks = sprintTasks.map(task => {
+          const targetTimestamp = Number(task.targetTimestamp);
+          const createdAt = Number(task.createdAt);
+          return {
+            ...task,
+            targetTimestamp: Number.isFinite(targetTimestamp) ? targetTimestamp : parseTargetTimestampFromHHMM(task.targetTimeStr || ''),
+            createdAt: Number.isFinite(createdAt) ? createdAt : Date.now(),
+            isCompleted: Boolean(task.isCompleted),
+            notifiedExpired: Boolean(task.notifiedExpired)
+          };
+        });
+        saveSprintTasks();
       }
 
       // Default sample task if completely empty
@@ -4983,7 +5002,7 @@
           cardBgClass = "bg-amber-50/60 border-amber-300 shadow-2xs";
           statusBadge = `<span class="px-2 py-0.5 rounded-full bg-amber-200 text-amber-950 font-black text-[10px] flex items-center gap-1">🔥 <span>${t('sprint_status_in_progress', 'Đang Vibe Code')}</span></span>`;
           
-          const remTotalSec = Math.floor(diffMs / 1000);
+          const remTotalSec = Math.max(0, Math.ceil(diffMs / 1000));
           const remH = Math.floor(remTotalSec / 3600);
           const remM = Math.floor((remTotalSec % 3600) / 60);
           const remS = remTotalSec % 60;
@@ -5142,7 +5161,7 @@
       const now = Date.now();
       const diff = topTask.targetTimestamp - now;
       const isExpired = diff <= 0;
-      const absSec = Math.abs(Math.floor(diff / 1000));
+      const absSec = Math.abs(Math.ceil(diff / 1000));
       const h = Math.floor(absSec / 3600);
       const m = Math.floor((absSec % 3600) / 60);
       const s = absSec % 60;
@@ -5335,7 +5354,7 @@
             barEl.style.width = '100%';
             barEl.className = "h-full rounded-full bg-rose-500 transition-all duration-700";
           } else {
-            const remTotalSec = Math.floor(diff / 1000);
+            const remTotalSec = Math.max(0, Math.ceil(diff / 1000));
             const remH = Math.floor(remTotalSec / 3600);
             const remM = Math.floor((remTotalSec % 3600) / 60);
             const remS = remTotalSec % 60;
@@ -5352,6 +5371,27 @@
           }
         });
       }
+    }
+
+    // Keep the countdown tied to wall-clock time instead of trusting a fixed
+    // one-second interval. The self-scheduling loop survives WebKit timer
+    // throttling and a transient render error, then catches up from Date.now().
+    function startSprintTimerLoop() {
+      if (sprintTimerLoopId) clearTimeout(sprintTimerLoopId);
+
+      const tick = () => {
+        try {
+          updateSprintTimer();
+        } catch (error) {
+          console.warn('Sprint timer recovered from render error', error);
+        } finally {
+          const now = Date.now();
+          const delay = 1000 - (now % 1000) + 20;
+          sprintTimerLoopId = setTimeout(tick, Math.max(120, delay));
+        }
+      };
+
+      tick();
     }
 
     // Models & Quota Hub Modal (Phím tắt U)
@@ -7921,7 +7961,7 @@ function triggerRandomStudioEvent() {
     applyLanguage(currentLang);
     updateMobileRoomTabs(null);
     initSprintTasks();
-    setInterval(updateSprintTimer, 1000);
+    startSprintTimerLoop();
     updateDiagnosticUI();
     updateJukeboxUI();
     updateQuotaUI();
