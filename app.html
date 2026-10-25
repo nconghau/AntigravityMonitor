@@ -328,6 +328,39 @@
     #sprint-modal-body { min-height: 0; overscroll-behavior: contain; }
     .sprint-agent-row { transition: transform .2s ease, box-shadow .2s ease; }
     .sprint-agent-row:hover { transform: translateY(-2px); box-shadow: 0 8px 18px -12px rgba(0,0,0,.35); }
+    /* Generated playful UI image icons: one coherent visual language instead of mixed emoji glyphs. */
+    .ui-icon {
+      display: inline-block;
+      width: 1.15em;
+      height: 1.15em;
+      flex: 0 0 auto;
+      vertical-align: -.2em;
+      background-image: url('./assets/playful-ui-icon-atlas.png');
+      background-repeat: no-repeat;
+      background-size: 400% 400%;
+      filter: drop-shadow(0 1px 1px rgba(40, 30, 20, .16));
+    }
+    .ui-icon.icon-lg { width: 1.55em; height: 1.55em; vertical-align: -.34em; }
+    .ui-icon.icon-xl { width: 2.2em; height: 2.2em; vertical-align: -.62em; }
+    .icon-target { background-position: 0% 0%; }
+    .icon-clock { background-position: 33.333% 0%; }
+    .icon-fire { background-position: 66.666% 0%; }
+    .icon-check { background-position: 100% 0%; }
+    .icon-bell { background-position: 0% 33.333%; }
+    .icon-trash { background-position: 33.333% 33.333%; }
+    .icon-add { background-position: 66.666% 33.333%; }
+    .icon-focus { background-position: 100% 33.333%; }
+    .icon-bot { background-position: 0% 66.666%; }
+    .icon-coffee { background-position: 33.333% 66.666%; }
+    .icon-pizza { background-position: 66.666% 66.666%; }
+    .icon-home { background-position: 100% 66.666%; }
+    .icon-music { background-position: 0% 100%; }
+    .icon-code { background-position: 33.333% 100%; }
+    .icon-rocket { background-position: 66.666% 100%; }
+    .icon-sleep { background-position: 100% 100%; }
+    @media (prefers-reduced-motion: reduce) {
+      .sprint-hero::before, .sprint-countdown-orbit, .sprint-hero.is-expired { animation: none; }
+    }
     @media (max-width: 640px) {
       #modal-sprint-countdown { padding: 0; }
       #modal-sprint-countdown > div,
@@ -7333,6 +7366,59 @@ function triggerRandomStudioEvent() {
       console.warn("Error restoring custom studio configuration:", e);
     }
 
+    // Convert visible emoji glyphs into the generated playful UI icon atlas.
+    // Keeping this at the DOM layer also covers dynamically rendered agent/task cards.
+    function hydratePlayfulIcons(root = document.body) {
+      const iconByEmoji = {
+        '🎯': 'target', '⏳': 'clock', '⏱️': 'clock', '⏱': 'clock', '🔥': 'fire', '✅': 'check',
+        '🔔': 'bell', '🗑️': 'trash', '🗑': 'trash', '➕': 'add', '＋': 'add', '⛶': 'focus',
+        '🤖': 'bot', '☕': 'coffee', '🍕': 'pizza', '🏠': 'home', '🏡': 'home', '🏢': 'home',
+        '🎵': 'music', '🎶': 'music', '📻': 'music', '🇻🇳': 'music', '💻': 'code', '🚀': 'rocket',
+        '🌙': 'sleep', '🛏️': 'sleep', '🛏': 'sleep', '⚡': 'fire', '💡': 'target', '🔍': 'focus',
+        '📋': 'code', '🎨': 'focus', '⚙️': 'focus', '⚙': 'focus', '🔄': 'clock', '🧠': 'bot',
+        '🔒': 'bell', '⏰': 'clock', '🛍️': 'home', '🛍': 'home', '🧪': 'code', 'ℹ️': 'target',
+        'ℹ': 'target', '✏️': 'code', '✏': 'code', '🛋️': 'home', '🛋': 'home', '🍳': 'coffee',
+        '📡': 'clock', '📥': 'clock', '🛡️': 'check', '🛡': 'check', '🎉': 'check', '↺': 'clock',
+        '💾': 'check', '🎮': 'bot', '⭐': 'target', '✨': 'target', '🧭': 'focus',
+        '☀': 'home', '♨': 'coffee', '⚠️': 'bell', '⚠': 'bell', '❌': 'trash', '🌊': 'home',
+        '🌍': 'home', '🌐': 'home', '🌸': 'target', '🌿': 'home', '🍇': 'pizza', '🍓': 'pizza',
+        '🍩': 'pizza', '🍯': 'coffee', '🍵': 'coffee', '🎧': 'music', '🎭': 'bot', '🎲': 'bot',
+        '🏆': 'check', '🏛': 'home', '🐱': 'bot', '🐾': 'bot', '👉': 'focus', '👤': 'bot',
+        '👥': 'bot', '💖': 'check', '💤': 'sleep', '💧': 'coffee', '📁': 'code', '📂': 'code',
+        '📊': 'code', '📌': 'target', '📍': 'target', '📝': 'code', '📱': 'code', '📺': 'music',
+        '🔊': 'music', '🔕': 'music', '😴': 'sleep', '🚶': 'bot', '🛌': 'sleep', '🛠': 'code',
+        '🖥': 'code', '🖼': 'home', '🟢': 'check', '🥪': 'pizza', '🧃': 'coffee', '🩺': 'check',
+        '🪑': 'home', '🪴': 'home'
+      };
+      const emojiPattern = new RegExp(Object.keys(iconByEmoji).sort((a, b) => b.length - a.length).map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'gu');
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const textNodes = [];
+      let current;
+      while ((current = walker.nextNode())) {
+        const parent = current.parentElement;
+        if (parent && !parent.closest('script, style, textarea, .ui-icon') && emojiPattern.test(current.nodeValue)) {
+          textNodes.push(current);
+        }
+        emojiPattern.lastIndex = 0;
+      }
+      textNodes.forEach(node => {
+        const fragment = document.createDocumentFragment();
+        let lastIndex = 0;
+        node.nodeValue.replace(emojiPattern, (match, offset) => {
+          if (offset > lastIndex) fragment.appendChild(document.createTextNode(node.nodeValue.slice(lastIndex, offset)));
+          const icon = document.createElement('span');
+          icon.className = `ui-icon icon-${iconByEmoji[match] || 'target'}`;
+          icon.setAttribute('aria-hidden', 'true');
+          fragment.appendChild(icon);
+          lastIndex = offset + match.length;
+          return match;
+        });
+        if (lastIndex < node.nodeValue.length) fragment.appendChild(document.createTextNode(node.nodeValue.slice(lastIndex)));
+        node.parentNode.replaceChild(fragment, node);
+        emojiPattern.lastIndex = 0;
+      });
+    }
+
     applyLanguage(currentLang);
     initSprintTasks();
     setInterval(updateSprintTimer, 1000);
@@ -7341,6 +7427,8 @@ function triggerRandomStudioEvent() {
     updateQuotaUI();
     renderWorld();
     selectAgent(currentSelectedId, false);
+    hydratePlayfulIcons();
+    new MutationObserver(() => hydratePlayfulIcons()).observe(document.body, { childList: true, subtree: true });
   </script>
 </body>
 </html>
