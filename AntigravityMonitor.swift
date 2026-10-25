@@ -38,8 +38,18 @@ class WebKitBridge: NSObject, WKScriptMessageHandler {
         } else if action == "openTerminal" {
             let agentId = dict["agentId"] as? String ?? ""
             let workspace = scanner?.getWorkspaceForAgent(agentId: agentId) ?? FileManager.default.homeDirectoryForCurrentUser.path
+            let logPath = scanner?.getLogPathForAgent(agentId: agentId)
             DispatchQueue.main.async {
-                let script = "tell application \"Terminal\" to do script \"cd '\(workspace)' && (which agy-top >/dev/null 2>&1 && agy-top || ls -la)\""
+                let command: String
+                if let logPath {
+                    let escapedPath = logPath.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
+                    command = "tail -n 80 -f \"\(escapedPath)\""
+                } else {
+                    let escapedWorkspace = workspace.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
+                    command = "cd \"\(escapedWorkspace)\" && (which agy-top >/dev/null 2>&1 && agy-top || echo 'No transcript log is attached to this agent yet.')"
+                }
+                let escapedCommand = command.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
+                let script = "tell application \"Terminal\" to do script \"\(escapedCommand)\""
                 if let appleScript = NSAppleScript(source: script) {
                     appleScript.executeAndReturnError(nil)
                 }
@@ -195,6 +205,18 @@ class AgentScanner: ObservableObject {
             }
         }
         return FileManager.default.homeDirectoryForCurrentUser.path
+    }
+
+    func getLogPathForAgent(agentId: String) -> String? {
+        for a in agentsJson {
+            if (a["id"] as? String) == agentId,
+               let path = a["logPath"] as? String,
+               !path.isEmpty,
+               FileManager.default.fileExists(atPath: path) {
+                return path
+            }
+        }
+        return nil
     }
 
     func toJsonString() -> String? {

@@ -1498,7 +1498,7 @@
         </button>
         <!-- Toggle Terminal Button with State Badge -->
         <button id="btn-terminal-toggle" onclick="toggleTerminalDrawer()" class="px-2.5 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-bold border border-zinc-300 shadow-2xs flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0" title="Toggle Terminal Logs (Auto-opens on Action)">
-          <span class="flex items-center gap-1"><span class="ui-icon icon-code" aria-hidden="true"></span><span data-i18n="btn_terminal">Terminal</span></span>
+          <span class="flex items-center gap-1"><span class="ui-icon icon-code" aria-hidden="true"></span><span data-i18n="btn_terminal">Execution Logs</span></span>
           <span id="terminal-badge" class="px-1.5 py-0.2 rounded-full bg-zinc-200 text-zinc-700 text-[9px] font-mono font-bold" data-i18n="terminal_hidden">Hide</span>
           <span id="terminal-arrow" class="text-[9px] transition-transform duration-200">▾</span>
         </button>
@@ -1513,11 +1513,11 @@
       <div class="px-3.5 py-1.5 bg-zinc-900 border-t border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-400">
         <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span class="flex items-center gap-1"><span class="ui-icon icon-fire" aria-hidden="true"></span><span data-i18n="terminal_stream_title">LIVE ACTION TERMINAL STREAM</span></span>
+          <span class="flex items-center gap-1"><span class="ui-icon icon-fire" aria-hidden="true"></span><span data-i18n="terminal_stream_title">AGENT EXECUTION LOGS</span></span>
         </span>
         <div class="flex items-center gap-2">
           <button onclick="bridgeNative('openTerminal')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors" title="Open in macOS Terminal.app">
-            <span data-i18n="terminal_open_mac">↗ Open macOS Terminal</span>
+            <span data-i18n="terminal_open_mac">↗ Open Log Tail</span>
           </button>
           <button onclick="toggleTerminalDrawer(false)" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-red-950 text-zinc-400 hover:text-red-300 transition-colors" title="Collapse Terminal">
             <span class="ui-icon icon-trash" aria-hidden="true"></span><span data-i18n="terminal_collapse">Collapse</span>
@@ -2517,12 +2517,12 @@
         btn_edit_bot: "✏️ Edit Bot",
         room_label: "Room:",
         btn_open_ide: "Open IDE",
-        btn_terminal: "Terminal",
+        btn_terminal: "Execution Logs",
         terminal_hidden: "Hide",
         terminal_visible: "Show",
         btn_copy_id: "Copy ID",
-        terminal_stream_title: "LIVE ACTION TERMINAL STREAM",
-        terminal_open_mac: "↗ Open macOS Terminal",
+        terminal_stream_title: "AGENT EXECUTION LOGS",
+        terminal_open_mac: "↗ Open Log Tail",
         terminal_collapse: "Collapse",
         runtime_state_label: "STATE",
         runtime_process_label: "PROCESS",
@@ -2799,12 +2799,12 @@
         btn_edit_bot: "✏️ Sửa Bot",
         room_label: "Phòng:",
         btn_open_ide: "Mở IDE",
-        btn_terminal: "Terminal",
+        btn_terminal: "Log Execution",
         terminal_hidden: "Ẩn",
         terminal_visible: "Hiện",
         btn_copy_id: "Copy ID",
-        terminal_stream_title: "LIVE ACTION TERMINAL STREAM",
-        terminal_open_mac: "↗ Mở macOS Terminal",
+        terminal_stream_title: "LOG EXECUTION CỦA AGENT",
+        terminal_open_mac: "↗ Mở Log Tail",
         terminal_collapse: "✕ Thu gọn",
         runtime_state_label: "TRẠNG THÁI",
         runtime_process_label: "PROCESS",
@@ -6790,7 +6790,10 @@ function triggerRandomStudioEvent() {
         if (btn) btn.classList.add('border-emerald-400', 'bg-emerald-50');
         const logsEl = document.getElementById('inspect-logs');
         if (logsEl) logsEl.scrollTop = logsEl.scrollHeight;
-        requestAnimationFrame(() => drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+        setTimeout(() => {
+          drawer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          window.scrollBy({ top: 120, behavior: 'smooth' });
+        }, 60);
       } else {
         drawer.style.maxHeight = '0px';
         drawer.style.opacity = '0';
@@ -7527,14 +7530,23 @@ function triggerRandomStudioEvent() {
       renderInspectorRuntime(agent);
       const logsBox = document.getElementById('inspect-logs');
       const logs = Array.isArray(agent.logs) ? agent.logs : [];
-      logsBox.innerHTML = logs.length ? logs.map(log => {
+      const fallbackLogs = [
+        `[INFO] Source: ${agent.processName || (agent.env === 'IDE' ? 'Antigravity IDE' : 'Antigravity Desktop')}`,
+        `[INFO] State: ${agent.isActive ? 'ACTIVE' : 'IDLE'}`,
+        `[INFO] Task: ${agent.prompt || agent.mainStep || 'No task prompt available.'}`,
+        `[INFO] Tool: ${agent.tool || 'No tool call recorded.'}`,
+        `[INFO] Transcript events: ${agent.eventCount || agent.steps || 0}`,
+        `[INFO] Log path: ${agent.logPath || 'No transcript path exposed.'}`
+      ];
+      logsBox.innerHTML = (logs.length ? logs : fallbackLogs).map(log => {
         let col = "text-zinc-300";
+        if (log.startsWith("[INFO]")) col = "text-zinc-400";
         if (log.startsWith("[USER]")) col = "text-amber-300 font-bold";
         if (log.startsWith("[TOOL]")) col = "text-cyan-400";
         if (log.startsWith("[RESULT]")) col = "text-emerald-400 font-bold";
         if (log.startsWith("[STATUS]")) col = "text-indigo-300";
         return `<div class="leading-relaxed hover:bg-white/10 px-1 rounded transition-colors ${col}">${escapeHtml(log)}</div>`;
-      }).join('') : `<div class="text-zinc-500 italic py-2">${escapeHtml(currentLang === 'vi' ? 'Chưa có log execution.' : 'No execution log yet.')}</div>`;
+      }).join('');
       logsBox.scrollTop = logsBox.scrollHeight;
 
       renderWorld();
