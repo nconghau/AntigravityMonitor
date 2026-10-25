@@ -115,12 +115,24 @@ struct PlayfulWebView: NSViewRepresentable {
 class AgentScanner: ObservableObject {
     @Published var agentsJson: [[String: Any]] = []
     private var timer: Timer?
+    private var lastObservedAccount: String? = nil
 
     init() {
         refresh()
         timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
             self?.refresh()
         }
+    }
+
+    private func getActiveGoogleAccount() -> String {
+        let home = FileManager.default.homeDirectoryForCurrentUser.path
+        let accountsUrl = URL(fileURLWithPath: "\(home)/.gemini/google_accounts.json")
+        if let data = try? Data(contentsOf: accountsUrl),
+           let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let active = json["active"] as? String, !active.isEmpty {
+            return active
+        }
+        return ProcessInfo.processInfo.environment["ANTIGRAVITY_ACCOUNT"] ?? "\(NSUserName())@gmail.com"
     }
 
     func getWorkspaceForAgent(agentId: String) -> String {
@@ -143,10 +155,10 @@ class AgentScanner: ObservableObject {
 
         var issues: [String] = []
         if !ideBrainExists && !desktopBrainExists {
-            issues.append("Chưa tìm thấy thư mục ~/.gemini/antigravity/brain hoặc ~/.gemini/antigravity-ide/brain")
+            issues.append("Missing ~/.gemini/antigravity/brain or ~/.gemini/antigravity-ide/brain")
         }
         if agentsJson.isEmpty && (ideBrainExists || desktopBrainExists) {
-            issues.append("Đã có thư mục Antigravity nhưng chưa phát hiện phiên làm việc (conversation) nào trong 18 giờ qua")
+            issues.append("Antigravity engine detected but no active conversation in the last 18 hours")
         }
 
         let diagnostic: [String: Any] = [
@@ -157,7 +169,7 @@ class AgentScanner: ObservableObject {
             "detectedConversations": agentsJson.count,
             "homePath": home,
             "issues": issues,
-            "statusMessage": (ideBrainExists || desktopBrainExists) ? "Cấu hình Antigravity hợp lệ! Đã sẵn sàng." : "Chưa phát hiện cấu hình Antigravity trên máy tính này."
+            "statusMessage": (ideBrainExists || desktopBrainExists) ? "Valid Antigravity engine active and ready." : "No Antigravity brain configuration found on this machine."
         ]
 
         var totalTokensUsed = 0
@@ -169,17 +181,24 @@ class AgentScanner: ObservableObject {
         let remainingPct = max(5, 100 - usedPct)
         let remainingCredits = max(50, 1000 - Int(Double(totalTokensUsed) / 1000.0))
 
-        let userAccount = ProcessInfo.processInfo.environment["ANTIGRAVITY_ACCOUNT"] ?? "\(NSUserName())@local"
+        let userAccount = getActiveGoogleAccount()
+        var accountChanged = false
+        if let last = lastObservedAccount, last != userAccount {
+            accountChanged = true
+        }
+        lastObservedAccount = userAccount
+
         let quota: [String: Any] = [
             "account": userAccount,
+            "accountChanged": accountChanged,
             "tier": "Google AI Pro",
             "credits": remainingCredits,
             "remainingPct": remainingPct,
             "usedPct": usedPct,
             "totalTokensUsed": totalTokensUsed,
             "maxTokens": maxTokens,
-            "resetTime": "00:00 UTC (Hàng ngày)",
-            "rateLimit": "High Priority • Không giới hạn lượt",
+            "resetTime": "00:00 UTC (Daily)",
+            "rateLimit": "High Priority • Unlimited speed",
             "activeModel": "Gemini 3.8 Flash (High)",
             "models": [
                 [
@@ -187,32 +206,32 @@ class AgentScanner: ObservableObject {
                     "provider": "Google DeepMind",
                     "context": "1,000,000 tokens (1M)",
                     "remainingPct": remainingPct,
-                    "status": "Active (Mặc định)",
-                    "speed": "⚡ Siêu tốc (~120 tps)"
+                    "status": "Active (Default)",
+                    "speed": "⚡ Ultra Fast (~120 tps)"
                 ],
                 [
                     "name": "Claude Sonnet 4.6 (Thinking)",
                     "provider": "Anthropic",
                     "context": "200,000 tokens",
                     "remainingPct": 85,
-                    "status": "Khả dụng",
-                    "speed": "🧠 Suy luận sâu (Thinking)"
+                    "status": "Available",
+                    "speed": "🧠 Deep Reasoning (Thinking)"
                 ],
                 [
                     "name": "Claude Opus 4.6 (Thinking)",
                     "provider": "Anthropic",
                     "context": "200,000 tokens",
                     "remainingPct": 80,
-                    "status": "Khả dụng",
-                    "speed": "🏛️ Thiết kế kiến trúc lớn"
+                    "status": "Available",
+                    "speed": "🏛️ System Architecture"
                 ],
                 [
                     "name": "GPT-OSS 120B (Medium)",
                     "provider": "Open Weights",
                     "context": "128,000 tokens",
                     "remainingPct": 92,
-                    "status": "Khả dụng",
-                    "speed": "⚙️ Tiêu chuẩn"
+                    "status": "Available",
+                    "speed": "⚙️ Standard"
                 ]
             ]
         ]
@@ -340,7 +359,7 @@ class AgentScanner: ObservableObject {
 
                 var isSubagent = subagentRegistry[cid] != nil
                 var parentId = subagentRegistry[cid]?.parentId
-                var subRole = subagentRegistry[cid]?.role ?? ""
+                let subRole = subagentRegistry[cid]?.role ?? ""
                 if let p = subagentRegistry[cid]?.prompt, !p.isEmpty {
                     lastPrompt = p
                 }
@@ -438,21 +457,21 @@ class AgentScanner: ObservableObject {
                                     } else if let action = args["toolAction"] as? String {
                                         argDesc = action
                                     } else if let img = args["ImageName"] as? String {
-                                        argDesc = "Tạo ảnh \(img)"
+                                        argDesc = "Generate image \(img)"
                                     } else if let cmd = args["CommandLine"] as? String {
                                         let firstPart = cmd.components(separatedBy: "\n").first ?? cmd
                                         argDesc = String(firstPart.prefix(60))
                                     } else if let path = args["Path"] as? String {
                                         argDesc = (path as NSString).lastPathComponent
                                     } else if let role = args["Role"] as? String {
-                                        argDesc = "Gọi subagent \(role)"
+                                        argDesc = "Invoke subagent \(role)"
                                     } else if let query = args["query"] as? String {
                                         argDesc = query
                                     }
 
                                     if tname == "send_message" {
                                         hasSentMessage = true
-                                        argDesc = "Báo cáo hoàn tất về Main Agent"
+                                        argDesc = "Report complete to Main Agent"
                                     }
 
                                     argDesc = argDesc.replacingOccurrences(of: "\"", with: "")
@@ -511,7 +530,7 @@ class AgentScanner: ObservableObject {
                 // Determine house room & action state
                 var houseRoom = "office"
                 var actionState = "typing"
-                var bubbleText = isSubagent ? "🎨 Đang xử lý task con" : "💻 Code 60 WPM"
+                var bubbleText = isSubagent ? "🎨 Processing subagent task" : "💻 Code 60 WPM"
 
                 if isActive {
                     houseRoom = "office"
@@ -519,12 +538,12 @@ class AgentScanner: ObservableObject {
                     if lastTool != "None" {
                         bubbleText = "🛠️ \(lastTool)"
                     } else {
-                        bubbleText = isSubagent ? "⚡ Xử lý subagent task" : "⚡ Đang xử lý task"
+                        bubbleText = isSubagent ? "⚡ Processing subagent task" : "⚡ Executing task"
                     }
                 } else if timeDelta < 600 { // Last 10 mins: Kitchen Cafe
                     houseRoom = "kitchen"
                     actionState = "coffee"
-                    bubbleText = "☕ Vừa xong task! Thư giãn"
+                    bubbleText = "☕ Task finished! Break time"
                 } else if timeDelta < 2400 { // 10 to 40 mins: Living Lounge
                     houseRoom = "living"
                     actionState = "relaxing"
@@ -532,10 +551,10 @@ class AgentScanner: ObservableObject {
                 } else { // Inactive > 40 mins: Sleep Pod
                     houseRoom = "bedroom"
                     actionState = "sleeping"
-                    bubbleText = "💤 Zzz... Ngủ ngon 0 bug"
+                    bubbleText = "💤 Zzz... Sleeping zero bug"
                 }
 
-                let mainStep = collectedLogs.last ?? (isActive ? "Đang chạy: \(lastPrompt.prefix(40))" : "Hoàn thành")
+                let mainStep = collectedLogs.last ?? (isActive ? "Running: \(lastPrompt.prefix(40))" : "Completed")
 
                 // Identity & Role Resolution
                 var name = ""
@@ -593,9 +612,9 @@ class AgentScanner: ObservableObject {
                     }
                 }
 
-                var dialog = isActive 
-                    ? (isSubagent ? "Đang tăng tốc xử lý tác vụ con cho Main Agent..." : "Đang tập trung xử lý tác vụ...") 
-                    : (isSubagent ? "Nhiệm vụ nhánh đã hoàn tất và gửi về Main Agent!" : "Task đã xong, đang nạp năng lượng!")
+                let dialog = isActive 
+                    ? (isSubagent ? "Accelerating subagent task execution for Main Agent..." : "Focused on executing autonomous task...") 
+                    : (isSubagent ? "Branch task completed and reported back to Main Agent!" : "Task completed, taking a break!")
 
                 let dict: [String: Any] = [
                     "id": cid,
@@ -619,7 +638,7 @@ class AgentScanner: ObservableObject {
                     "contextPct": "\(min(100, max(1, Int(Double(tokensEst) / 1000000.0 * 100.0))))%",
                     "time": timeFormatter.string(from: mdate),
                     "tool": lastTool,
-                    "prompt": lastPrompt.isEmpty ? "Đang xử lý tác vụ..." : lastPrompt,
+                    "prompt": lastPrompt.isEmpty ? "Executing autonomous task..." : lastPrompt,
                     "isActive": isActive,
                     "houseRoom": houseRoom,
                     "actionState": actionState,
