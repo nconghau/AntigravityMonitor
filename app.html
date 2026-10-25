@@ -750,16 +750,16 @@
 
       <!-- Music Jukebox Player Bar & Dropdown -->
       <div class="relative inline-block shrink-0">
-        <button onclick="toggleJukeboxMenu()" id="btn-jukebox" class="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-xs font-bold border border-indigo-200 shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap" title="Bật nhạc Lo-fi & Chiptune thư giãn khi làm việc (Phím tắt J)">
-          <span id="jukebox-icon">🎵</span>
-          <span id="jukebox-track-name">Lo-fi</span>
+        <button onclick="toggleJukeboxMenu()" id="btn-jukebox" class="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-xs font-bold border border-indigo-200 shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap" title="Bật nhạc Việt Nam Lo-fi & Acoustic thư giãn khi làm việc (Phím tắt J)">
+          <span id="jukebox-icon">🇻🇳</span>
+          <span id="jukebox-track-name">Cà Phê Sài Gòn</span>
           <span id="jukebox-eq" class="hidden text-[10px] text-indigo-600 font-mono animate-pulse">♫</span>
         </button>
 
         <!-- Jukebox Popover Menu -->
-        <div id="jukebox-menu" class="hidden absolute right-0 top-full mt-2 w-64 p-3 bg-white/95 backdrop-blur-md rounded-2xl border-2 border-indigo-200 shadow-xl z-50 text-xs text-[var(--text-main)] pop-in">
+        <div id="jukebox-menu" class="hidden absolute right-0 top-full mt-2 w-72 p-3 bg-white/95 backdrop-blur-md rounded-2xl border-2 border-indigo-200 shadow-xl z-50 text-xs text-[var(--text-main)] pop-in">
           <div class="flex items-center justify-between pb-2 border-b border-indigo-100 mb-2 font-bold">
-            <span class="flex items-center gap-1">📻 <span>Jukebox Âm Nhạc</span></span>
+            <span class="flex items-center gap-1">📻 <span>Jukebox Nhạc Việt Nam</span></span>
             <button onclick="toggleJukeboxPlay()" id="btn-jukebox-play" class="px-2 py-0.5 rounded-lg bg-indigo-600 text-white font-extrabold text-[11px] shadow-2xs cursor-pointer">▶️ Phát</button>
           </div>
           <div class="space-y-1 mb-2.5" id="jukebox-track-list">
@@ -1700,12 +1700,15 @@
 
             <!-- Radio stream presets quick click -->
             <div>
-              <div class="text-[10px] font-bold text-zinc-500 mb-1">Gợi ý luồng Lo-fi trực tuyến miễn phí:</div>
+              <div class="text-[10px] font-bold text-zinc-500 mb-1">Gợi ý luồng nhạc Việt Nam & Lo-fi trực tuyến miễn phí:</div>
               <div class="flex items-center gap-1.5 flex-wrap">
-                <button onclick="setMusicStreamPreset('📻 Lofi Girl Chill Live', 'https://play.streamafrica.net/lofiradio')" class="px-2 py-0.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-[10px] border border-indigo-200 cursor-pointer">
-                  + Lofi Girl Live
+                <button onclick="setMusicStreamPreset('📻 Hà Nội Community Radio', 'https://ha-noi-community-radio.radiocult.fm/stream')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[10px] border border-emerald-300 cursor-pointer">
+                  + 🇻🇳 Hà Nội Community
                 </button>
-                <button onclick="setMusicStreamPreset('☕ Chillhop Cafe Radio', 'https://stream.zeno.fm/f3wvbbqmdg8uv')" class="px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[10px] border border-amber-200 cursor-pointer">
+                <button onclick="setMusicStreamPreset('🇻🇳 Việt Chill Lo-fi Live', 'https://play.streamafrica.net/lofiradio')" class="px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-[10px] border border-amber-300 cursor-pointer">
+                  + 🇻🇳 Việt Chill Lo-fi
+                </button>
+                <button onclick="setMusicStreamPreset('☕ Chillhop Cafe Radio', 'https://stream.zeno.fm/f3wvbbqmdg8uv')" class="px-2 py-0.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-[10px] border border-indigo-200 cursor-pointer">
                   + Chillhop Cafe
                 </button>
                 <button onclick="setMusicStreamPreset('🎧 Night Cyber Radio', 'https://stream.nightride.fm/chillsynth.mp3')" class="px-2 py-0.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold text-[10px] border border-purple-200 cursor-pointer">
@@ -2127,11 +2130,13 @@
         });
         
         this.defaultTracks = [
-          { id: 'lofi', type: 'synth', name: '☕ Cozy Lo-fi Study Cafe', desc: 'Rhodes chords & vinyl warmth' },
-          { id: 'arcade', type: 'synth', name: '👾 8-Bit Retro Arcade', desc: 'Bouncy Game Boy chiptune arpeggios' },
-          { id: 'synth', type: 'synth', name: '🌌 Deep Space Synthwave', desc: 'Chill neon cyberpunk atmosphere' },
-          { id: 'rain', type: 'synth', name: '🌧️ Gentle Coffee Rain', desc: 'Ambient focus rain & soft chords' },
-          { id: 'zen', type: 'synth', name: '🧘 Zen Flow Chimes', desc: 'Calm pentatonic bells' }
+          { id: 'vn_coffee', type: 'synth', name: '🇻🇳 Cà Phê Sáng Sài Gòn (Acoustic Lo-fi)', desc: 'Chùm hợp âm Guitar Acoustic mộc mạc & ấm áp' },
+          { id: 'vn_hanoi', type: 'synth', name: '🇻🇳 Hà Nội Mùa Thu & Mưa Phùn (Chill Beat)', desc: 'Giai điệu Ballad piano & mưa rơi êm dịu' },
+          { id: 'vn_dantranh', type: 'synth', name: '🇻🇳 Đàn Tranh & Sáo Trúc (Zen Việt)', desc: 'Ngũ cung Việt Nam thanh tao, thư giãn sâu' },
+          { id: 'vn_indie', type: 'synth', name: '🇻🇳 Phố Cổ Lên Đèn (Indie Night Pop)', desc: 'Indie Pop đêm muộn nhẹ nhàng cho Coder' },
+          { id: 'vn_retro', type: 'synth', name: '🇻🇳 Sài Gòn 1980s (Retro Chiptune)', desc: '8-Bit Game Boy tuổi thơ sôi nổi & sáng tạo' },
+          { id: 'vn_radio_hanoi', type: 'stream', name: '📻 Hà Nội Community Radio (Live)', desc: 'Luồng Live Radio Việt Nam 24/7', url: 'https://ha-noi-community-radio.radiocult.fm/stream' },
+          { id: 'lofi_intl', type: 'synth', name: '🌍 Cozy Global Lo-fi Cafe', desc: 'Rhodes chords & vinyl beat quốc tế' }
         ];
 
         this.loadCustomTracks();
@@ -2256,57 +2261,93 @@
       }
 
       getTempoForTrack() {
-        const track = this.tracks[this.currentTrackIndex] ? this.tracks[this.currentTrackIndex].id : 'lofi';
-        if (track === 'arcade') return 240;
-        if (track === 'lofi') return 520;
-        if (track === 'synth') return 360;
-        if (track === 'rain') return 600;
-        return 550;
+        const track = this.tracks[this.currentTrackIndex] ? this.tracks[this.currentTrackIndex].id : 'vn_coffee';
+        if (track === 'vn_retro') return 240;
+        if (track === 'vn_coffee') return 500;
+        if (track === 'vn_hanoi') return 580;
+        if (track === 'vn_dantranh') return 480;
+        if (track === 'vn_indie') return 420;
+        return 520;
       }
 
       tick() {
         if (!this.isPlaying || !this.ctx) return;
-        const track = this.tracks[this.currentTrackIndex] ? this.tracks[this.currentTrackIndex].id : 'lofi';
+        const track = this.tracks[this.currentTrackIndex] ? this.tracks[this.currentTrackIndex].id : 'vn_coffee';
         
-        if (track === 'lofi') {
+        if (track === 'vn_coffee') {
+          // 🇻🇳 Cà Phê Sáng Sài Gòn (Acoustic Chords: Cmaj7 - Am7 - Dm7 - G7)
           const progression = [
-            [196.00, 293.66, 369.99, 440.00], // Gmaj7
-            [246.94, 293.66, 369.99, 440.00], // Bm7
             [261.63, 329.63, 392.00, 493.88], // Cmaj7
-            [293.66, 369.99, 440.00, 523.25]  // D7
+            [220.00, 261.63, 329.63, 392.00], // Am7
+            [146.83, 174.61, 220.00, 261.63], // Dm7
+            [196.00, 246.94, 293.66, 349.23]  // G7
+          ];
+          const chord = progression[Math.floor((this.step % 16) / 4)];
+          const note = chord[this.step % 4];
+          this.playNote(note, 0.45, 'triangle', 0.12);
+          if (this.step % 4 === 0) {
+            this.playNote(chord[0] / 2, 0.85, 'sine', 0.18); // Warm bass
+          }
+        } else if (track === 'vn_hanoi') {
+          // 🇻🇳 Hà Nội Mùa Thu & Mưa Phùn (Em - C - G - D)
+          const progression = [
+            [164.81, 196.00, 246.94, 329.63], // Em
+            [130.81, 164.81, 196.00, 261.63], // C
+            [196.00, 246.94, 293.66, 392.00], // G
+            [146.83, 185.00, 220.00, 293.66]  // D
+          ];
+          const chord = progression[Math.floor((this.step % 16) / 4)];
+          const note = chord[this.step % 4];
+          this.playNote(note, 0.55, 'sine', 0.1);
+          if (this.step % 8 === 0) {
+            this.playNote(chord[0] / 2, 1.2, 'triangle', 0.15);
+          }
+          if (this.step % 4 === 2) {
+            this.playNoiseGrain(0.18); // Soft raindrop
+          }
+        } else if (track === 'vn_dantranh') {
+          // 🇻🇳 Đàn Tranh & Sáo Trúc (Ngũ cung Việt Nam: Hò - Xự - Xang - Xê - Cống)
+          const vnPentatonic = [293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
+          const melodyIdx = [0, 2, 3, 5, 4, 2, 1, 0, 3, 4, 5, 7, 5, 4, 2, 0];
+          const note = vnPentatonic[melodyIdx[this.step % melodyIdx.length]];
+          this.playNote(note, 0.75, 'triangle', 0.14); // Resonant zither pluck
+          if (this.step % 4 === 0) {
+            this.playNote(146.83, 1.2, 'sine', 0.16); // Deep wood gong
+          }
+        } else if (track === 'vn_indie') {
+          // 🇻🇳 Phố Cổ Lên Đèn (Indie Night Chords: Fmaj7 - Em7 - Dm7 - Cmaj7)
+          const progression = [
+            [174.61, 220.00, 261.63, 329.63], // Fmaj7
+            [164.81, 196.00, 246.94, 329.63], // Em7
+            [146.83, 174.61, 220.00, 261.63], // Dm7
+            [130.81, 164.81, 196.00, 246.94]  // Cmaj7
+          ];
+          const chord = progression[Math.floor((this.step % 16) / 4)];
+          this.playNote(chord[this.step % 4], 0.4, 'triangle', 0.11);
+          if (this.step % 2 === 0) {
+            this.playNote(chord[0], 0.35, 'sine', 0.14);
+          }
+        } else if (track === 'vn_retro') {
+          // 🇻🇳 Sài Gòn 1980s Retro 8-Bit
+          const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+          const note = scale[this.step % scale.length];
+          this.playNote(note, 0.14, 'square', 0.08);
+          if (this.step % 4 === 0) {
+            this.playNote(130.81, 0.22, 'square', 0.12);
+          }
+        } else {
+          // 🌍 Global Cozy Lo-fi
+          const progression = [
+            [196.00, 293.66, 369.99, 440.00],
+            [246.94, 293.66, 369.99, 440.00],
+            [261.63, 329.63, 392.00, 493.88],
+            [293.66, 369.99, 440.00, 523.25]
           ];
           const chord = progression[Math.floor((this.step % 16) / 4)];
           const note = chord[this.step % 4];
           this.playNote(note, 0.45, 'triangle', 0.12);
           if (this.step % 4 === 0) {
             this.playNote(chord[0] / 2, 0.8, 'sine', 0.18);
-          }
-        } else if (track === 'arcade') {
-          const scale = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
-          const note = scale[this.step % scale.length];
-          this.playNote(note, 0.12, 'square', 0.08);
-          if (this.step % 4 === 0) {
-            this.playNote(130.81, 0.2, 'square', 0.12);
-          }
-        } else if (track === 'synth') {
-          const roots = [110.00, 130.81, 146.83, 164.81];
-          const root = roots[Math.floor((this.step % 16) / 4)];
-          this.playNote(root * 2, 0.35, 'sawtooth', 0.07);
-          if (this.step % 2 === 0) {
-            this.playNote(root, 0.4, 'triangle', 0.15);
-          }
-        } else if (track === 'rain') {
-          if (this.step % 8 === 0) {
-            this.playNote(587.33, 1.2, 'sine', 0.08);
-          } else if (this.step % 8 === 4) {
-            this.playNote(880.00, 1.2, 'sine', 0.06);
-          }
-          this.playNoiseGrain(0.3);
-        } else {
-          const pentatonic = [392.00, 440.00, 523.25, 587.33, 659.25, 783.99];
-          if (this.step % 3 === 0) {
-            const note = pentatonic[(this.step / 3) % pentatonic.length];
-            this.playNote(note, 1.4, 'sine', 0.1);
           }
         }
 
@@ -2917,7 +2958,15 @@
       const btnPlay = document.getElementById('btn-jukebox-play');
       const btnHeader = document.getElementById('btn-jukebox');
 
-      if (nameEl) nameEl.innerText = curTrack ? curTrack.name.split(' ')[1] + ' ' + (curTrack.name.split(' ')[2] || '') : 'Lo-fi Music';
+      const iconEl = document.getElementById('jukebox-icon');
+      if (nameEl && curTrack) {
+        const cleanWords = curTrack.name.replace(/^[^\s\w]+ /, '').split(' ').slice(0, 3).join(' ');
+        nameEl.innerText = cleanWords || 'Cà Phê Sáng';
+      }
+      if (iconEl && curTrack) {
+        const firstEmoji = curTrack.name.match(/^[^\s]+/);
+        if (firstEmoji) iconEl.innerText = firstEmoji[0];
+      }
       if (eqEl) {
         if (musicJukebox.isPlaying) eqEl.classList.remove('hidden');
         else eqEl.classList.add('hidden');
