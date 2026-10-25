@@ -215,6 +215,38 @@
     .pop-in { animation: pop-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     .float-item { animation: float-up-fade 1.5s forwards ease-out; }
 
+    @keyframes action-code {
+      0%, 100% { transform: translateY(0) rotate(-1deg) scale(1); }
+      50% { transform: translateY(-5px) rotate(1deg) scale(1.035); }
+    }
+    @keyframes action-think {
+      0%, 100% { transform: translateY(0) rotate(0); filter: drop-shadow(0 4px 8px rgba(99,102,241,.18)); }
+      50% { transform: translateY(-8px) rotate(-2deg); filter: drop-shadow(0 0 14px rgba(129,140,248,.65)); }
+    }
+    @keyframes action-alert {
+      0%, 100% { transform: translateX(0) rotate(0); filter: drop-shadow(0 4px 8px rgba(244,63,94,.18)); }
+      25% { transform: translateX(-2px) rotate(-2deg); }
+      75% { transform: translateX(2px) rotate(2deg); }
+    }
+    @keyframes action-celebrate {
+      0%, 100% { transform: translateY(0) scale(1); }
+      35% { transform: translateY(-14px) scale(1.1) rotate(-4deg); }
+      70% { transform: translateY(-5px) scale(1.04) rotate(4deg); }
+    }
+    @keyframes cinematic-pulse {
+      0%, 100% { box-shadow: inset 0 0 0 1px rgba(251,191,36,.08), 0 0 0 rgba(251,191,36,0); }
+      50% { box-shadow: inset 0 0 0 1px rgba(251,191,36,.25), 0 0 42px rgba(251,191,36,.16); }
+    }
+    .action-typing .char-sprite { animation: action-code .7s infinite ease-in-out; }
+    .action-reviewing .char-sprite { animation: action-think 2.1s infinite ease-in-out; }
+    .action-error .char-sprite, .action-alert .char-sprite { animation: action-alert .42s infinite ease-in-out; }
+    .action-celebrating .char-sprite, .action-done .char-sprite { animation: action-celebrate .9s infinite ease-in-out; }
+    .cinematic-mode #view-game-house { animation: cinematic-pulse 2.4s infinite ease-in-out; }
+    .cinematic-mode .game-character:not(.selected) { opacity: .42; filter: saturate(.55) blur(.35px); transition: opacity .35s ease, filter .35s ease; }
+    .cinematic-mode .game-character.selected { z-index: 100 !important; filter: drop-shadow(0 0 18px rgba(251,191,36,.78)); }
+    .cinematic-mode #studio-stage::after { content: ''; position: absolute; inset: 0; pointer-events: none; border: 2px solid rgba(251,191,36,.28); border-radius: 1rem; box-shadow: inset 0 0 70px rgba(99,102,241,.12); }
+    .live-event-card { animation: pop-in .28s ease-out both; }
+
     /* Vibe Coding Sprint Tracker polish - Playful Arcade Command HUD */
     #modal-sprint-countdown.sprint-focus-mode {
       background: rgba(15, 12, 28, 0.92);
@@ -904,6 +936,10 @@
           <span class="sm:hidden">Live</span>
           <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
         </button>
+        <button onclick="toggleCinematicMode()" id="btn-cinematic-mode" class="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-xs font-black border border-indigo-200 shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap" title="Focus on the active agent" data-i18n-title="cinematic_title">
+          <span class="ui-icon icon-focus" aria-hidden="true"></span>
+          <span class="hidden sm:inline" data-i18n="cinematic_btn">Watch Live</span>
+        </button>
       </div>
     </div>
 
@@ -1109,6 +1145,15 @@
 
       <!-- Studio Interactive Stage / Floor -->
       <div id="studio-stage" class="relative flex-1 min-h-[340px] sm:min-h-[420px] md:min-h-[520px] lg:min-h-[580px] w-full mt-1 cursor-crosshair rounded-2xl overflow-hidden" onclick="handleStudioMapClick(event)">
+
+        <!-- Live event ribbon: turns real agent transitions into a readable mini-show -->
+        <aside id="live-event-feed" class="absolute left-2 bottom-2 z-30 w-[min(21rem,calc(100%-1rem))] max-w-full pointer-events-none" aria-live="polite">
+          <div class="flex items-center justify-between mb-1 px-1 text-[9px] font-black uppercase tracking-[.12em] text-white/85">
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span><span data-i18n="live_feed_title">Live Agent Feed</span></span>
+            <span id="live-feed-count" class="font-mono text-white/60">0 events</span>
+          </div>
+          <div id="live-event-list" class="space-y-1"></div>
+        </aside>
         
         <!-- ZOOMED ROOM HUD (Desktop Full Navigation) -->
         <div id="zoomed-room-hud" class="hidden absolute top-2 left-2 right-2 z-40 md:flex flex-wrap items-center justify-between gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-md rounded-2xl border-2 border-amber-300 shadow-md">
@@ -2381,6 +2426,11 @@
         pending_queue_open_agent: "Open agent",
         pending_queue_unknown_agent: "Unassigned agent",
         pending_queue_no_content: "Queued task content unavailable",
+        cinematic_btn: "Watch Live",
+        cinematic_title: "Focus on the active agent",
+        cinematic_exit: "Exit focus",
+        live_feed_title: "Live Agent Feed",
+        live_feed_empty: "Waiting for the next agent move...",
 
         // Mobile rooms
         mob_4rooms: "4 Rooms",
@@ -2650,6 +2700,11 @@
         pending_queue_open_agent: "Mở agent",
         pending_queue_unknown_agent: "Agent chưa xác định",
         pending_queue_no_content: "Chưa đọc được nội dung task đang chờ",
+        cinematic_btn: "Xem Live",
+        cinematic_title: "Tập trung vào agent đang làm",
+        cinematic_exit: "Thoát focus",
+        live_feed_title: "Hoạt động của Agent",
+        live_feed_empty: "Đang chờ hành động tiếp theo...",
 
         // Mobile rooms
         mob_4rooms: "4 Phòng",
@@ -2884,6 +2939,8 @@
     let activeGoogleAccount = localStorage.getItem('antigravity_active_account') || null;
     let pendingQueue = [];
     let pendingQueueExpanded = false;
+    let cinematicMode = false;
+    let liveEvents = [];
 
     function escapeHtml(value = '') {
       return String(value).replace(/[&<>'"]/g, char => ({
@@ -2993,6 +3050,55 @@
       togglePendingQueue(pendingQueueExpanded || ordered.length === 1);
     }
 
+    function recordLiveEvent(agent, kind, detail = '') {
+      if (!agent) return;
+      const labels = {
+        started: { icon: 'rocket', en: 'started a task', vi: 'bắt đầu task' },
+        finished: { icon: 'check', en: 'finished a task', vi: 'hoàn thành task' },
+        tool: { icon: 'code', en: 'is running', vi: 'đang chạy' },
+        alert: { icon: 'bell', en: 'needs attention', vi: 'cần được chú ý' }
+      };
+      const label = labels[kind] || labels.tool;
+      const text = detail ? `${label[currentLang]} · ${detail}` : label[currentLang];
+      liveEvents.unshift({ id: `${agent.id}-${kind}-${Date.now()}`, agentId: agent.id, name: agent.name, text, icon: label.icon, at: Date.now() });
+      liveEvents = liveEvents.slice(0, 5);
+      renderLiveEvents();
+    }
+
+    function renderLiveEvents() {
+      const list = document.getElementById('live-event-list');
+      const count = document.getElementById('live-feed-count');
+      if (!list || !count) return;
+      count.innerText = `${liveEvents.length} ${currentLang === 'vi' ? 'sự kiện' : 'events'}`;
+      list.innerHTML = liveEvents.length ? liveEvents.map(event => `<button type="button" class="live-event-card pointer-events-auto w-full flex items-center gap-2 rounded-xl border border-white/20 bg-slate-950/72 backdrop-blur-md px-2.5 py-2 text-left shadow-lg hover:bg-slate-900/85 transition-colors cursor-pointer" onclick="selectAgent('${escapeHtml(event.agentId)}')">
+        <span class="ui-icon icon-${escapeHtml(event.icon)} shrink-0" aria-hidden="true"></span>
+        <span class="min-w-0 flex-1"><b class="block truncate text-[10px] text-white">${escapeHtml(event.name)}</b><span class="block truncate text-[9px] text-white/70">${escapeHtml(event.text)}</span></span>
+        <span class="text-[8px] text-white/45 font-mono shrink-0">${new Date(event.at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+      </button>`).join('') : `<div class="rounded-xl border border-white/15 bg-slate-950/55 backdrop-blur-md px-2.5 py-2 text-[9px] text-white/60">${escapeHtml(t('live_feed_empty'))}</div>`;
+    }
+
+    function toggleCinematicMode() {
+      cinematicMode = !cinematicMode;
+      document.body.classList.toggle('cinematic-mode', cinematicMode);
+      const button = document.getElementById('btn-cinematic-mode');
+      if (button) {
+        button.classList.toggle('bg-indigo-600', cinematicMode);
+        button.classList.toggle('text-white', cinematicMode);
+        button.classList.toggle('bg-indigo-50', !cinematicMode);
+        button.classList.toggle('text-indigo-900', !cinematicMode);
+        const label = button.querySelector('[data-i18n="cinematic_btn"]');
+        if (label) label.innerText = t(cinematicMode ? 'cinematic_exit' : 'cinematic_btn');
+      }
+      if (cinematicMode) {
+        const active = agentList.find(agent => agent.isActive) || agentList[0];
+        if (active) {
+          selectAgent(active.id, false);
+          recordLiveEvent(active, 'tool', currentLang === 'vi' ? 'đang được focus' : 'is now in focus');
+        }
+      }
+      renderWorld();
+    }
+
     function resetWorkspaceForNewAccount(newAccount, isManual = false) {
       console.log(`[Account Manager] Resetting workspace for Google Account: ${newAccount}`);
       const oldAccount = activeGoogleAccount;
@@ -3097,6 +3203,7 @@
       if (typeof renderSprintTasks === 'function') renderSprintTasks();
       if (typeof updateSprintTimer === 'function') updateSprintTimer();
       if (typeof renderPendingQueue === 'function') renderPendingQueue();
+      if (typeof renderLiveEvents === 'function') renderLiveEvents();
       if (typeof selectAgent === 'function' && typeof currentSelectedId !== 'undefined' && currentSelectedId) {
         selectAgent(currentSelectedId, false);
       }
@@ -6963,6 +7070,18 @@ function triggerRandomStudioEvent() {
 
       el.style.zIndex = Math.round(agent.y * 10);
 
+      ['typing', 'reviewing', 'error', 'alert', 'celebrating', 'done'].forEach(state => el.classList.remove(`action-${state}`));
+      const visualAction = agent.actionState === 'error' || agent.actionState === 'failed'
+        ? 'error'
+        : agent.isActive && (agent.actionState === 'typing' || agent.actionState === 'running')
+          ? 'typing'
+          : agent.isActive && agent.actionState === 'reviewing'
+            ? 'reviewing'
+            : !agent.isActive && /DONE|RESULT|complete|hoàn tất/i.test((agent.logs || []).slice(-1)[0] || '')
+              ? 'done'
+              : '';
+      if (visualAction) el.classList.add(`action-${visualAction}`);
+
       // Tooltip dynamic alignment based on coordinates
       const tt = document.getElementById(`tooltip-${agent.id}`);
       if (tt) {
@@ -7283,6 +7402,7 @@ function triggerRandomStudioEvent() {
       }
 
       renderPendingQueue();
+      renderLiveEvents();
     }
 
     function selectAgent(id, playSound = true) {
@@ -7521,6 +7641,21 @@ function triggerRandomStudioEvent() {
           }
         });
 
+        // Turn meaningful state transitions into a small live show without spamming
+        // the feed on every refresh tick.
+        freshAgents.forEach(fresh => {
+          const previous = agentList.find(existing => existing.id === fresh.id);
+          if (!previous) {
+            if (fresh.isActive) recordLiveEvent(fresh, 'started', fresh.prompt || fresh.tool || 'new activity');
+          } else if (!previous.isActive && fresh.isActive) {
+            recordLiveEvent(fresh, 'started', fresh.prompt || fresh.tool || 'new activity');
+          } else if (previous.isActive && !fresh.isActive) {
+            recordLiveEvent(fresh, 'finished', fresh.prompt || 'task complete');
+          } else if (fresh.isActive && fresh.tool && fresh.tool !== previous.tool) {
+            recordLiveEvent(fresh, 'tool', fresh.tool);
+          }
+        });
+
         agentList = freshAgents;
         renderWorld();
         selectAgent(currentSelectedId, false); // Keep UI synced without firing sound automatically
@@ -7715,6 +7850,9 @@ function triggerRandomStudioEvent() {
     updateDiagnosticUI();
     updateJukeboxUI();
     updateQuotaUI();
+    agentList.filter(agent => agent.isActive).slice(0, 3).reverse().forEach(agent => {
+      recordLiveEvent(agent, 'started', agent.prompt || agent.tool || 'active task');
+    });
     renderWorld();
     selectAgent(currentSelectedId, false);
     hydratePlayfulIcons();
