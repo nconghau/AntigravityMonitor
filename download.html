@@ -3,23 +3,33 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Antigravity Monitor 🎮 • Pixel Game Dev Studio & Mission Control cho AI Coding Agents</title>
+  <title>Antigravity Monitor | Playful Mission Control for AI Coding Agents</title>
   
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Antigravity Monitor — Desktop & MenuBar visualizer for Google DeepMind Antigravity autonomous coding agents with real-time isometric Game Dev Studio, Lo-fi Jukebox and auto diagnostics."/>
-  <meta name="keywords" content="antigravity, google antigravity, agent monitor, coding agent, deepmind, game dev story, lofi jukebox, macos menubar, ai developer tools, autonomous coding"/>
+  <meta name="description" content="Antigravity Monitor is a playful macOS mission control for AI coding agents: live agent activity, sprint countdowns, a four-room studio, agent skills, and focus-friendly telemetry."/>
+  <meta name="keywords" content="AI coding agent monitor, autonomous coding agents, macOS developer tool, Antigravity Monitor, agent dashboard, vibe coding sprint tracker, playful developer tools"/>
   <meta name="author" content="Nguyen Cong Hau (nconghau)"/>
+  <meta name="robots" content="index, follow, max-image-preview:large"/>
+  <meta name="theme-color" content="#f59e0b"/>
+  <link rel="canonical" href="https://agy-monitor.surge.sh/"/>
   
   <!-- OpenGraph Social Sharing -->
-  <meta property="og:title" content="Antigravity Monitor — Game Dev Studio Visualizer cho AI Agents"/>
-  <meta property="og:description" content="Transform raw AI coding agents into adorable 3D chibi sprites walking, typing, drinking coffee, and resting in an isometric Game Dev Studio!"/>
+  <meta property="og:title" content="Antigravity Monitor | Playful Mission Control for AI Coding Agents"/>
+  <meta property="og:description" content="Turn autonomous coding activity into a living four-room studio with live agent status, sprint countdowns, skills, and delightful focus tools."/>
   <meta property="og:image" content="https://agy-monitor.surge.sh/assets/logo.jpg"/>
+  <meta property="og:image:alt" content="Antigravity Monitor playful coding robot"/>
   <meta property="og:url" content="https://agy-monitor.surge.sh"/>
   <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Antigravity Monitor"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Antigravity Monitor | Playful Mission Control"/>
+  <meta name="twitter:description" content="A playful macOS command center for autonomous AI coding agents."/>
+  <meta name="twitter:image" content="https://agy-monitor.surge.sh/assets/logo.jpg"/>
   
   <link rel="icon" type="image/jpeg" href="./assets/logo.jpg"/>
+  <link rel="icon" type="image/png" href="./assets/app-icon-source.png"/>
   <link rel="shortcut icon" type="image/jpeg" href="./assets/logo.jpg"/>
-  <link rel="apple-touch-icon" href="./assets/logo.jpg"/>
+  <link rel="apple-touch-icon" href="./assets/app-icon-source.png"/>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
@@ -49,7 +59,49 @@
     .room-card:hover img {
       transform: scale(1.05);
     }
+    .ui-icon {
+      display: inline-block;
+      width: 1.15em;
+      height: 1.15em;
+      flex: 0 0 auto;
+      vertical-align: -.2em;
+      background-image: url('./assets/playful-ui-icon-atlas.png');
+      background-repeat: no-repeat;
+      background-size: 400% 400%;
+      filter: drop-shadow(0 1px 1px rgba(40, 30, 20, .16));
+    }
+    .icon-target { background-position: 0% 0%; }
+    .icon-clock { background-position: 33.333% 0%; }
+    .icon-fire { background-position: 66.666% 0%; }
+    .icon-check { background-position: 100% 0%; }
+    .icon-bell { background-position: 0% 33.333%; }
+    .icon-trash { background-position: 33.333% 33.333%; }
+    .icon-add { background-position: 66.666% 33.333%; }
+    .icon-focus { background-position: 100% 33.333%; }
+    .icon-bot { background-position: 0% 66.666%; }
+    .icon-coffee { background-position: 33.333% 66.666%; }
+    .icon-pizza { background-position: 66.666% 66.666%; }
+    .icon-home { background-position: 100% 66.666%; }
+    .icon-music { background-position: 0% 100%; }
+    .icon-code { background-position: 33.333% 100%; }
+    .icon-rocket { background-position: 66.666% 100%; }
+    .icon-sleep { background-position: 100% 100%; }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Antigravity Monitor",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS",
+    "description": "A playful mission control for autonomous AI coding agents with live agent activity, sprint countdowns, skills, and a four-room studio.",
+    "softwareVersion": "2.2.3",
+    "downloadUrl": "https://agy-monitor.surge.sh/downloads/AntigravityMonitor-macOS-Universal.dmg",
+    "url": "https://agy-monitor.surge.sh/",
+    "license": "https://github.com/nconghau/AntigravityMonitor/blob/main/LICENSE",
+    "author": { "@type": "Person", "name": "Nguyen Cong Hau", "url": "https://github.com/nconghau" }
+  }
+  </script>
 </head>
 <body class="min-h-screen flex flex-col hero-glow selection:bg-amber-200">
 
@@ -75,7 +127,7 @@
 
       <a href="#download" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 active:scale-95 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
         <span data-landing-i18n="nav_download">🍏 Download macOS App</span>
-        <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-900/30">v2.5</span>
+        <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-900/30">v2.2.3</span>
       </a>
       <a href="https://github.com/nconghau/AntigravityMonitor" target="_blank" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5">
         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -89,7 +141,7 @@
     
     <div class="text-center max-w-3xl mx-auto mb-10">
       <div class="inline-flex flex-wrap items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-amber-100/90 border border-amber-300 text-amber-950 font-bold text-xs mb-4 shadow-2xs">
-        <span>✨ Universal v2.5 Release</span>
+        <span>✨ Universal v2.2.3 Release</span>
         <span>•</span>
         <span class="text-emerald-700 font-extrabold">Apple Silicon & Intel Ready</span>
         <span>•</span>
@@ -406,7 +458,7 @@
     const LANDING_I18N = {
       en: {
         nav_download: "🍏 Download macOS App",
-        hero_tag: "✨ Universal v2.5 Release • Apple Silicon & Intel Ready",
+        hero_tag: "✨ Universal v2.2.3 Release • Apple Silicon & Intel Ready",
         hero_title: 'Turn Bland AI Coding Logs Into A Vibrant <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-500 to-rose-600">Game Dev Studio</span>!',
         hero_desc: "No more staring at monotone terminal output. Antigravity Monitor brings Google Antigravity autonomous coding agents to life as 3D chibi sprites in an isometric 4-room virtual studio: typing at 120 WPM, taking espresso breaks, listening to Lo-fi beats, and napping in the sleep pod.",
         btn_dmg: "🍏 Download macOS App (.DMG - 25 MB)",
@@ -446,7 +498,7 @@
       },
       vi: {
         nav_download: "🍏 Tải App macOS",
-        hero_tag: "✨ Bản Cập Nhật v2.5 Universal • Apple Silicon & Intel Ready",
+        hero_tag: "✨ Bản Cập Nhật v2.2.3 Universal • Apple Silicon & Intel Ready",
         hero_title: 'Turn Bland AI Coding Logs Into A Vibrant <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-500 to-rose-600">Game Dev Studio</span>!',
         hero_desc: "No more staring at monotone terminal output. Antigravity Monitor brings Google Antigravity autonomous coding agents to life as 3D chibi sprites in an isometric 4-room virtual studio: typing at 120 WPM, taking espresso breaks, listening to Lo-fi beats, and napping in the sleep pod.",
         btn_dmg: "🍏 Tải Bản macOS (.DMG - 25 MB)",
@@ -488,6 +540,48 @@
 
     let landingLang = localStorage.getItem('agy_lang') || 'en';
 
+    function hydrateLandingIcons(root = document.body) {
+      const iconByEmoji = {
+        '🎮': 'bot', '🌐': 'home', '🍏': 'rocket', '✨': 'target', '🎯': 'target', '💻': 'code',
+        '➔': 'focus', '📻': 'music', '🩺': 'check', '🎨': 'focus', '🌙': 'sleep', '💤': 'sleep',
+        '✅': 'check', '💾': 'check', '📦': 'code', '🐙': 'bot', '❤️': 'check', '⚡': 'fire',
+        '☕': 'coffee', '🍕': 'pizza', '🍵': 'coffee', '🧠': 'bot', '🏠': 'home', '🛋️': 'home',
+        '🛏️': 'sleep', '🔧': 'code', '🚀': 'rocket', '💡': 'target', '📱': 'code', '🏡': 'home',
+        '🏢': 'home', '🎧': 'music', '🎵': 'music', '🔔': 'bell', '🧪': 'code', '🛠️': 'code',
+        '🐱': 'bot', '🪴': 'home', '📁': 'code', '📝': 'code', '🟢': 'check', '🔒': 'bell',
+        '🍳': 'coffee', '🪟': 'home', '🐧': 'bot', '🐍': 'bot', '➜': 'focus'
+      };
+      const emojiPattern = new RegExp(Object.keys(iconByEmoji).sort((a, b) => b.length - a.length).map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'gu');
+      const textNodes = [];
+      const seen = new Set();
+      const candidates = [root, ...root.querySelectorAll('*')];
+      candidates.forEach(parent => {
+        if (parent.matches && parent.matches('script, style, textarea, .ui-icon')) return;
+        [...parent.childNodes].forEach(node => {
+          if (node.nodeType !== 3 || seen.has(node)) return;
+          seen.add(node);
+          if (emojiPattern.test(node.nodeValue)) textNodes.push(node);
+          emojiPattern.lastIndex = 0;
+        });
+      });
+      textNodes.forEach(node => {
+        const fragment = document.createDocumentFragment();
+        let lastIndex = 0;
+        emojiPattern.lastIndex = 0;
+        node.nodeValue.replace(emojiPattern, (match, offset) => {
+          if (offset > lastIndex) fragment.appendChild(document.createTextNode(node.nodeValue.slice(lastIndex, offset)));
+          const icon = document.createElement('span');
+          icon.className = `ui-icon icon-${iconByEmoji[match] || 'target'}`;
+          icon.setAttribute('aria-hidden', 'true');
+          fragment.appendChild(icon);
+          lastIndex = offset + match.length;
+          return match;
+        });
+        if (lastIndex < node.nodeValue.length) fragment.appendChild(document.createTextNode(node.nodeValue.slice(lastIndex)));
+        node.parentNode.replaceChild(fragment, node);
+      });
+    }
+
     function applyLandingLanguage(lang) {
       landingLang = (lang === 'vi' || lang === 'en') ? lang : 'en';
       localStorage.setItem('agy_lang', landingLang);
@@ -508,6 +602,7 @@
         const key = el.getAttribute('data-landing-i18n-html');
         if (dict[key]) el.innerHTML = dict[key];
       });
+      hydrateLandingIcons();
     }
 
     function toggleLandingLanguage() {
@@ -517,6 +612,7 @@
 
     // Initialize on load
     applyLandingLanguage(landingLang);
+    new MutationObserver(() => hydrateLandingIcons()).observe(document.body, { childList: true, subtree: true });
   </script>
 
 </body>

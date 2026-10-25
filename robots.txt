@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://agy-monitor.surge.sh/sitemap.xml

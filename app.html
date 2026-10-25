@@ -1040,7 +1040,7 @@
 
     <!-- Search Input: Compact & Clean -->
     <div class="flex items-center gap-2">
-      <input type="text" id="agent-search" oninput="onSearch(this.value)" placeholder="🔍 Search agents, tasks..." data-i18n-placeholder="search_placeholder" class="w-40 sm:w-52 px-2.5 py-1 text-xs rounded-lg bg-[var(--floor-color)] border border-[var(--card-border)] outline-none focus:border-amber-400 font-medium"/>
+      <input type="text" id="agent-search" oninput="onSearch(this.value)" placeholder="Search agents, tasks..." data-i18n-placeholder="search_placeholder" class="w-40 sm:w-52 px-2.5 py-1 text-xs rounded-lg bg-[var(--floor-color)] border border-[var(--card-border)] outline-none focus:border-amber-400 font-medium"/>
     </div>
   </div>
 
@@ -1049,11 +1049,11 @@
 
     <!-- MOBILE QUICK ROOM SWITCHER (Tối ưu trải nghiệm cho điện thoại) -->
     <div class="flex items-center justify-between gap-1.5 overflow-x-auto no-scrollbar py-1.5 px-2 bg-white/95 rounded-2xl border border-[var(--card-border)] md:hidden mb-2 shadow-2xs text-[11px] font-bold sticky top-1 z-30">
-      <button onclick="resetRoomZoom()" id="mobile-tab-all" class="px-3 py-1.5 rounded-xl bg-amber-400 text-amber-950 shadow-2xs whitespace-nowrap shrink-0 transition-all font-black" data-i18n="mob_4rooms">🏠 4 Rooms</button>
-      <button onclick="zoomToRoom('office')" id="mobile-tab-office" class="px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap shrink-0 transition-all font-semibold">💻 Dev Lab</button>
-      <button onclick="zoomToRoom('kitchen')" id="mobile-tab-kitchen" class="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap shrink-0 transition-all font-semibold" data-i18n="mob_kitchen">🍳 Kitchen</button>
-      <button onclick="zoomToRoom('living')" id="mobile-tab-living" class="px-3 py-1.5 rounded-xl bg-pink-50 text-pink-700 border border-pink-200 whitespace-nowrap shrink-0 transition-all font-semibold">🛋️ Lounge</button>
-      <button onclick="zoomToRoom('bedroom')" id="mobile-tab-bedroom" class="px-3 py-1.5 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 whitespace-nowrap shrink-0 transition-all font-semibold" data-i18n="mob_bedroom">🛏️ Sleep</button>
+      <button onclick="resetRoomZoom()" id="mobile-tab-all" class="px-3 py-1.5 rounded-xl bg-amber-400 text-amber-950 shadow-2xs whitespace-nowrap shrink-0 transition-all font-black"><span class="ui-icon icon-home" aria-hidden="true"></span> 4 Rooms</button>
+      <button onclick="zoomToRoom('office')" id="mobile-tab-office" class="px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap shrink-0 transition-all font-semibold"><span class="ui-icon icon-code" aria-hidden="true"></span> Dev Lab</button>
+      <button onclick="zoomToRoom('kitchen')" id="mobile-tab-kitchen" class="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap shrink-0 transition-all font-semibold"><span class="ui-icon icon-coffee" aria-hidden="true"></span> Kitchen</button>
+      <button onclick="zoomToRoom('living')" id="mobile-tab-living" class="px-3 py-1.5 rounded-xl bg-pink-50 text-pink-700 border border-pink-200 whitespace-nowrap shrink-0 transition-all font-semibold"><span class="ui-icon icon-home" aria-hidden="true"></span> Lounge</button>
+      <button onclick="zoomToRoom('bedroom')" id="mobile-tab-bedroom" class="px-3 py-1.5 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 whitespace-nowrap shrink-0 transition-all font-semibold"><span class="ui-icon icon-sleep" aria-hidden="true"></span> Sleep</button>
     </div>
 
     <!-- MODE 1: 🏡 THE GAME DEV STORY VIRTUAL STUDIO MAP -->
@@ -1077,16 +1077,16 @@
         <!-- Quick Studio Action Buttons -->
         <div class="flex items-center gap-1 text-[10px] font-bold">
           <button onclick="event.stopPropagation(); sendSelectedToRoom('office')" class="px-2 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 transition-transform active:scale-95" title="Send Agent to coding desk" data-i18n-title="studio_desk_title">
-            <span data-i18n="btn_desk">💻 Code Desk</span>
+            <span class="ui-icon icon-code" aria-hidden="true"></span><span data-i18n="btn_desk">Code Desk</span>
           </button>
           <button onclick="event.stopPropagation(); sendSelectedToRoom('kitchen')" class="px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition-transform active:scale-95" title="Send Agent to coffee & pizza counter" data-i18n-title="studio_coffee_title">
-            <span data-i18n="btn_coffee">☕ Coffee</span>
+            <span class="ui-icon icon-coffee" aria-hidden="true"></span><span data-i18n="btn_coffee">Coffee</span>
           </button>
           <button onclick="event.stopPropagation(); sendSelectedToRoom('living')" class="px-2 py-1 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 transition-transform active:scale-95" title="Send Agent to sofa to relax" data-i18n-title="studio_sofa_title">
-            <span data-i18n="btn_sofa">🛋️ Sofa TV</span>
+            <span class="ui-icon icon-home" aria-hidden="true"></span><span data-i18n="btn_sofa">Sofa TV</span>
           </button>
           <button onclick="event.stopPropagation(); sendSelectedToRoom('bedroom')" class="px-2 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition-transform active:scale-95" title="Send Agent to sleep pod" data-i18n-title="studio_sleep_title">
-            <span data-i18n="btn_sleep">🛏️ Sleep Pod</span>
+            <span class="ui-icon icon-sleep" aria-hidden="true"></span><span data-i18n="btn_sleep">Sleep Pod</span>
           </button>
         </div>
       </div>
@@ -1109,27 +1109,27 @@
 
           <!-- Quick Switcher Between Rooms While Zoomed (Desktop) -->
           <div class="flex items-center gap-1 text-[10px] font-bold">
-            <button onclick="event.stopPropagation(); zoomToRoom('office')" id="zoom-tab-office" class="px-2 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap shrink-0">💻 Dev Lab</button>
-            <button onclick="event.stopPropagation(); zoomToRoom('kitchen')" id="zoom-tab-kitchen" class="px-2 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap shrink-0" data-i18n="mob_kitchen">🍳 Kitchen & Cafe</button>
-            <button onclick="event.stopPropagation(); zoomToRoom('living')" id="zoom-tab-living" class="px-2 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap shrink-0">🛋️ Lounge</button>
-            <button onclick="event.stopPropagation(); zoomToRoom('bedroom')" id="zoom-tab-bedroom" class="px-2 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap shrink-0" data-i18n="mob_bedroom">🛏️ Bedroom</button>
+            <button onclick="event.stopPropagation(); zoomToRoom('office')" id="zoom-tab-office" class="px-2 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap shrink-0"><span class="ui-icon icon-code" aria-hidden="true"></span> Dev Lab</button>
+            <button onclick="event.stopPropagation(); zoomToRoom('kitchen')" id="zoom-tab-kitchen" class="px-2 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap shrink-0"><span class="ui-icon icon-coffee" aria-hidden="true"></span> <span data-i18n="mob_kitchen">Kitchen & Cafe</span></button>
+            <button onclick="event.stopPropagation(); zoomToRoom('living')" id="zoom-tab-living" class="px-2 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap shrink-0"><span class="ui-icon icon-home" aria-hidden="true"></span> Lounge</button>
+            <button onclick="event.stopPropagation(); zoomToRoom('bedroom')" id="zoom-tab-bedroom" class="px-2 py-1 rounded-lg border transition-all cursor-pointer whitespace-nowrap shrink-0"><span class="ui-icon icon-sleep" aria-hidden="true"></span> <span data-i18n="mob_bedroom">Bedroom</span></button>
           </div>
 
           <!-- Back to 4-room diorama button -->
           <button onclick="event.stopPropagation(); resetRoomZoom()" class="px-3 py-1 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-black text-xs shadow-xs flex items-center gap-1 cursor-pointer transition-all active:scale-95 whitespace-nowrap">
-            <span data-i18n="back_4rooms">🏠 4 Rooms</span>
+            <span class="ui-icon icon-home" aria-hidden="true"></span><span data-i18n="back_4rooms">4 Rooms</span>
           </button>
         </div>
 
         <!-- MOBILE MINIMALIST ROOM BADGE (Chỉ hiển thị trên mobile khi phóng to - Chiếm đúng 1 dòng nhỏ) -->
         <div id="zoomed-room-mobile-badge" class="hidden absolute top-2 left-2 right-2 z-40 md:hidden flex items-center justify-between px-3 py-1.5 bg-white/90 backdrop-blur-md rounded-xl border border-amber-300 shadow-sm">
           <div class="flex items-center gap-1.5">
-            <span id="zoomed-mobile-icon" class="text-sm">💻</span>
+            <span id="zoomed-mobile-icon" class="ui-icon icon-code" aria-hidden="true"></span>
             <span id="zoomed-mobile-title" class="font-black text-xs text-slate-800">DEV LAB</span>
             <span id="zoomed-mobile-agents" class="px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-blue-100 text-blue-800">2 Agents</span>
           </div>
           <button onclick="event.stopPropagation(); resetRoomZoom()" class="px-2.5 py-0.5 rounded-lg bg-amber-400 text-amber-950 font-black text-[10px] shadow-2xs flex items-center gap-1 active:scale-95">
-            <span data-i18n="back_4rooms">🏠 4 Rooms</span>
+            <span class="ui-icon icon-home" aria-hidden="true"></span><span data-i18n="back_4rooms">4 Rooms</span>
           </button>
         </div>
 
@@ -1427,16 +1427,16 @@
 
         <!-- Developer Direct Tools -->
         <button onclick="bridgeNative('openWorkspace')" class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200 shadow-2xs flex items-center gap-1 transition-colors whitespace-nowrap shrink-0" title="Open project directly in Antigravity IDE / VS Code">
-          <span data-i18n="btn_open_ide">💻 Open IDE</span>
+          <span class="ui-icon icon-code" aria-hidden="true"></span><span data-i18n="btn_open_ide">Open IDE</span>
         </button>
         <!-- Toggle Terminal Button with State Badge -->
         <button id="btn-terminal-toggle" onclick="toggleTerminalDrawer()" class="px-2.5 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-bold border border-zinc-300 shadow-2xs flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0" title="Toggle Terminal Logs (Auto-opens on Action)">
-          <span>⌨️ <span data-i18n="btn_terminal">Terminal</span></span>
+          <span class="flex items-center gap-1"><span class="ui-icon icon-code" aria-hidden="true"></span><span data-i18n="btn_terminal">Terminal</span></span>
           <span id="terminal-badge" class="px-1.5 py-0.2 rounded-full bg-zinc-200 text-zinc-700 text-[9px] font-mono font-bold" data-i18n="terminal_hidden">Hide</span>
           <span id="terminal-arrow" class="text-[9px] transition-transform duration-200">▾</span>
         </button>
         <button onclick="copyCurrentId()" class="px-2.5 py-1.5 rounded-xl bg-white hover:bg-amber-50 text-xs font-bold border border-[var(--card-border)] shadow-2xs transition-colors whitespace-nowrap shrink-0">
-          📋 Copy ID
+          <span class="ui-icon icon-code" aria-hidden="true"></span> Copy ID
         </button>
       </div>
     </div>
@@ -1446,14 +1446,14 @@
       <div class="px-3.5 py-1.5 bg-zinc-900 border-t border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-400">
         <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span data-i18n="terminal_stream_title">⚡ LIVE ACTION TERMINAL STREAM</span>
+          <span class="flex items-center gap-1"><span class="ui-icon icon-fire" aria-hidden="true"></span><span data-i18n="terminal_stream_title">LIVE ACTION TERMINAL STREAM</span></span>
         </span>
         <div class="flex items-center gap-2">
           <button onclick="bridgeNative('openTerminal')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors" title="Open in macOS Terminal.app">
             <span data-i18n="terminal_open_mac">↗ Open macOS Terminal</span>
           </button>
           <button onclick="toggleTerminalDrawer(false)" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-red-950 text-zinc-400 hover:text-red-300 transition-colors" title="Collapse Terminal">
-            <span data-i18n="terminal_collapse">✕ Collapse</span>
+            <span class="ui-icon icon-trash" aria-hidden="true"></span><span data-i18n="terminal_collapse">Collapse</span>
           </button>
         </div>
       </div>
@@ -1470,7 +1470,7 @@
       <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-[var(--card-border)] mb-3">
         <div class="flex items-center gap-2.5">
           <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-base sm:text-lg border border-purple-200 shrink-0">
-            🧠
+            <span class="ui-icon icon-bot icon-lg" aria-hidden="true"></span>
           </div>
           <div>
             <h3 class="font-extrabold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2">
@@ -1492,7 +1492,7 @@
           <div class="flex items-center justify-between gap-3">
             <div class="flex items-center gap-2.5">
               <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl shrink-0">
-                ⚙️
+                <span class="ui-icon icon-focus icon-lg" aria-hidden="true"></span>
               </div>
               <div>
                 <h4 class="font-black text-xs sm:text-sm flex items-center gap-1.5">
@@ -1504,12 +1504,12 @@
               </div>
             </div>
             <button type="button" onclick="openAntigravitySettingsDirect()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-purple-50 active:scale-95 text-purple-950 font-black text-xs shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer">
-              <span>🚀</span> <span data-i18n="quota_btn_open_settings">Mở Settings > Models</span>
+              <span class="ui-icon icon-rocket" aria-hidden="true"></span> <span data-i18n="quota_btn_open_settings">Mở Settings > Models</span>
             </button>
           </div>
 
           <div class="text-[10px] text-purple-200/90 bg-black/15 rounded-xl px-2.5 py-1.5 flex items-center justify-between">
-            <span class="flex items-center gap-1">💡 <span data-i18n="quota_rate_limit_notice">Hạn mức được Google quản lý server-side theo chu kỳ 5 giờ & hàng tuần.</span></span>
+            <span class="flex items-center gap-1"><span class="ui-icon icon-target" aria-hidden="true"></span> <span data-i18n="quota_rate_limit_notice">Hạn mức được Google quản lý server-side theo chu kỳ 5 giờ & hàng tuần.</span></span>
             <span class="font-mono text-emerald-300 font-bold" id="quota-plan-badge-pill">Google AI Pro</span>
           </div>
         </div>
@@ -2275,13 +2275,13 @@
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pb-2 mb-2 border-b border-[var(--card-border)]">
         <div class="flex items-center gap-1 text-[10px] overflow-x-auto no-scrollbar py-0.5" id="step-filter-pills">
           <button onclick="setStepFilter('ALL')" id="filter-pill-ALL" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-amber-400 text-amber-950 shadow-2xs cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_all">All</button>
-          <button onclick="setStepFilter('USER')" id="filter-pill-USER" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_user">👤 User</button>
-          <button onclick="setStepFilter('TOOL')" id="filter-pill-TOOL" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_tool">🛠️ Tools</button>
-          <button onclick="setStepFilter('CMD')" id="filter-pill-CMD" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_cmd">💻 Cmd</button>
-          <button onclick="setStepFilter('RESULT')" id="filter-pill-RESULT" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0" data-i18n="step_filter_result">🟢 Results</button>
+          <button onclick="setStepFilter('USER')" id="filter-pill-USER" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0"><span class="ui-icon icon-bot" aria-hidden="true"></span> <span data-i18n="step_filter_user">User</span></button>
+          <button onclick="setStepFilter('TOOL')" id="filter-pill-TOOL" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0"><span class="ui-icon icon-code" aria-hidden="true"></span> <span data-i18n="step_filter_tool">Tools</span></button>
+          <button onclick="setStepFilter('CMD')" id="filter-pill-CMD" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0"><span class="ui-icon icon-code" aria-hidden="true"></span> <span data-i18n="step_filter_cmd">Cmd</span></button>
+          <button onclick="setStepFilter('RESULT')" id="filter-pill-RESULT" class="step-filter-pill px-2.5 py-1 rounded-xl font-bold bg-zinc-100 hover:bg-zinc-200 text-zinc-700 cursor-pointer whitespace-nowrap shrink-0"><span class="ui-icon icon-check" aria-hidden="true"></span> <span data-i18n="step_filter_result">Results</span></button>
         </div>
         <div class="relative w-full sm:w-auto">
-          <input type="text" id="step-search-input" oninput="filterStepDetailList()" placeholder="🔍 Filter step keywords..." data-i18n-placeholder="step_search_placeholder" 
+          <input type="text" id="step-search-input" oninput="filterStepDetailList()" placeholder="Filter step keywords..." data-i18n-placeholder="step_search_placeholder"
                  class="w-full sm:w-44 text-[11px] px-2.5 py-1 rounded-xl bg-white border border-[var(--card-border)] focus:outline-none focus:border-amber-400 text-[var(--text-main)]" />
         </div>
       </div>
@@ -2358,30 +2358,30 @@
         tab_all: "All",
         tab_running: "Running",
         tab_idle: "Idle",
-        search_placeholder: "🔍 Search agents, tasks...",
+        search_placeholder: "Search agents, tasks...",
 
         // Mobile rooms
-        mob_4rooms: "🏠 4 Rooms",
-        mob_office: "💻 Dev Lab",
-        mob_kitchen: "🍳 Kitchen",
-        mob_living: "🛋️ Lounge",
-        mob_bedroom: "🛏️ Sleep",
+        mob_4rooms: "4 Rooms",
+        mob_office: "Dev Lab",
+        mob_kitchen: "Kitchen",
+        mob_living: "Lounge",
+        mob_bedroom: "Sleep",
 
         // Studio HUD
         studio_brand: "Antigravity Game Studio",
         studio_level: "Lv.4 Indie",
         studio_hint: "💡 Click floor or furniture to send Agent • Click Agent to select",
-        btn_desk: "💻 Code Desk",
-        btn_coffee: "☕ Coffee",
-        btn_sofa: "🛋️ Sofa TV",
-        btn_sleep: "🛏️ Sleep Pod",
+        btn_desk: "Code Desk",
+        btn_coffee: "Coffee",
+        btn_sofa: "Sofa TV",
+        btn_sleep: "Sleep Pod",
         studio_desk_title: "Send Agent to coding desk",
         studio_coffee_title: "Send Agent to coffee & pizza counter",
         studio_sofa_title: "Send Agent to sofa to relax",
         studio_sleep_title: "Send Agent to sleep pod",
         zoomed_title_suffix: "(FULL VIEW)",
         zoomed_desc: "Detailed step-by-step room view",
-        back_4rooms: "🏠 4 Rooms",
+        back_4rooms: "4 Rooms",
 
         // Rugs
         rug_office_title: "💻 DEV LAB • CODING ROOM",
@@ -2432,14 +2432,14 @@
         btn_done_idle: "✓ Completed",
         btn_edit_bot: "✏️ Edit Bot",
         room_label: "Room:",
-        btn_open_ide: "💻 Open IDE",
-        btn_terminal: "⌨️ Terminal",
+        btn_open_ide: "Open IDE",
+        btn_terminal: "Terminal",
         terminal_hidden: "Hide",
         terminal_visible: "Show",
-        btn_copy_id: "📋 Copy ID",
-        terminal_stream_title: "⚡ LIVE ACTION TERMINAL STREAM",
+        btn_copy_id: "Copy ID",
+        terminal_stream_title: "LIVE ACTION TERMINAL STREAM",
         terminal_open_mac: "↗ Open macOS Terminal",
-        terminal_collapse: "✕ Collapse",
+        terminal_collapse: "Collapse",
         subagent_running: "● SUBAGENT RUNNING",
         subagent_done: "○ SUBAGENT COMPLETED",
         main_running: "● MAIN AGENT RUNNING",
@@ -2469,11 +2469,11 @@
         step_modal_tokens: "📊 Token Usage",
         step_modal_current_goal: "🎯 Current Goal",
         step_filter_all: "All",
-        step_filter_user: "👤 User",
-        step_filter_tool: "🛠️ Tools",
-        step_filter_cmd: "💻 Cmd",
-        step_filter_result: "🟢 Results",
-        step_search_placeholder: "🔍 Filter step keywords...",
+        step_filter_user: "User",
+        step_filter_tool: "Tools",
+        step_filter_cmd: "Cmd",
+        step_filter_result: "Results",
+        step_search_placeholder: "Filter step keywords...",
         step_copy_btn: "📋 Copy Steps",
         step_close_btn: "Close (Esc)",
         step_status_completed: "Completed",
@@ -2621,30 +2621,30 @@
         tab_all: "Tất cả",
         tab_running: "Đang chạy",
         tab_idle: "Giải lao",
-        search_placeholder: "🔍 Tìm agent, task...",
+        search_placeholder: "Tìm agent, task...",
 
         // Mobile rooms
-        mob_4rooms: "🏠 4 Phòng",
-        mob_office: "💻 Dev Lab",
-        mob_kitchen: "🍳 Bếp",
-        mob_living: "🛋️ Lounge",
-        mob_bedroom: "🛏️ Ngủ",
+        mob_4rooms: "4 Phòng",
+        mob_office: "Dev Lab",
+        mob_kitchen: "Bếp",
+        mob_living: "Lounge",
+        mob_bedroom: "Ngủ",
 
         // Studio HUD
         studio_brand: "Antigravity Game Studio",
         studio_level: "Lv.4 Indie",
         studio_hint: "💡 Click floor or furniture to send Agent • Click Agent to select",
-        btn_desk: "💻 Bàn Code",
-        btn_coffee: "☕ Cà Phê",
-        btn_sofa: "🛋️ Sofa TV",
-        btn_sleep: "🛏️ Đi Ngủ",
+        btn_desk: "Bàn Code",
+        btn_coffee: "Cà Phê",
+        btn_sofa: "Sofa TV",
+        btn_sleep: "Đi Ngủ",
         studio_desk_title: "Cho Agent về bàn lập trình gõ code",
         studio_coffee_title: "Cho Agent xuống quầy cà phê & pizza",
         studio_sofa_title: "Cho Agent ra sofa xem TV thư giãn",
         studio_sleep_title: "Cho Agent lên giường ngủ khò",
         zoomed_title_suffix: "(FULL VIEW)",
         zoomed_desc: "Chế độ xem chi tiết từng step trong phòng",
-        back_4rooms: "🏠 Xem 4 Phòng",
+        back_4rooms: "Xem 4 Phòng",
 
         // Rugs
         rug_office_title: "💻 DEV LAB • PHÒNG LẬP TRÌNH",
@@ -2695,12 +2695,12 @@
         btn_done_idle: "✓ Đã xong việc",
         btn_edit_bot: "✏️ Sửa Bot",
         room_label: "Phòng:",
-        btn_open_ide: "💻 Mở IDE",
-        btn_terminal: "⌨️ Terminal",
+        btn_open_ide: "Mở IDE",
+        btn_terminal: "Terminal",
         terminal_hidden: "Ẩn",
         terminal_visible: "Hiện",
-        btn_copy_id: "📋 Copy ID",
-        terminal_stream_title: "⚡ LIVE ACTION TERMINAL STREAM",
+        btn_copy_id: "Copy ID",
+        terminal_stream_title: "LIVE ACTION TERMINAL STREAM",
         terminal_open_mac: "↗ Mở macOS Terminal",
         terminal_collapse: "✕ Thu gọn",
         subagent_running: "● SUBAGENT ĐANG CHẠY",
@@ -2732,11 +2732,11 @@
         step_modal_tokens: "📊 Tiêu Thụ",
         step_modal_current_goal: "🎯 Mục tiêu đang thực thi",
         step_filter_all: "Tất cả",
-        step_filter_user: "👤 User",
-        step_filter_tool: "🛠️ Tools",
-        step_filter_cmd: "💻 Cmd",
-        step_filter_result: "🟢 Kết quả",
-        step_search_placeholder: "🔍 Lọc từ khoá step...",
+        step_filter_user: "User",
+        step_filter_tool: "Tools",
+        step_filter_cmd: "Cmd",
+        step_filter_result: "Kết quả",
+        step_search_placeholder: "Lọc từ khoá step...",
         step_copy_btn: "📋 Copy Steps",
         step_close_btn: "Đóng (Esc)",
         step_status_completed: "Hoàn thành",
@@ -3019,11 +3019,11 @@
       const mobKitchen = document.getElementById('mobile-tab-kitchen');
       const mobLiving = document.getElementById('mobile-tab-living');
       const mobBedroom = document.getElementById('mobile-tab-bedroom');
-      if (mobAll) mobAll.innerText = t('mob_4rooms');
-      if (mobOffice) mobOffice.innerText = t('mob_office');
-      if (mobKitchen) mobKitchen.innerText = t('mob_kitchen');
-      if (mobLiving) mobLiving.innerText = t('mob_living');
-      if (mobBedroom) mobBedroom.innerText = t('mob_bedroom');
+      if (mobAll) mobAll.innerHTML = '<span class="ui-icon icon-home" aria-hidden="true"></span> ' + t('mob_4rooms');
+      if (mobOffice) mobOffice.innerHTML = '<span class="ui-icon icon-code" aria-hidden="true"></span> ' + t('mob_office');
+      if (mobKitchen) mobKitchen.innerHTML = '<span class="ui-icon icon-coffee" aria-hidden="true"></span> ' + t('mob_kitchen');
+      if (mobLiving) mobLiving.innerHTML = '<span class="ui-icon icon-home" aria-hidden="true"></span> ' + t('mob_living');
+      if (mobBedroom) mobBedroom.innerHTML = '<span class="ui-icon icon-sleep" aria-hidden="true"></span> ' + t('mob_bedroom');
 
       // Inspector panel buttons
       const btnOpenIde = document.querySelector('button[onclick*="bridgeNative(\'openWorkspace\')"]');
@@ -5813,7 +5813,8 @@
       const info = roomTitles[roomKey] || roomTitles.office;
       const iconEl = document.getElementById('zoomed-room-icon');
       const titleEl = document.getElementById('zoomed-room-title');
-      if (iconEl) iconEl.innerText = info.icon;
+      const roomIconClass = { office: 'icon-code', kitchen: 'icon-coffee', living: 'icon-home', bedroom: 'icon-sleep' }[roomKey] || 'icon-code';
+      if (iconEl) iconEl.className = `ui-icon ${roomIconClass}`;
       if (titleEl) titleEl.innerText = info.title;
 
       // Update tabs active state
@@ -5841,7 +5842,7 @@
         const iconEl = document.getElementById('zoomed-mobile-icon');
         const titleEl = document.getElementById('zoomed-mobile-title');
         const agentsEl = document.getElementById('zoomed-mobile-agents');
-        if (iconEl) iconEl.innerText = info.icon;
+        if (iconEl) iconEl.className = `ui-icon ${roomIconClass}`;
         if (titleEl) titleEl.innerText = info.title.split('•')[0].trim();
         const agentsInRoom = agentList.filter(a => (a.houseRoom || (a.isActive ? 'office' : 'living')) === roomKey);
         if (agentsEl) agentsEl.innerText = `${agentsInRoom.length} Agent${agentsInRoom.length > 1 ? 's' : ''}`;
@@ -7495,7 +7496,7 @@ function triggerRandomStudioEvent() {
         '🏆': 'check', '🏛': 'home', '🐱': 'bot', '🐾': 'bot', '👉': 'focus', '👤': 'bot',
         '👥': 'bot', '💖': 'check', '💤': 'sleep', '💧': 'coffee', '📁': 'code', '📂': 'code',
         '📊': 'code', '📌': 'target', '📍': 'target', '📝': 'code', '📱': 'code', '📺': 'music',
-        '🔊': 'music', '🔕': 'music', '😴': 'sleep', '🚶': 'bot', '🛌': 'sleep', '🛠': 'code',
+        '🔊': 'music', '🔕': 'music', '😴': 'sleep', '🚶': 'bot', '🛌': 'sleep', '🛠': 'code', '✕': 'trash', '⌨️': 'code', '⌨': 'code',
         '🖥': 'code', '🖼': 'home', '🟢': 'check', '🥪': 'pizza', '🧃': 'coffee', '🩺': 'check',
         '🪑': 'home', '🪴': 'home', '🪴️': 'home', '🖥️': 'code', '🖥': 'code',
         '🧑‍💻': 'code', '🔧': 'code', '🕹️': 'bot', '🕹': 'bot', '🎧': 'music',
@@ -7545,7 +7546,12 @@ function triggerRandomStudioEvent() {
       });
     }
 
+    // Register the icon pass before any renderers run so a later UI error cannot leave raw emoji in static UI.
+    hydratePlayfulIcons();
+    new MutationObserver(() => hydratePlayfulIcons()).observe(document.body, { childList: true, subtree: true });
+
     applyLanguage(currentLang);
+    updateMobileRoomTabs(null);
     initSprintTasks();
     setInterval(updateSprintTimer, 1000);
     updateDiagnosticUI();
@@ -7554,7 +7560,6 @@ function triggerRandomStudioEvent() {
     renderWorld();
     selectAgent(currentSelectedId, false);
     hydratePlayfulIcons();
-    new MutationObserver(() => hydratePlayfulIcons()).observe(document.body, { childList: true, subtree: true });
     // Native WKWebView can finish layout after the initial script pass; hydrate once more after paint.
     requestAnimationFrame(() => hydratePlayfulIcons());
     setTimeout(() => hydratePlayfulIcons(), 250);
