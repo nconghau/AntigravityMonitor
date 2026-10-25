@@ -1044,6 +1044,22 @@
     </div>
   </div>
 
+  <!-- PENDING QUEUE: surfaced only when the native/bridge payload confirms queued work -->
+  <section id="pending-queue-panel" class="hidden mb-2 rounded-2xl border border-indigo-200 bg-indigo-50/70 shadow-2xs overflow-hidden" aria-live="polite" aria-label="Pending task queue">
+    <button type="button" id="pending-queue-toggle" onclick="togglePendingQueue()" class="w-full flex items-center justify-between gap-2 px-3 py-2 text-left cursor-pointer hover:bg-indigo-100/70 transition-colors">
+      <span class="flex items-center gap-2 min-w-0">
+        <span class="ui-icon icon-clock shrink-0" aria-hidden="true"></span>
+        <span class="font-black text-xs text-indigo-950" data-i18n="pending_queue_title">Queued Messages</span>
+        <span id="pending-queue-count" class="px-1.5 py-0.5 rounded-full bg-indigo-200 text-indigo-900 text-[10px] font-black">0</span>
+      </span>
+      <span class="flex items-center gap-2 shrink-0 text-[10px] text-indigo-700 font-semibold">
+        <span class="hidden sm:inline" data-i18n="pending_queue_subtitle">Sends after the agent finishes working</span>
+        <span id="pending-queue-chevron" class="transition-transform">⌄</span>
+      </span>
+    </button>
+    <div id="pending-queue-list" class="hidden px-2.5 pb-2.5 space-y-2"></div>
+  </section>
+
   <!-- VIEW CONTAINER: MODE 1 (GAME HOUSE FLOOR PLAN) & MODE 2 (DASHBOARD) -->
   <main class="mb-2 sm:mb-3 flex-1 flex flex-col justify-center">
 
@@ -2359,6 +2375,12 @@
         tab_running: "Running",
         tab_idle: "Idle",
         search_placeholder: "Search agents, tasks...",
+        pending_queue_title: "Queued Messages",
+        pending_queue_subtitle: "Sends after the agent finishes working",
+        pending_queue_waiting: "Waiting",
+        pending_queue_open_agent: "Open agent",
+        pending_queue_unknown_agent: "Unassigned agent",
+        pending_queue_no_content: "Queued task content unavailable",
 
         // Mobile rooms
         mob_4rooms: "4 Rooms",
@@ -2622,6 +2644,12 @@
         tab_running: "Đang chạy",
         tab_idle: "Giải lao",
         search_placeholder: "Tìm agent, task...",
+        pending_queue_title: "Tin nhắn đang chờ",
+        pending_queue_subtitle: "Sẽ gửi sau khi agent làm xong",
+        pending_queue_waiting: "Đang chờ",
+        pending_queue_open_agent: "Mở agent",
+        pending_queue_unknown_agent: "Agent chưa xác định",
+        pending_queue_no_content: "Chưa đọc được nội dung task đang chờ",
 
         // Mobile rooms
         mob_4rooms: "4 Phòng",
@@ -2854,6 +2882,116 @@
     // Automatically resets quota, agents & processes
     // ==========================================
     let activeGoogleAccount = localStorage.getItem('antigravity_active_account') || null;
+    let pendingQueue = [];
+    let pendingQueueExpanded = false;
+
+    function escapeHtml(value = '') {
+      return String(value).replace(/[&<>'"]/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[char]));
+    }
+
+    function formatPendingAge(timestamp) {
+      const queuedAt = Number(timestamp);
+      if (!Number.isFinite(queuedAt) || queuedAt <= 0) return '';
+      const elapsed = Math.max(0, Date.now() - queuedAt);
+      const minutes = Math.floor(elapsed / 60000);
+      if (minutes < 1) return currentLang === 'vi' ? 'vừa xong' : 'just now';
+      if (minutes < 60) return currentLang === 'vi' ? `${minutes} phút trước` : `${minutes}m ago`;
+      const hours = Math.floor(minutes / 60);
+      return currentLang === 'vi' ? `${hours} giờ trước` : `${hours}h ago`;
+    }
+
+    function normalizePendingQueue(payload, agents = []) {
+      const source = payload && typeof payload === 'object' ? payload : {};
+      const topLevel = [source.queuedMessages, source.pendingMessages, source.pendingTasks, source.queue]
+        .find(value => Array.isArray(value)) || [];
+      const perAgent = agents.flatMap(agent => {
+        const items = agent.pendingMessages || agent.queuedMessages || agent.pendingTasks;
+        if (!Array.isArray(items)) return [];
+        return items.map(item => ({ ...item, agentId: item.agentId || agent.id, agentName: item.agentName || agent.name }));
+      });
+      const merged = [...topLevel, ...perAgent];
+      const seen = new Set();
+      return merged.map((item, index) => {
+        const raw = typeof item === 'string' ? { content: item } : (item || {});
+        const agent = agents.find(a => a.id === (raw.agentId || raw.targetAgentId || raw.conversationId));
+        const content = raw.content || raw.message || raw.text || raw.prompt || raw.title || '';
+        const id = String(raw.id || raw.messageId || `${raw.agentId || agent?.id || 'pending'}-${raw.queuedAt || raw.createdAt || index}`);
+        return {
+          id,
+          agentId: raw.agentId || raw.targetAgentId || raw.conversationId || agent?.id || '',
+          agentName: raw.agentName || agent?.name || t('pending_queue_unknown_agent'),
+          project: raw.project || raw.workspace || agent?.project || '',
+          content: String(content).trim(),
+          queuedAt: raw.queuedAt || raw.createdAt || raw.timestamp || 0,
+          source: raw.source || 'bridge'
+        };
+      }).filter(item => {
+        if (!item.content || seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+      });
+    }
+
+    function togglePendingQueue(force) {
+      pendingQueueExpanded = typeof force === 'boolean' ? force : !pendingQueueExpanded;
+      const list = document.getElementById('pending-queue-list');
+      const chevron = document.getElementById('pending-queue-chevron');
+      if (list) list.classList.toggle('hidden', !pendingQueueExpanded);
+      if (chevron) chevron.style.transform = pendingQueueExpanded ? 'rotate(180deg)' : '';
+    }
+
+    function renderPendingQueue() {
+      const panel = document.getElementById('pending-queue-panel');
+      const list = document.getElementById('pending-queue-list');
+      const count = document.getElementById('pending-queue-count');
+      if (!panel || !list || !count) return;
+
+      const ordered = [...pendingQueue].sort((a, b) => {
+        const aAgent = agentList.find(agent => agent.id === a.agentId);
+        const bAgent = agentList.find(agent => agent.id === b.agentId);
+        const activeDiff = Number(!!bAgent?.isActive) - Number(!!aAgent?.isActive);
+        if (activeDiff) return activeDiff;
+        return Number(a.queuedAt || 0) - Number(b.queuedAt || 0);
+      });
+      panel.classList.toggle('hidden', ordered.length === 0);
+      count.innerText = ordered.length;
+      if (!ordered.length) {
+        list.innerHTML = '';
+        return;
+      }
+
+      list.innerHTML = ordered.map(item => {
+        const agent = agentList.find(candidate => candidate.id === item.agentId);
+        const isWorking = !!agent?.isActive;
+        const avatar = agent?.avatarImg || './assets/dev_bot.png';
+        const safeContent = escapeHtml(item.content || t('pending_queue_no_content'));
+        const safeAgent = escapeHtml(item.agentName || t('pending_queue_unknown_agent'));
+        const safeProject = escapeHtml(item.project);
+        const age = escapeHtml(formatPendingAge(item.queuedAt));
+        const action = item.agentId && agentList.some(candidate => candidate.id === item.agentId)
+          ? `<button type="button" onclick="event.stopPropagation(); selectAgent('${escapeHtml(item.agentId)}'); document.getElementById('inspect-name')?.scrollIntoView({behavior:'smooth', block:'center'});" class="px-2 py-1 rounded-lg bg-white hover:bg-indigo-100 text-indigo-800 border border-indigo-200 text-[10px] font-black whitespace-nowrap cursor-pointer">${escapeHtml(t('pending_queue_open_agent'))}</button>`
+          : '';
+        return `<article class="flex items-start gap-2 rounded-xl border border-indigo-100 bg-white/90 p-2.5 shadow-2xs">
+          <img src="${escapeHtml(avatar)}" alt="" class="w-8 h-8 rounded-lg object-contain bg-indigo-50 border border-indigo-100 shrink-0" onerror="this.onerror=null; this.src='./assets/dev_bot.png'"/>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="font-black text-[11px] text-indigo-950 truncate max-w-[15rem]">${safeAgent}</span>
+              <span class="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 text-[9px] font-black">${escapeHtml(t('pending_queue_waiting'))}</span>
+              ${isWorking ? '<span class="text-[9px] font-bold text-emerald-700">• agent working</span>' : ''}
+            </div>
+            <p class="mt-1 text-[11px] leading-snug text-zinc-700 line-clamp-2" title="${safeContent}">${safeContent}</p>
+            <div class="mt-1 flex flex-wrap items-center gap-x-2 text-[9px] text-zinc-400 font-medium">
+              ${safeProject ? `<span class="truncate max-w-[15rem]">${safeProject}</span>` : ''}
+              ${age ? `<span>${age}</span>` : ''}
+            </div>
+          </div>
+          ${action}
+        </article>`;
+      }).join('');
+      togglePendingQueue(pendingQueueExpanded || ordered.length === 1);
+    }
 
     function resetWorkspaceForNewAccount(newAccount, isManual = false) {
       console.log(`[Account Manager] Resetting workspace for Google Account: ${newAccount}`);
@@ -2958,6 +3096,7 @@
       if (typeof updateQuotaUI === 'function') updateQuotaUI();
       if (typeof renderSprintTasks === 'function') renderSprintTasks();
       if (typeof updateSprintTimer === 'function') updateSprintTimer();
+      if (typeof renderPendingQueue === 'function') renderPendingQueue();
       if (typeof selectAgent === 'function' && typeof currentSelectedId !== 'undefined' && currentSelectedId) {
         selectAgent(currentSelectedId, false);
       }
@@ -7142,6 +7281,8 @@ function triggerRandomStudioEvent() {
           </div>
         `).join('');
       }
+
+      renderPendingQueue();
     }
 
     function selectAgent(id, playSound = true) {
@@ -7245,12 +7386,24 @@ function triggerRandomStudioEvent() {
       }
     }
 
+    // Optional bridge entrypoint for a future native queue reader. The panel stays hidden
+    // until a payload explicitly contains queued/pending items, so the UI never guesses.
+    window.onPendingQueueUpdate = function(queuePayload) {
+      const agents = Array.isArray(queuePayload) ? agentList : (queuePayload?.agents || agentList);
+      pendingQueue = normalizePendingQueue(queuePayload, agents);
+      renderPendingQueue();
+    };
+
     window.onAgentUpdate = function(freshData) {
       let freshAgents = [];
+      let includesQueuePayload = false;
       if (Array.isArray(freshData)) {
         freshAgents = freshData;
+        includesQueuePayload = freshAgents.some(agent => Array.isArray(agent.pendingMessages || agent.queuedMessages || agent.pendingTasks));
       } else if (freshData && typeof freshData === 'object') {
         if (Array.isArray(freshData.agents)) freshAgents = freshData.agents;
+        includesQueuePayload = ['queuedMessages', 'pendingMessages', 'pendingTasks', 'queue'].some(key => Array.isArray(freshData[key]))
+          || freshAgents.some(agent => Array.isArray(agent.pendingMessages || agent.queuedMessages || agent.pendingTasks));
         if (freshData.quota) {
           const incomingAccount = freshData.quota.account;
           const accountChanged = freshData.quota.accountChanged === true;
@@ -7269,6 +7422,11 @@ function triggerRandomStudioEvent() {
           currentDiagnostic = freshData.diagnostic;
           updateDiagnosticUI();
         }
+      }
+
+      if (includesQueuePayload) {
+        pendingQueue = normalizePendingQueue(freshData, freshAgents);
+        renderPendingQueue();
       }
 
       if (freshAgents.length > 0) {
