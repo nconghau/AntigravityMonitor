@@ -727,6 +727,15 @@ class AgentScanner: ObservableObject {
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.activate(ignoringOtherApps: true)
+        
+        // Ensure the app logo icon is explicitly set on the Dock & Application
+        if let iconUrl = Bundle.main.url(forResource: "AppIcon", withExtension: "icns") 
+            ?? Bundle.main.url(forResource: "logo", withExtension: "jpg", subdirectory: "assets")
+            ?? Bundle.main.url(forResource: "AppIcon", withExtension: "icns", subdirectory: "assets") {
+            if let img = NSImage(contentsOf: iconUrl) {
+                NSApp.applicationIconImage = img
+            }
+        }
     }
 }
 
