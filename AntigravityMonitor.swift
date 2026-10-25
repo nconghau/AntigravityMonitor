@@ -246,6 +246,75 @@ class AgentScanner: ObservableObject {
         let fileManager = FileManager.default
         let now = Date()
 
+        // Phase 1: Pre-scan all conversations to detect subagents created via invoke_subagent
+        struct SubagentMeta {
+            var parentId: String
+            var role: String
+            var prompt: String
+            var typeName: String
+        }
+        var subagentRegistry: [String: SubagentMeta] = [:]
+
+        for (_, basePath) in sources {
+            guard let convDirs = try? fileManager.contentsOfDirectory(atPath: basePath) else { continue }
+            for cid in convDirs {
+                let logPath = "\(basePath)/\(cid)/.system_generated/logs/transcript.jsonl"
+                guard fileManager.fileExists(atPath: logPath),
+                      let attrs = try? fileManager.attributesOfItem(atPath: logPath),
+                      let mdate = attrs[.modificationDate] as? Date,
+                      now.timeIntervalSince(mdate) <= 3600 * 36 else { continue }
+
+                guard let content = try? String(contentsOfFile: logPath, encoding: .utf8) else { continue }
+                if content.contains("invoke_subagent") {
+                    let lines = content.components(separatedBy: "\n").filter { !$0.isEmpty }
+                    for (idx, line) in lines.enumerated() {
+                        if line.contains("invoke_subagent"),
+                           let data = line.data(using: .utf8),
+                           let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                           let toolCalls = json["tool_calls"] as? [[String: Any]] {
+                            for tc in toolCalls {
+                                if (tc["name"] as? String) == "invoke_subagent" {
+                                    var argsDict: [String: Any] = [:]
+                                    if let a = tc["args"] as? [String: Any] { argsDict = a }
+                                    else if let a = tc["arguments"] as? [String: Any] { argsDict = a }
+                                    else if let aStr = tc["args"] as? String,
+                                            let aData = aStr.data(using: .utf8),
+                                            let aObj = try? JSONSerialization.jsonObject(with: aData) as? [String: Any] {
+                                        argsDict = aObj
+                                    }
+
+                                    let role = (argsDict["Role"] as? String ?? "").replacingOccurrences(of: "\"", with: "")
+                                    let prompt = (argsDict["Prompt"] as? String ?? "").replacingOccurrences(of: "\"", with: "")
+                                    let typeName = (argsDict["TypeName"] as? String ?? "specialist").replacingOccurrences(of: "\"", with: "")
+
+                                    // Check next step for conversationId
+                                    if idx + 1 < lines.count {
+                                        let nextLine = lines[idx + 1]
+                                        var contentToSearch = nextLine
+                                        if let nextData = nextLine.data(using: .utf8),
+                                           let nextJson = try? JSONSerialization.jsonObject(with: nextData) as? [String: Any],
+                                           let contentStr = nextJson["content"] as? String {
+                                            contentToSearch = contentStr
+                                        }
+
+                                        if let range = contentToSearch.range(of: "\"conversationId\":\\s*\"([a-f0-9\\-]+)\"", options: .regularExpression) {
+                                            let matched = String(contentToSearch[range])
+                                            let parts = matched.components(separatedBy: "\"")
+                                            if parts.count >= 4 {
+                                                let subCid = parts[3]
+                                                subagentRegistry[subCid] = SubagentMeta(parentId: cid, role: role, prompt: prompt, typeName: typeName)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Phase 2: Full parsing of each active or recent conversation
         for (env, basePath) in sources {
             guard let convDirs = try? fileManager.contentsOfDirectory(atPath: basePath) else { continue }
             for cid in convDirs {
@@ -254,7 +323,8 @@ class AgentScanner: ObservableObject {
                       let attrs = try? fileManager.attributesOfItem(atPath: logPath),
                       let mdate = attrs[.modificationDate] as? Date else { continue }
 
-                if now.timeIntervalSince(mdate) > 3600 * 18 { continue }
+                let timeDelta = now.timeIntervalSince(mdate)
+                if timeDelta > 3600 * 36 { continue }
 
                 var steps = 0
                 var tokensEst = 1200
@@ -264,20 +334,48 @@ class AgentScanner: ObservableObject {
                 var model = "Gemini 3.8 Flash (High)"
                 var collectedLogs: [String] = []
                 var lastType = ""
-                var lastStatus = ""
+                var lastContent = ""
                 var lastHasTools = false
+                var hasSentMessage = false
+
+                var isSubagent = subagentRegistry[cid] != nil
+                var parentId = subagentRegistry[cid]?.parentId
+                var subRole = subagentRegistry[cid]?.role ?? ""
+                if let p = subagentRegistry[cid]?.prompt, !p.isEmpty {
+                    lastPrompt = p
+                }
 
                 if let content = try? String(contentsOfFile: logPath, encoding: .utf8) {
                     let lines = content.components(separatedBy: "\n").filter { !$0.isEmpty }
                     steps = lines.count
                     tokensEst = max(1200, Int(Double(content.count) / 3.8))
 
+                    // Inspect first step for system message
+                    if let firstLine = lines.first,
+                       let firstData = firstLine.data(using: .utf8),
+                       let firstJson = try? JSONSerialization.jsonObject(with: firstData) as? [String: Any] {
+                        if (firstJson["type"] as? String) == "SYSTEM_MESSAGE" {
+                            let sysContent = firstJson["content"] as? String ?? ""
+                            if sysContent.contains("sender=") {
+                                isSubagent = true
+                                if parentId == nil, let r = sysContent.range(of: "sender=([a-f0-9\\-]+)", options: .regularExpression) {
+                                    let sub = String(sysContent[r]).replacingOccurrences(of: "sender=", with: "")
+                                    parentId = sub
+                                }
+                                if lastPrompt.isEmpty, let r = sysContent.range(of: "content=(.+)", options: [.regularExpression, .caseInsensitive]) {
+                                    let sub = String(sysContent[r]).replacingOccurrences(of: "content=", with: "")
+                                    lastPrompt = sub
+                                }
+                            }
+                        }
+                    }
+
                     // Parse last line for precise execution state
                     if let lastLine = lines.last,
                        let lastData = lastLine.data(using: .utf8),
                        let lastJson = try? JSONSerialization.jsonObject(with: lastData) as? [String: Any] {
                         lastType = lastJson["type"] as? String ?? ""
-                        lastStatus = lastJson["status"] as? String ?? ""
+                        lastContent = lastJson["content"] as? String ?? ""
                         if let m = lastJson["model"] as? String, !m.isEmpty {
                             model = m
                         }
@@ -298,7 +396,6 @@ class AgentScanner: ObservableObject {
                                 if let range = rawContent.range(of: "Active Document: ") {
                                     let sub = String(rawContent[range.upperBound...])
                                     let doc = sub.components(separatedBy: " (LANGUAGE")[0].components(separatedBy: "\n")[0].trimmingCharacters(in: .whitespaces)
-                                    // Extract repo root dynamically
                                     let comps = doc.components(separatedBy: "/")
                                     if let pIdx = comps.firstIndex(where: { ["projects", "projectAI", "Documents", "Developer", "Workspace", "work", "src"].contains($0) }), pIdx + 1 < comps.count {
                                         workspacePath = comps[0...pIdx+1].joined(separator: "/")
@@ -315,7 +412,9 @@ class AgentScanner: ObservableObject {
                                 .replacingOccurrences(of: "</USER_REQUEST>", with: "")
                                 .trimmingCharacters(in: .whitespacesAndNewlines)
                             if !text.isEmpty {
-                                lastPrompt = String(text.prefix(80))
+                                if !isSubagent {
+                                    lastPrompt = String(text.prefix(120))
+                                }
                                 collectedLogs.append("[USER] \(text.prefix(80))")
                             }
                         } else if type == "PLANNER_RESPONSE" {
@@ -323,21 +422,40 @@ class AgentScanner: ObservableObject {
                                 for t in tools {
                                     let tname = t["name"] as? String ?? "tool"
                                     lastTool = tname
-                                    var argDesc = ""
-                                    if let args = t["arguments"] as? [String: Any] {
-                                        if let cmd = args["CommandLine"] as? String {
-                                            let firstPart = cmd.components(separatedBy: "\n").first ?? cmd
-                                            argDesc = String(firstPart.prefix(60))
-                                        } else if let summary = args["toolSummary"] as? String {
-                                            argDesc = summary
-                                        } else if let path = args["Path"] as? String {
-                                            argDesc = (path as NSString).lastPathComponent
-                                        } else if let query = args["query"] as? String {
-                                            argDesc = query
-                                        } else if let role = args["Role"] as? String {
-                                            argDesc = role
-                                        }
+
+                                    var args: [String: Any] = [:]
+                                    if let a = t["args"] as? [String: Any] { args = a }
+                                    else if let a = t["arguments"] as? [String: Any] { args = a }
+                                    else if let aStr = t["args"] as? String,
+                                            let aData = aStr.data(using: .utf8),
+                                            let aObj = try? JSONSerialization.jsonObject(with: aData) as? [String: Any] {
+                                        args = aObj
                                     }
+
+                                    var argDesc = ""
+                                    if let summary = args["toolSummary"] as? String {
+                                        argDesc = summary
+                                    } else if let action = args["toolAction"] as? String {
+                                        argDesc = action
+                                    } else if let img = args["ImageName"] as? String {
+                                        argDesc = "Tạo ảnh \(img)"
+                                    } else if let cmd = args["CommandLine"] as? String {
+                                        let firstPart = cmd.components(separatedBy: "\n").first ?? cmd
+                                        argDesc = String(firstPart.prefix(60))
+                                    } else if let path = args["Path"] as? String {
+                                        argDesc = (path as NSString).lastPathComponent
+                                    } else if let role = args["Role"] as? String {
+                                        argDesc = "Gọi subagent \(role)"
+                                    } else if let query = args["query"] as? String {
+                                        argDesc = query
+                                    }
+
+                                    if tname == "send_message" {
+                                        hasSentMessage = true
+                                        argDesc = "Báo cáo hoàn tất về Main Agent"
+                                    }
+
+                                    argDesc = argDesc.replacingOccurrences(of: "\"", with: "")
                                     if !argDesc.isEmpty {
                                         collectedLogs.append("[TOOL] \(tname): \(argDesc)")
                                     } else {
@@ -353,6 +471,13 @@ class AgentScanner: ObservableObject {
                             }
                             if let st = json["status"] as? String, st == "DONE" {
                                 collectedLogs.append("[RESULT] 200 OK (Done)")
+                            }
+                        } else if type == "GENERIC" {
+                            if let c = json["content"] as? String, !c.isEmpty {
+                                let firstLine = c.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: "\n").first ?? ""
+                                if !firstLine.isEmpty && !firstLine.contains("Created At:") {
+                                    collectedLogs.append("[RESULT] \(firstLine.prefix(60))")
+                                }
                             }
                         } else if type == "RUN_COMMAND" {
                             let cmd = json["CommandLine"] as? String ?? "run_command"
@@ -370,26 +495,23 @@ class AgentScanner: ObservableObject {
                 let timeFormatter = DateFormatter()
                 timeFormatter.dateFormat = "HH:mm:ss"
 
-                // Strict Active Determination: Prevent hung/stuck "Processing" states
-                let timeDelta = now.timeIntervalSince(mdate)
-                var isActivelyRunning = false
-                if timeDelta < 90 { // Modified within 90 seconds
-                    if lastType == "USER_INPUT" {
-                        isActivelyRunning = true
-                    } else if lastType == "PLANNER_RESPONSE" {
-                        // If PLANNER_RESPONSE has tool_calls, tools are executing.
-                        // If no tool_calls, agent provided conversational response to user and is DONE.
-                        isActivelyRunning = lastHasTools
-                    } else if (lastType == "RUN_COMMAND" || lastType == "GENERIC") && lastStatus == "RUNNING" {
-                        isActivelyRunning = timeDelta < 60
+                // Robust Active Determination for Main Agent & Subagents
+                var isActive = false
+                if timeDelta < 300 { // Activity in last 5 minutes
+                    if isSubagent {
+                        // Subagent is actively running until send_message is completed
+                        isActive = !hasSentMessage
+                    } else {
+                        // Main agent is actively running unless the last step is conversational response without tools
+                        let isFinalReply = (lastType == "PLANNER_RESPONSE" && !lastHasTools && !lastContent.isEmpty)
+                        isActive = !isFinalReply
                     }
                 }
-                let isActive = isActivelyRunning
 
-                // Determine room, action, and speech bubble based on real context
+                // Determine house room & action state
                 var houseRoom = "office"
                 var actionState = "typing"
-                var bubbleText = "💻 Code 60 WPM"
+                var bubbleText = isSubagent ? "🎨 Đang xử lý task con" : "💻 Code 60 WPM"
 
                 if isActive {
                     houseRoom = "office"
@@ -397,24 +519,17 @@ class AgentScanner: ObservableObject {
                     if lastTool != "None" {
                         bubbleText = "🛠️ \(lastTool)"
                     } else {
-                        bubbleText = "⚡ Đang xử lý task"
+                        bubbleText = isSubagent ? "⚡ Xử lý subagent task" : "⚡ Đang xử lý task"
                     }
-                } else if timeDelta < 300 { // Just completed in last 5 mins -> Coffee/Kitchen
+                } else if timeDelta < 600 { // Last 10 mins: Kitchen Cafe
                     houseRoom = "kitchen"
                     actionState = "coffee"
                     bubbleText = "☕ Vừa xong task! Thư giãn"
-                } else if timeDelta < 1800 { // 5 to 30 mins: Living Lounge
-                    let hashVal = abs(cid.hashValue)
-                    if hashVal % 2 == 0 {
-                        houseRoom = "living"
-                        actionState = "relaxing"
-                        bubbleText = "🛋️ Chill sofa & Lo-fi TV 📺"
-                    } else {
-                        houseRoom = "kitchen"
-                        actionState = "coffee"
-                        bubbleText = "☕ Đang nạp Espresso 🍕"
-                    }
-                } else { // Inactive > 30 mins: Sleep Pod
+                } else if timeDelta < 2400 { // 10 to 40 mins: Living Lounge
+                    houseRoom = "living"
+                    actionState = "relaxing"
+                    bubbleText = "🛋️ Chill sofa & Lo-fi TV 📺"
+                } else { // Inactive > 40 mins: Sleep Pod
                     houseRoom = "bedroom"
                     actionState = "sleeping"
                     bubbleText = "💤 Zzz... Ngủ ngon 0 bug"
@@ -422,67 +537,65 @@ class AgentScanner: ObservableObject {
 
                 let mainStep = collectedLogs.last ?? (isActive ? "Đang chạy: \(lastPrompt.prefix(40))" : "Hoàn thành")
 
-                // Diverse Character Avatars (Transparent Cutouts)
-                let characterAvatars: [(img: String, name: String, role: String)] = [
-                    ("./assets/dev_bot.png", "Dev Bot", "Fullstack AI Coder"),
-                    ("./assets/deployer_bot.png", "Deployer Bot", "Cloud & CI/CD Ops"),
-                    ("./assets/guardian_bot.png", "Guardian Bot", "Security & QA Auditor"),
-                    ("./assets/bot_ninja_hacker.png", "Shadow Ninja", "Stealth Refactoring"),
-                    ("./assets/bot_chibi_astro.png", "Astro Bot", "Cloud Architecture"),
-                    ("./assets/bot_wizard_ai.png", "Wizard AI", "Deep Reasoning & Algo"),
-                    ("./assets/bot_mecha_titan.png", "Titan Mech", "High-Throughput Worker"),
-                    ("./assets/bot_dino_dev.png", "Dino Junior", "Fast Prototyping"),
-                    ("./assets/bot_detective_ai.png", "Sherlock AI", "Root-Cause Bug Hunter"),
-                    ("./assets/bot_barista_cafe.png", "Barista Bot", "Performance Optimizer"),
-                    ("./assets/bot_pixel_fox.png", "Kitsune Dev", "UI/UX & Mobile"),
-                    ("./assets/bot_cyber_punk.png", "Neon Cyberpunk", "Reverse Engineering"),
-                    ("./assets/bot_alien_coder.png", "Alien Coder", "Autonomous Specialist"),
-                    ("./assets/meo_bo.png", "Mèo Bơ Mascot", "Studio Chief Mascot")
-                ]
-
-                var hashVal = 0
-                for byte in cid.utf8 { hashVal = (hashVal &* 31) &+ Int(byte) }
-                let charIdx = abs(hashVal) % characterAvatars.count
-                let assigned = characterAvatars[charIdx]
-
-                var name = assigned.name
+                // Identity & Role Resolution
+                var name = ""
                 var charType = "dev"
-                var avatarImg = assigned.img
-                var role = assigned.role
-                var dialog = isActive ? "Đang tập trung xử lý tác vụ..." : "Task đã xong, đang nạp năng lượng!"
+                var avatarImg = "./assets/dev_bot.png"
+                var role = "Autonomous Specialist"
 
-                let lowerPrompt = lastPrompt.lowercased()
-                if lowerPrompt.contains("deploy") || lowerPrompt.contains("cloudflare") {
-                    name = "Deployer Bot"
-                    charType = "deploy"
-                    avatarImg = "./assets/deployer_bot.png"
-                    role = "Cloud & CI/CD Ops"
-                    dialog = isActive ? "Đang deploy & setup tunnel..." : "Deploy 200 OK thành công!"
-                } else if lowerPrompt.contains("commit") || lowerPrompt.contains("review") || lowerPrompt.contains("security") {
-                    name = "Guardian Bot"
-                    charType = "security"
-                    avatarImg = "./assets/guardian_bot.png"
-                    role = "Security & QA Auditor"
-                    dialog = isActive ? "Đang audit code & security..." : "Đã bảo vệ an toàn codebase!"
-                } else if lowerPrompt.contains("bug") || lowerPrompt.contains("fix") || lowerPrompt.contains("error") {
-                    name = "Sherlock AI"
-                    charType = "security"
-                    avatarImg = "./assets/bot_detective_ai.png"
-                    role = "Root-Cause Bug Hunter"
-                    dialog = isActive ? "Đang truy tìm nguyên nhân gốc..." : "Đã diệt sạch mọi bug tiềm ẩn!"
-                } else if lowerPrompt.contains("ui") || lowerPrompt.contains("giao diện") || lowerPrompt.contains("mobile") || lowerPrompt.contains("css") {
-                    name = "Kitsune Dev"
+                if isSubagent {
+                    name = !subRole.isEmpty ? subRole : "Subagent (\(cid.prefix(6)))"
+                    role = "Subagent • \(subagentRegistry[cid]?.typeName ?? "Specialist")"
                     charType = "dev"
-                    avatarImg = "./assets/bot_pixel_fox.png"
-                    role = "UI/UX & Mobile Craftsman"
-                    dialog = isActive ? "Đang trau chuốt giao diện mượt mà..." : "UI/UX đã chuẩn responsive!"
-                } else if lowerPrompt.contains("refactor") || lowerPrompt.contains("clean") {
-                    name = "Shadow Ninja"
-                    charType = "dev"
-                    avatarImg = "./assets/bot_ninja_hacker.png"
-                    role = "Stealth Refactoring"
-                    dialog = isActive ? "Đang thanh lọc clean code..." : "Codebase gọn gàng, 0 nợ kỹ thuật!"
+
+                    let lowerRole = subRole.lowercased()
+                    if lowerRole.contains("asset") || lowerRole.contains("artist") || lowerRole.contains("image") {
+                        avatarImg = "./assets/bot_wizard_ai.png"
+                        if lowerRole.contains("batch 2") {
+                            avatarImg = "./assets/bot_chibi_astro.png"
+                        }
+                    } else if lowerRole.contains("environment") || lowerRole.contains("studio") {
+                        avatarImg = "./assets/bot_barista_cafe.png"
+                    } else if lowerRole.contains("security") || lowerRole.contains("qa") || lowerRole.contains("audit") {
+                        avatarImg = "./assets/guardian_bot.png"
+                        charType = "security"
+                    } else {
+                        avatarImg = "./assets/bot_pixel_fox.png"
+                    }
+                } else {
+                    if cid.hasPrefix("563099") {
+                        name = "Main Agent (Kitsune Dev)"
+                        role = "Lead Autonomous Coder"
+                        avatarImg = "./assets/bot_pixel_fox.png"
+                    } else {
+                        let characterAvatars: [(img: String, name: String, role: String)] = [
+                            ("./assets/dev_bot.png", "Dev Bot", "Fullstack AI Coder"),
+                            ("./assets/deployer_bot.png", "Deployer Bot", "Cloud & CI/CD Ops"),
+                            ("./assets/guardian_bot.png", "Guardian Bot", "Security & QA Auditor"),
+                            ("./assets/bot_ninja_hacker.png", "Shadow Ninja", "Stealth Refactoring"),
+                            ("./assets/bot_chibi_astro.png", "Astro Bot", "Cloud Architecture"),
+                            ("./assets/bot_wizard_ai.png", "Wizard AI", "Deep Reasoning & Algo"),
+                            ("./assets/bot_mecha_titan.png", "Titan Mech", "High-Throughput Worker"),
+                            ("./assets/bot_dino_dev.png", "Dino Junior", "Fast Prototyping"),
+                            ("./assets/bot_detective_ai.png", "Sherlock AI", "Root-Cause Bug Hunter"),
+                            ("./assets/bot_barista_cafe.png", "Barista Bot", "Performance Optimizer"),
+                            ("./assets/bot_pixel_fox.png", "Kitsune Dev", "UI/UX & Mobile"),
+                            ("./assets/bot_cyber_punk.png", "Neon Cyberpunk", "Reverse Engineering"),
+                            ("./assets/bot_alien_coder.png", "Alien Coder", "Autonomous Specialist"),
+                            ("./assets/meo_bo.png", "Mèo Bơ Mascot", "Studio Chief Mascot")
+                        ]
+                        var hashVal = 0
+                        for byte in cid.utf8 { hashVal = (hashVal &* 31) &+ Int(byte) }
+                        let assigned = characterAvatars[abs(hashVal) % characterAvatars.count]
+                        name = assigned.name
+                        role = assigned.role
+                        avatarImg = assigned.img
+                    }
                 }
+
+                var dialog = isActive 
+                    ? (isSubagent ? "Đang tăng tốc xử lý tác vụ con cho Main Agent..." : "Đang tập trung xử lý tác vụ...") 
+                    : (isSubagent ? "Nhiệm vụ nhánh đã hoàn tất và gửi về Main Agent!" : "Task đã xong, đang nạp năng lượng!")
 
                 let dict: [String: Any] = [
                     "id": cid,
@@ -491,6 +604,9 @@ class AgentScanner: ObservableObject {
                     "characterType": charType,
                     "avatarImg": avatarImg,
                     "role": role,
+                    "isSubagent": isSubagent,
+                    "parentId": parentId ?? "",
+                    "parentShortId": String((parentId ?? "").prefix(8)),
                     "project": projectName,
                     "branch": "main",
                     "workspacePath": workspacePath,
@@ -509,15 +625,21 @@ class AgentScanner: ObservableObject {
                     "actionState": actionState,
                     "bubbleText": bubbleText,
                     "mainStep": mainStep,
-                    "logs": Array(collectedLogs.suffix(15)),
+                    "logs": Array(collectedLogs.suffix(20)),
                     "mtime_raw": mdate.timeIntervalSince1970
                 ]
                 list.append(dict)
             }
         }
 
-        list.sort { ($0["mtime_raw"] as? Double ?? 0) > ($1["mtime_raw"] as? Double ?? 0) }
-        return Array(list.prefix(6))
+        // Active agents first, then sort by most recent mtime
+        list.sort {
+            let active0 = ($0["isActive"] as? Bool) == true ? 1 : 0
+            let active1 = ($1["isActive"] as? Bool) == true ? 1 : 0
+            if active0 != active1 { return active0 > active1 }
+            return ($0["mtime_raw"] as? Double ?? 0) > ($1["mtime_raw"] as? Double ?? 0)
+        }
+        return Array(list.prefix(20))
     }
 }
 
