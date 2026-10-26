@@ -1607,10 +1607,10 @@
           <!-- Row 2: User Account Profile (Name, Email, Avatar) -->
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-              <img id="quota-modal-avatar" src="https://lh3.googleusercontent.com/a/ACg8ocJ5q5ikI7wl-oN9sNk9kx-D-WIpWFKacGMyWlMrnybUWq7nx1Wt=s96-c" class="w-10 h-10 rounded-full object-cover border-2 border-purple-300 shadow-2xs" onerror="this.src='./assets/dev_bot.jpg'"/>
+              <img id="quota-modal-avatar" src="./assets/dev_bot.png" class="w-10 h-10 rounded-full object-cover border-2 border-purple-300 shadow-2xs" onerror="this.src='./assets/dev_bot.png'"/>
               <div>
-                <div class="text-xs font-black text-zinc-900" id="quota-modal-user-name">hau ncong</div>
-                <div class="text-[11px] font-mono text-zinc-500" id="quota-modal-user-email">nconghauu@gmail.com</div>
+                <div class="text-xs font-black text-zinc-900" id="quota-modal-user-name">Local user</div>
+                <div class="text-[11px] font-mono text-zinc-500" id="quota-modal-user-email">Local account</div>
               </div>
             </div>
 
@@ -2317,7 +2317,7 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2.5 bg-[var(--floor-color)]/70 p-2 sm:p-2.5 rounded-2xl border border-[var(--card-border)] text-[10px] sm:text-[11px]">
         <div>
           <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase" data-i18n="step_modal_project">📁 Project</div>
-          <div id="step-modal-project" class="font-bold truncate text-amber-700">optiflow-svc</div>
+          <div id="step-modal-project" class="font-bold truncate text-amber-700">Local Workspace</div>
         </div>
         <div>
           <div class="text-[8px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase" data-i18n="step_modal_branch">🌿 Branch</div>
@@ -5449,11 +5449,11 @@
     // Models & Quota Hub Modal (Phím tắt U)
     let isModelsQuotaOpen = false;
     let currentQuota = {
-      name: "hau ncong",
-      account: "nconghauu@gmail.com",
-      avatar: "https://lh3.googleusercontent.com/a/ACg8ocJ5q5ikI7wl-oN9sNk9kx-D-WIpWFKacGMyWlMrnybUWq7nx1Wt=s96-c",
-      plan: "Google AI Pro",
-      tier: "Google AI Pro",
+      name: "Local user",
+      account: "Local account",
+      avatar: "./assets/dev_bot.png",
+      plan: "Local workspace",
+      tier: "Local workspace",
       upgradeUrl: "https://antigravity.google/g1-upgrade",
       models: [
         { name: "Gemini 3.1 Pro (High)", provider: "Google DeepMind", context: "1,000,000 tokens (1M)", status: "Active (Default)", speed: "⚡ Ultra Fast Reasoning" },
@@ -5493,10 +5493,10 @@
     function updateQuotaUI() {
       if (!currentQuota) return;
 
-      const userName = currentQuota.name || 'hau ncong';
-      const userEmail = currentQuota.account || 'nconghauu@gmail.com';
-      const userPlan = currentQuota.plan || currentQuota.tier || 'Google AI Pro';
-      const userAvatar = currentQuota.avatar || 'https://lh3.googleusercontent.com/a/ACg8ocJ5q5ikI7wl-oN9sNk9kx-D-WIpWFKacGMyWlMrnybUWq7nx1Wt=s96-c';
+      const userName = currentQuota.name || 'Local user';
+      const userEmail = currentQuota.account || 'Local account';
+      const userPlan = currentQuota.plan || currentQuota.tier || 'Local workspace';
+      const userAvatar = currentQuota.avatar || './assets/dev_bot.png';
       const upgradeUrl = currentQuota.upgradeUrl || 'https://antigravity.google/g1-upgrade';
 
       // Header Pill
@@ -5903,7 +5903,7 @@
       document.getElementById('step-modal-name').innerText = agent.name;
       document.getElementById('step-modal-shortid').innerText = `#${agent.shortId || agent.id.slice(0, 8)}`;
       document.getElementById('step-modal-role').innerText = agent.role || 'Autonomous Coding Agent';
-      document.getElementById('step-modal-project').innerText = agent.project || 'optiflow-svc';
+      document.getElementById('step-modal-project').innerText = agent.project || 'Local Workspace';
       document.getElementById('step-modal-branch').innerText = agent.branch || 'main';
       document.getElementById('step-modal-model').innerText = agent.model || 'Gemini 3.8 Flash';
       document.getElementById('step-modal-tokens').innerText = `${agent.tokensEstFormatted || '12k'} (${agent.contextPct || '1.2%'})`;
@@ -6680,9 +6680,9 @@ function triggerRandomStudioEvent() {
         characterType: 'deploy',
         avatarImg: './assets/deployer_bot.png',
         role: 'DevOps & Cloudflare Specialist',
-        project: 'pango-ai-flowise-source',
+        project: 'Local Demo Workspace',
         branch: 'main',
-        workspacePath: '~/Documents/projects/pango-ai-flowise-source',
+        workspacePath: '~/Documents',
         model: 'Gemini 3.8 Flash (High)',
         zone: 'ops',
         houseRoom: 'kitchen',
@@ -6709,9 +6709,9 @@ function triggerRandomStudioEvent() {
         logs: [
           '[USER] deploy new cloudflare tunnel',
           '[TOOL] replace_file_content: cloudflared.yml contract updated',
-          '[CMD] cloudflared tunnel run valuable-ins-vote-conditional',
+          '[CMD] cloudflared tunnel run <local-demo-tunnel>',
           '[STATUS] Tunnel established: 200 OK',
-          '[RESULT] 👉 URL: https://valuable-ins-vote-conditional.trycloudflare.com',
+          '[RESULT] Local demo tunnel ready (sample data)',
           '[DONE] Deployment task complete.'
         ]
       },
@@ -6722,9 +6722,9 @@ function triggerRandomStudioEvent() {
         characterType: 'dev',
         avatarImg: './assets/bot_pixel_fox.png',
         role: 'UI/UX & Animation Craftsman',
-        project: 'optiflow-svc',
+        project: 'Local Demo Workspace',
         branch: 'feature/antigravity-monitor-ui',
-        workspacePath: '~/Documents/projects/optiflow-svc',
+        workspacePath: '~/Documents',
         model: 'Gemini 3.8 Flash (High)',
         zone: 'dev',
         houseRoom: 'office',
@@ -6763,9 +6763,9 @@ function triggerRandomStudioEvent() {
         characterType: 'security',
         avatarImg: './assets/guardian_bot.png',
         role: 'Code Review & Git Policy',
-        project: 'optiflow-svc',
+        project: 'Local Demo Workspace',
         branch: 'main',
-        workspacePath: '~/Documents/projects/optiflow-svc',
+        workspacePath: '~/Documents',
         model: 'Claude Sonnet 4.6 (Thinking)',
         zone: 'dev',
         houseRoom: 'living',
@@ -6803,9 +6803,9 @@ function triggerRandomStudioEvent() {
         characterType: 'scout',
         avatarImg: './assets/bot_chibi_astro.png',
         role: 'SKU & Cloud Data Resolver',
-        project: 'pango-ai-flowise-source',
+        project: 'Local Demo Workspace',
         branch: 'main',
-        workspacePath: '~/Documents/projects/pango-ai-flowise-source',
+        workspacePath: '~/Documents',
         model: 'Gemini 3.8 Flash (High)',
         zone: 'lounge',
         houseRoom: 'kitchen',
@@ -7746,7 +7746,7 @@ function triggerRandomStudioEvent() {
           if (!f.avatarImg || f.avatarImg.endsWith('.jpg')) {
             f.avatarImg = getDiverseCharacterAvatar(f.id, f.characterType, f.prompt);
           }
-          if (!f.project) f.project = f.workspacePath ? f.workspacePath.split('/').pop() : "optiflow-svc";
+          if (!f.project) f.project = f.workspacePath ? f.workspacePath.split('/').pop() : "Local Workspace";
           if (!f.branch) f.branch = "main";
           if (!f.model) f.model = "Gemini 3.8 Flash (High)";
 

@@ -151,10 +151,10 @@ class AgentScanner: ObservableObject {
     private func getRealAccountProfile() -> (name: String, email: String, avatar: String, plan: String, upgradeUrl: String) {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
         let dbPath = "\(home)/Library/Application Support/Antigravity/User/globalStorage/state.vscdb"
-        var name = "hau ncong"
-        var email = "nconghauu@gmail.com"
-        var avatar = "https://lh3.googleusercontent.com/a/ACg8ocJ5q5ikI7wl-oN9sNk9kx-D-WIpWFKacGMyWlMrnybUWq7nx1Wt=s96-c"
-        let plan = "Google AI Pro"
+        var name = Host.current().localizedName ?? NSUserName()
+        var email = "Local account"
+        var avatar = "./assets/dev_bot.png"
+        var plan = "Local workspace"
         let upgradeUrl = "https://antigravity.google/g1-upgrade"
 
         // Check if sqlite database exists
@@ -191,7 +191,10 @@ class AgentScanner: ObservableObject {
                 }
             }
         }
-        return (name, email, avatar, plan, upgradeUrl)
+        if email == "Local account" {
+            plan = "Local workspace"
+        }
+        return (name.isEmpty ? "Local user" : name, email, avatar, plan, upgradeUrl)
     }
 
     private func getActiveGoogleAccount() -> String {
@@ -586,7 +589,7 @@ class AgentScanner: ObservableObject {
                 }
 
                 if workspacePath.isEmpty {
-                    workspacePath = env == "IDE" ? "\(home)/Documents/projectAI/pango-ai-flowise-source" : "\(home)/Documents/projects/optiflow/optiflow-svc"
+                    workspacePath = "\(home)/Documents"
                 }
 
                 let projectName = (workspacePath as NSString).lastPathComponent
